@@ -1,0 +1,20 @@
+default:
+  graphformat: pdf
+#  font: Helvetica
+#  font: Bookman Old Style
+#  font: DejaVu Serif
+  font: Latin Modern Roman
+#  bold: "{* Bold}"
+#  mono: Andale Mono
+#  mono: DejaVu Sans Mono
+  mono: Latin Modern Mono
+  prechap: "Kapitel "
+  postchap: ""
+  presect: "Abschnitt "
+  postsect: ""
+  dql: "“"
+  dqr: "”"
+  con: "Inhalt"
+  fig: "Abbildung "
+  tab: "Tabelle "
+  indent: "\\qquad"

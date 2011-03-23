@@ -1,0 +1,201 @@
+#!/usr/bin/env ruby
+###############################################################################
+# This is originally based on the "progit" makepdf script, but is heavly
+# changed to automatically generate PDFs from .gv and .svg plus changes
+# for newer versions of pandoc
+###############################################################################
+# -*- coding: utf-8 -*-
+require 'fileutils'
+require 'open3'
+require 'erb'
+require 'yaml'
+
+include FileUtils, Open3
+alias :pipe :popen3
+
+$here = File.expand_path(File.dirname(__FILE__))
+$root = File.join($here, '..')
+
+def figures(config)
+	# generate Graphviz PDF
+	Dir["figures/*.gv"].each do |file|
+		tofile = file.sub(/\.gv/, "-GEN.#{config['graphformat']}")
+		if test(?<, file, tofile)
+			next
+		end
+
+		print "\tGenerating Graphviz #{file} -> #{tofile}... "
+		unless system("dot -T#{config['graphformat']} '#{file}' -o '#{tofile}' 2>&1")
+			STDERR.print "Error generating graphviz"
+			exit
+		end
+		puts "done"
+	end
+
+	# generate Inkscape PDF
+	Dir["figures/*.svg"].each do |file|
+		tofile = file.sub(/\.svg/, "-GEN.#{config['graphformat']}")
+		if test(?<, file, tofile)
+			next
+		end
+		print "\tGenerating Inkscape #{file} -> #{tofile}... "
+
+		if config['graphformat'] == 'pdf' then
+			unless system("#{$inkscape} -f '#{file}' -A '#{tofile}' 2>&1")
+				STDERR.print "Error generating inkscape"
+				exit
+			end
+		end
+		puts "done"
+	end
+end
+
+def usage
+	puts <<USAGE
+Usage:
+  makepdf [OPTION...] 
+
+Options:
+  -d, --debug      prints TeX and other output
+USAGE
+	exit
+end
+
+def command_exists?(command)
+	if File.executable?(command) then
+		return command
+	end
+	ENV['PATH'].split(/:/).map do |path|
+		File.executable?("#{path}/#{command}")
+	end.inject{|a, b| a || b}
+end
+
+def replace(string, &block)
+	string.instance_eval do
+		alias :s :gsub!
+		instance_eval(&block)
+	end
+	string
+end
+
+def verbatim_sanitize(string)
+	string.gsub('\\', '{\textbackslash}').
+		gsub('~', '{\textasciitilde}').
+		gsub(/([\$\#\_\^\%])/, '\\\\' + '\1{}')
+end
+
+def pre_pandoc(string, config)
+	replace(string) do
+		# Process figures
+		s /!\[(?:#{config['fig']}\d{1,2}-\d{1,2}:\s)?(.*)\]\((figures\/.*)\.(?:gv|svg)\)/,
+			"FIG: \\2-GEN.#{config['graphformat']}; \\1"
+		s /!\[(?:#{config['fig']}\d{1,2}-\d{1,2}:\s)?(.*)\]\((figures\/.*)\)/,
+		 	'FIG: \2; \1'
+	end
+end
+
+def post_pandoc(string, config)
+	replace(string) do
+		space = /\s/
+
+		# Enable proper cross-reference
+		s /#{config['fig'].gsub(space, '\s')}\s*(\d+)\-\-(\d+)/, '\imgref{\1.\2}'
+		s /#{config['tab'].gsub(space, '\s')}\s*(\d+)\-\-(\d+)/, '\tabref{\1.\2}'
+		s /#{config['prechap'].gsub(space, '\s')}\s*(\d+)(\s*)#{config['postchap'].gsub(space, '\s')}/, '\chapref{\1}\2'
+
+		# Miscellaneous fixes
+		s /FIG: (.*); (.*)/, '\img{\1}{\2}'
+		s '\begin{enumerate}[1.]', '\begin{enumerate}'
+		s /(\w)--(\w)/, '\1-\2'
+		s /``(.*?)''/, "#{config['dql']}\\1#{config['dqr']}"
+
+		# Convert inline-verbatims into \texttt (which is able to wrap)
+		s /\\verb(\W)(.*?)\1/ do
+			"{\\texttt{#{verbatim_sanitize($2)}}}"
+		end
+
+		# Ensure monospaced stuff is in a smaller font
+		s /(\\verb(\W).*?\2)/, '{\footnotesize\1}'
+		s /(\\begin\{verbatim\}.*?\\end\{verbatim\})/m, '{\footnotesize\1}'
+
+		# Shaded verbatim block
+		s /(\\begin\{verbatim\}.*?\\end\{verbatim\})/m, '\begin{shaded}\1\end{shaded}'
+	end
+end
+
+ARGV.delete_if{|arg| $DEBUG = true if arg == '-d' or arg == '--debug'}
+#docs = ARGV.select{|arg| File.directory?("#$root/#{arg}")}
+docs = [ 'text' ]
+usage if docs.empty?
+
+$config = YAML.load_file("#$here/config.yml")
+template = ERB.new(File.read("#$here/template.tex"))
+
+$inkscape = 'inkscape'
+if RUBY_PLATFORM =~ /darwin/ then
+	$inkscape = '/Applications/Inkscape.app/Contents/Resources/bin/inkscape'
+end
+
+required =  ['pandoc', 'xelatex'] # later: , $inkscape, 'dot']
+missing = required.reject{|command| command_exists?(command)}
+unless missing.empty?
+	puts "Missing dependencies: #{missing.join(', ')}."
+	puts "Install these and try again."
+	exit
+end
+
+cd($root)
+
+docs.each do |doc|
+	config = $config['default'].merge($config[doc]) rescue $config['default']
+
+	figures(config)
+
+	puts "#{doc}:"
+	markdown = Dir["#{doc}/*/*.markdown"].sort.map do |file|
+		File.read(file)
+	end.join("\n\n")
+
+	print "\tParsing markdown... "
+	latex = pipe('pandoc -p --no-wrap -f markdown -t latex --chapters') do |stdin, stdout|
+		stdin.write(pre_pandoc(markdown, config))
+		stdin.close
+		post_pandoc(stdout.read, config)
+	end
+	puts "done"
+
+	print "\tCreating main.tex for #{doc}... "
+	dir = "#$here/#{doc}"
+	mkdir_p(dir)
+	File.open("#{dir}/main.tex", 'w') do |file|
+		file.write(template.result(binding))
+	end
+	puts "done"
+
+	abort = false
+
+	puts "\tRunning XeTeX:"
+	3.times do |i|
+		print "\t\tPass #{i + 1}... "
+		pipe("xelatex -output-directory='#{dir}' '#{dir}/main.tex' 2>&1") do |_, stdout|
+			unless $DEBUG
+				if ~ /^!\s/
+					puts "failed with:\n\t\t\t#{$_.strip}"
+					puts "\tConsider running this again with --debug."
+					abort = true
+				end while stdout.gets and not abort
+			else
+				STDERR.print while stdout.gets rescue abort = true
+			end
+		end
+		break if abort
+		puts "done"
+	end
+
+	target = "fractals.pdf"
+	unless abort
+		print "\tMoving output to #{target}... "
+		mv("#{dir}/main.pdf", "#$root/#{target}")
+		puts "done"
+	end
+end
