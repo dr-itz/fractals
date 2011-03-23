@@ -1,6 +1,6 @@
 # Einführung #
 
-Dieses Dokument beschreibt das HSZ-T Softwareprojet im vierten Semester. Das
+Dieses Dokument beschreibt das HSZ-T Softwareprojekt im vierten Semester. Das
 Themengebiet ist numerische Mathematik. Die zu Software befasst sich mit dem
 visualisieren von Fraktalen als Einstieg in die Chaostheorie. Konkret geht es um
 die Julia- und die Mandelbrot-Menge.
@@ -44,4 +44,4 @@ Ziel ist es, folgendes zu erstellen:
 * Lauffähiges Java-Programm, einfach zu starten
 * Dokumentation als PDF
 * Gebundene Dokumentation
-* Presentation für die Klasse
+* Präsentation für die Klasse
