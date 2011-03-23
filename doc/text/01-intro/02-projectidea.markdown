@@ -15,8 +15,8 @@ werden die folgenden generellen Features implementiert:
 
   * **Zoom-Funktion**
 
-	Eine Zoom-Funktion durch selektion mit der Maus erlaubt, Fraktale bis zu
-	einem gewissen Grenze zu vergrössern.
+	Eine Zoom-Funktion durch Selektion mit der Maus erlaubt, Fraktale bis zu
+	einer gewissen Grenze zu vergrössern.
 
   * **Reset**
 
@@ -67,6 +67,7 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 
 
 Für das Design und die Architektur der Software wird auf folgendes geachtet:
+
 * Genügend Abstraktion um ggf. Berechnungen mit "Arbitrary Precision Arithmetic"
   durchzuführen.
 * Trennung von GUI und Berechnungen
