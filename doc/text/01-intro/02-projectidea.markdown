@@ -44,7 +44,7 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 
 	Ein Button zeichnet das Gesamte Fraktal im sichtbaren Bereich.
 
-  * **Zeichnen einzelner Linien**
+  * **Zeichnen einzelner Wege**
 
 	Eine weitere Funktion erlaubt das Zeichnen einzelner Wege mit allen
 	Gliedern bis zu der konfigurierten Anzahl Berechnungen. Dabei kann die Farbe
@@ -64,6 +64,9 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 		bei jedem zusätzlichen Weg. Dadurch sind diese einfach
 		auseinanderzuhalten.
 
+Abbildung 1-1 zeigt einen Entwurf des möglichen Aussehen des GUI.
+
+![Mögliches Aussehen des GUI](figures/sketch-main-gui.png)
 
 
 Für das Design und die Architektur der Software wird auf folgendes geachtet:
