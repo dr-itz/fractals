@@ -1,9 +1,9 @@
 # Einführung #
 
 Dieses Dokument beschreibt das HSZ-T Softwareprojekt im vierten Semester. Das
-Themengebiet ist numerische Mathematik. Die zu Software befasst sich mit dem
-visualisieren von Fraktalen als Einstieg in die Chaostheorie. Konkret geht es um
-die Julia- und die Mandelbrot-Menge.
+Themengebiet ist numerische Mathematik. Die zu entwickelnde Software befasst
+sich mit dem Visualisieren von Fraktalen als Einstieg in die Chaostheorie.
+Konkret geht es um die Julia- und die Mandelbrot-Menge.
 
 
 ## Organisatorisches ##
@@ -32,7 +32,7 @@ neue Features implementiert oder erweitert. Das Ziel davon ist, konkreten
 Fortschritt zeigen zu können und jederzeit Anforderungen zu ändern und so die
 ganze Entwicklung viel dynamischer zu gestalten.
 
-Zur Verwaltung der Features und Bug kommt Redmine als Webbasiertes
+Zur Verwaltung der Features und Bugs kommt Redmine als webbasiertes
 Issue-Tacking-Tool zum Einsatz. Neben dem Issue-Tracking bietet Redmine auch
 ein integriertes Wiki, Zeitmanagement und eine Roadmap zur Release-Planung.
 
