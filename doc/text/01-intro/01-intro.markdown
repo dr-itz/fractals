@@ -1,16 +1,16 @@
 # Einführung #
 
 Dieses Dokument beschreibt das HSZ-T Softwareprojekt im vierten Semester. Das
-Themengebiet ist numerische Mathematik. Die zu Software befasst sich mit dem
-visualisieren von Fraktalen als Einstieg in die Chaostheorie. Konkret geht es um
+Themengebiet ist numerische Mathematik. Die Software befasst sich mit dem
+Visualisieren von Fraktalen als Einstieg in die Chaostheorie. Konkret geht es um
 die Julia- und die Mandelbrot-Menge.
 
 
 ## Organisatorisches ##
 
-### Projekteam ###
+### Projektteam ###
 
-Das Projetkteam besteht aus Sandra Freihofer und Daniel Ritz. Betreut wird die
+Das Projektteam besteht aus Sandra Freihofer und Daniel Ritz. Betreut wird die
 Arbeit von Albert Heuberger.
 
 
@@ -39,7 +39,7 @@ ein integriertes Wiki, Zeitmanagement und eine Roadmap zur Release-Planung.
 
 ### Produkt der Arbeit ###
 
-Ziel ist es, folgendes zu erstellen:
+Ziel ist es, Folgendes zu erstellen:
 
 * Lauffähiges Java-Programm, einfach zu starten
 * Dokumentation als PDF

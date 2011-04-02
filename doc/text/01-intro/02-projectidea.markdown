@@ -48,9 +48,9 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 
 	Eine weitere Funktion erlaubt das Zeichnen einzelner Wege mit allen
 	Gliedern bis zu der konfigurierten Anzahl Berechnungen. Dabei kann die Farbe
-	ausgewählt werden. Durch anklicken eines Punktes in der graphischen
+	ausgewählt werden. Durch Anklicken eines Punktes in der graphischen
 	Darstellung wird der Vorgang gestartet. Um die Visualisierung zu verbessern,
-	wird dabei folgendes implementiert:
+	wird dabei Folgendes implementiert:
 
 	  * **Verzögerung zwischen den Schritten**
 
@@ -66,7 +66,7 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 
 
 
-Für das Design und die Architektur der Software wird auf folgendes geachtet:
+Für das Design und die Architektur der Software wird auf Folgendes geachtet:
 
 * Genügend Abstraktion um ggf. Berechnungen mit "Arbitrary Precision Arithmetic"
   durchzuführen.
@@ -91,7 +91,7 @@ berücksichtigt werden:
 
   * **Arbitrary Precision Arithmetic**
 
-	Um eine detailliertere Darstellung mit einem viel stärkerem Zoom zu
+	Um eine detailliertere Darstellung mit einem viel stärkeren Zoom zu
 	ermöglichen, soll Arbitrary Precision Arithmetic zum Einsatz kommen.
 
   * **Multithreading**
