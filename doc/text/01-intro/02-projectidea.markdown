@@ -107,3 +107,9 @@ berücksichtigt werden:
 	Fraktalen. Dabei geht es um das numerische lösen von
 	Differentialgleichungen. Der Grundaufbau mit der Visualisierung ist bereits
 	sehr ähnlich.
+
+  * **Wählbare Funktionen**
+
+	Es kann aus einem Set vordefinierter Funktionen ausgewählt werden. Die Funktionen 
+	werden unterteilt in Schrittfunktionen und kontinuierliche Funktionen.
+
