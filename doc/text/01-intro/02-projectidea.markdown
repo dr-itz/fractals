@@ -22,6 +22,10 @@ werden die folgenden generellen Features implementiert:
 
 	Ein Reset-Button löscht die gesamte Visualisierung.
 
+  * **Zeichnen der Menge**
+
+	Ein Button zeichnet das Gesamte Fraktal im sichtbaren Bereich.
+
 
 
 Spezifisch für Mandelbrot und Julia sind die folgenden Features:
@@ -40,11 +44,7 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 
 	Für die Julia-Menge kann die Konstante vorgegeben werden.
 
-  * **Zeichnen der Menge**
-
-	Ein Button zeichnet das Gesamte Fraktal im sichtbaren Bereich.
-
-  * **Zeichnen einzelner Linien**
+  * **Zeichnen einzelner Wege**
 
 	Eine weitere Funktion erlaubt das Zeichnen einzelner Wege mit allen
 	Gliedern bis zu der konfigurierten Anzahl Berechnungen. Dabei kann die Farbe
@@ -62,8 +62,11 @@ Spezifisch für Mandelbrot und Julia sind die folgenden Features:
 
 		Als Option einschaltbar ist die automatische Selektion einer neuen Farbe
 		bei jedem zusätzlichen Weg. Dadurch sind diese einfach
-		auseinanderzuhalten.
+		auseinander zu halten.
 
+Abbildung 1-1 zeigt einen Entwurf des möglichen Aussehen des GUI.
+
+![Mögliches Aussehen des GUI](figures/sketch-main-gui.png)
 
 
 Für das Design und die Architektur der Software wird auf Folgendes geachtet:
@@ -96,7 +99,7 @@ berücksichtigt werden:
 
   * **Multithreading**
 
-	Die meisten modernen Prozessoren haben mehrere Kerne. Daher macht es sinn,
+	Die meisten modernen Prozessoren haben mehrere Kerne. Daher macht es Sinn,
 	die Software so aufzubauen, dass mehrere Threads parallel die Visualisierung
 	der Fraktale berechnen um so die Geschwindigkeit zu erhöhen.
 
