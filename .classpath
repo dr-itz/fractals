@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" output="build/test-classes" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/test/cobertura/asm-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/test/cobertura/asm-tree-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/test/cobertura/cobertura-1.9.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/cobertura/log4j-1.2.9.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/hamcrest-core-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/hamcrest-library-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/jmock-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/jmock/jmock-junit4-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/bcel-5.2.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/cglib-nodep-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/mockrunner-jdbc.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/nekohtml.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/test/mockrunner/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/test/junit-4.8.2.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

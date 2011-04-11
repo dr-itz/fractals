@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Prepares a distribution directory. This is a quick and dirty hack that should
+  be replaced by a proper tool.
+  @author D.Ritz
+  @author S.Freihofer
+-->
+<project name="Fractals" basedir="." default="dist">
+	<import file="build-lib.xml"/>
+
+	<property name="target.props"   value="targets/${target}.properties"/>
+
+	<available file="${target.props}" property="isTargetAvail"/>
+	<fail unless="isTargetAvail"
+	 message="Target .properties doesn't exist. Is -Dtarget=... defined?" />
+
+	<property file="${target.props}"/>
+
+	<property name="target.dir"     value="${dist.dir}/${target}"/>
+	<property name="target.env"     value="${target.dir}/env.properties"/>
+	<property name="inst1.dir"      value="${target.dir}/inst1"/>
+	<property name="inst1.map"      value="config/mapping-instance1.properties"/>
+	<property name="inst1.env"      value="${inst1.dir}/env.properties"/>
+	<property name="inst2.dir"      value="${target.dir}/inst2"/>
+	<property name="inst2.map"      value="config/mapping-instance2.properties"/>
+	<property name="inst2.env"      value="${inst2.dir}/env.properties"/>
+
+	<target name="prepare">
+		<mkdir dir="${target.dir}"/>
+		<mkdir dir="${inst1.dir}"/>
+		<mkdir dir="${inst2.dir}"/>
+
+		<copy file="${target.props}" tofile="${target.env}"/>
+		<copy file="${inst1.map}" tofile="${inst1.env}">
+			<filterset>
+				<filtersfile file="${target.props}"/>
+			</filterset>
+		</copy>
+		<copy file="${inst2.map}" tofile="${inst2.env}">
+			<filterset>
+				<filtersfile file="${target.props}"/>
+			</filterset>
+			</copy>
+	</target>
+
+	<macrodef name="customerconfig">
+		<attribute name="instdir"/>
+		<attribute name="basedir"/>
+		<attribute name="copydir"/>
+		<sequential>
+			<copy todir="@{instdir}/@{copydir}">
+				<fileset dir="@{basedir}/@{copydir}">
+					<include name="**/${customer}/**/*"/>
+				</fileset>
+				<mapper>
+					<regexpmapper from="^(.*)/${customer}(.*)$$" to="\1\2" handledirsep="true"/>
+				</mapper>
+				<filterset>
+					<filtersfile file="${target.env}"/>
+					<filtersfile file="@{instdir}/env.properties"/>
+				</filterset>
+			</copy>
+		</sequential>
+	</macrodef>
+	<macrodef name="config">
+		<attribute name="instdir"/>
+		<attribute name="basedir"/>
+		<attribute name="copydir"/>
+		<sequential>
+			<copy todir="@{instdir}/@{copydir}">
+				<fileset dir="@{basedir}/@{copydir}">
+					<include name="**/*"/>
+				</fileset>
+				<filterset>
+					<filtersfile file="${target.env}"/>
+					<filtersfile file="@{instdir}/env.properties"/>
+				</filterset>
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<target name="dist" depends="prepare">
+		<customerconfig instdir="${inst1.dir}" basedir="config" copydir="waapi"/>
+		<customerconfig instdir="${inst2.dir}" basedir="config" copydir="waapi"/>
+		<config instdir="${inst1.dir}" basedir="config" copydir="tomcat"/>
+		<config instdir="${inst2.dir}" basedir="config" copydir="tomcat"/>
+		<copy file="config/build.xml" todir="${inst1.dir}"/>
+		<copy file="config/build.xml" todir="${inst2.dir}"/>
+
+		<copy todir="${target.dir}/sql">
+			<fileset dir="src/main/sql">
+				<include name="**/*.sql"/>
+			</fileset>
+		</copy>
+		<copy file="dist/fractals.jar" todir="${target.dir}"/>
+	</target>
+
+	<target name="distclean">
+		<delete dir="${dist.dir}"/>
+	</target>
+</project>

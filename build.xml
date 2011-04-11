@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Builds releases of Fractals, imported from another project
+  @author D.Ritz
+  @author S.Freihofer
+-->
+<project name="Fractals" basedir="." default="help">
+	<!-- define the project name, import build-lib -->
+	<import file="build-lib.xml"/>
+
+	<target name="all" description="builds everything"
+	 depends="app, coverage">
+		<echo>Full build complete</echo>
+	</target>
+
+	<target name="doc" depends="javadoc"/>
+
+	<target name="dist" depends="app">
+		<ant antfile="makedist.xml">
+			<property name="target" value="${target}"/>
+		</ant>
+	</target>
+	<target name="distclean">
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="help">
+		<echo>
+Available targets:
+- all                builds the application JAR, performs coverage tests
+- clean              cleans up generated files
+- app                compiles and assembles the JAR
+- compile            compile only
+- compile-test       compiles the tests only
+- test               compiles and runs test cases
+- coverage           compiles everything, instruments code and runs coverage tests
+- javadoc            build javadoc
+- dist               prepares a distribution directory
+- distclean          cleans just the dist/ directory
+		</echo>
+	</target>
+</project>

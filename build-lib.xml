@@ -1,0 +1,216 @@
+<!--
+  Generic build lib for apps, imported from another project
+  @author D.Ritz
+  @author S.Freihofer
+-->
+<project name="build-lib" basedir=".">
+	<!-- generic build properties -->
+	<property file="build.properties"/>
+
+	<property name="version.props" value="version.properties"/>
+	<property file="${version.props}"/>
+
+	<!-- some properties are built from environment variables -->
+	<property environment="myenv"/>
+	<property name="java.build.root"  value="${myenv.JAVA_BUILD_ROOT}"/>
+
+	<!-- build to different directory depending on env -->
+	<condition property="build.root" value="${java.build.root}/${app.name}" else=".">
+		<and>
+			<istrue value="${build.useextdir}"/>
+			<available file="${java.build.root}" type="dir"/>
+		</and>
+	</condition>
+
+	<!-- Set the uncustomizable properties -->
+	<property name="src.dir"          value="src/main/java"/>
+	<property name="src.test.dir"     value="src/test/java"/>
+	<property name="lib.dir"          value="lib/main"/>
+	<property name="lib.test.dir"     value="lib/test"/>
+
+	<property name="build.dir"        value="${build.root}/build"/>
+	<property name="classes.dir"      value="${build.dir}/classes"/>
+	<property name="classes.test.dir" value="${build.dir}/test-classes"/>
+
+	<property name="cobertura.dir"    value="${build.dir}/cobertura"/>
+	<property name="instrumented.dir" value="${cobertura.dir}/instrumented"/>
+	<property name="cover.data.file"  value="${cobertura.dir}/cobertura.ser"/>
+	<property name="cover.html.dir"   value="${cobertura.dir}/html"/>
+
+	<property name="dist.dir"         value="${build.root}/dist"/>
+
+	<property name="doc.dir"          value="doc"/>
+	<property name="doc.dist.dir"     value="${dist.dir}/doc"/>
+	<property name="javadoc.dir"      value="${doc.dist.dir}/javadoc"/>
+	<property name="doc.pdf.dir"      value="${doc.dist.dir}/pdf"/>
+
+	<!-- app properties -->
+	<property name="jar.name"         value="${app.name}.jar"/>
+	<property name="app.dir"          value="src/main/java/"/>
+
+	<!-- The classpaths to be used to compile, test, etc -->
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<path id="app.classpath">
+		<path refid="compile.classpath"/>
+		<pathelement location="${classes.dir}"/>
+	</path>
+	<path id="test.classpath">
+		<path refid="app.classpath"/>
+		<fileset dir="${lib.test.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+
+	<path id="cobertura.classpath">
+		<path refid="compile.classpath"/>
+		<fileset dir="${lib.test.dir}/cobertura">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties"/>
+	<path id="instrumented.classpath">
+		<pathelement location="${instrumented.dir}"/>
+	</path>
+
+	<!-- version: generate .X from .X.template -->
+	<macrodef name="versiongen">
+		<attribute name="basedir"/>
+		<attribute name="versionfile"/>
+		<sequential>
+			<dependset>
+				<srcfileset dir="@{basedir}">
+					<include name="@{versionfile}.template"/>
+					<include name="${version.props}"/>
+				</srcfileset>
+				<targetfileset dir="@{basedir}">
+					<include name="@{versionfile}"/>
+				</targetfileset>
+			</dependset>
+			<copy file="@{versionfile}.template" tofile="@{versionfile}">
+				<filterset>
+					<filtersfile file="${version.props}"/>
+				</filterset>
+			</copy>
+		</sequential>
+	</macrodef>
+
+	<!-- Default build target -->
+	<target name="init">
+		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${classes.test.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<mkdir dir="${cover.html.dir}"/>
+	</target>
+
+	<target name="clean" description="Deletes all generated files">
+		<delete dir="${classes.dir}"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${dist.dir}"/>
+	</target>
+
+	<target name="app-version">
+		<versiongen basedir="." versionfile="${src.dir}/${app.versionfile}"/>
+	</target>
+
+	<target name="compile" depends="init, app-version">
+		<copy todir="${classes.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+		<javac srcdir="${src.dir}" destdir="${classes.dir}"
+		       source="${javac.source}" target="${javac.target}"
+		       debug="${javac.debug}" optimize="${javac.optimize}">
+			<classpath>
+				<path refid="compile.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="app" depends="compile">
+		<jar destfile="${dist.dir}/${jar.name}">
+			<fileset dir="${app.dir}">
+				<include name="**/*"/>
+			</fileset>
+			<zipfileset dir="${lib.dir}"/>
+			<zipfileset dir="${classes.dir}" includes="**/*.class"/>
+			<zipfileset dir="${src.dir}">
+				<include name="**/*.properties"/>
+			</zipfileset>
+		</jar>
+	</target>
+
+	<!-- Targets for testing -->
+	<target name="compile-test" description="Compiles the unittests" depends="init, compile">
+		<copy todir="${classes.test.dir}">
+			<fileset dir="${src.test.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+		<javac srcdir="${src.test.dir}" destdir="${classes.test.dir}"
+		       debug="${javac.debug}"
+		       source="${javac.source}" target="${javac.target}">
+			<classpath>
+				<path refid="test.classpath"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="instrument" depends="init, compile">
+		<delete file="${cover.data.file}"/>
+		<delete dir="${instrumented.dir}" />
+
+		<cobertura-instrument datafile="${cover.data.file}" todir="${instrumented.dir}">
+			<!--
+			<ignore regex="org.apache.log4j.*" />
+			-->
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
+
+	<target name="test" depends="compile-test">
+		<junit fork="on" forkmode="perBatch" haltonerror="true">
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cover.data.file}"/>
+			<classpath>
+				<path refid="instrumented.classpath"/>
+				<path refid="test.classpath"/>
+				<pathelement location="${classes.test.dir}"/>
+
+				<path refid="cobertura.classpath"/>
+			</classpath>
+			<batchtest>
+				<fileset dir="${classes.test.dir}" includes="**/*Test.class"/>
+				<formatter type="brief" usefile="false"/>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="coverage" depends="instrument, test">
+		<cobertura-report datafile="${cover.data.file}" destdir="${cover.html.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java"/>
+			</fileset>
+		</cobertura-report>
+	</target>
+
+	<!-- Doc targets -->
+	<target name="javadoc">
+		<javadoc destdir="${javadoc.dir}"
+		 access="public" author="true" nodeprecated="false"
+		 nodeprecatedlist="false" noindex="false" nonavbar="false"
+		 notree="false" splitindex="true" use="true" version="true">
+			<classpath>
+				<path refid="app.classpath"/>
+			</classpath>
+			<fileset dir="${src.dir}" defaultexcludes="yes">
+				<include name="**/*.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+</project>
