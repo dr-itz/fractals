@@ -16,11 +16,6 @@
 
 	<target name="doc" depends="javadoc"/>
 
-	<target name="dist" depends="app">
-		<ant antfile="makedist.xml">
-			<property name="target" value="${target}"/>
-		</ant>
-	</target>
 	<target name="distclean">
 		<delete dir="${dist.dir}"/>
 	</target>
