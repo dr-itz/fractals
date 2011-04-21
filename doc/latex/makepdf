@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 ###############################################################################
-# This is originally based on the "progit" makepdf script, but is heavly
+# This is originally based on the "progit" makepdf script, but is heavily
 # changed to automatically generate PDFs from .gv and .svg plus changes
-# for newer versions of pandoc
+# for newer versions of pandoc and portability fixes
 ###############################################################################
 # -*- coding: utf-8 -*-
 require 'fileutils'
@@ -10,8 +10,7 @@ require 'open3'
 require 'erb'
 require 'yaml'
 
-include FileUtils, Open3
-alias :pipe :popen3
+include FileUtils
 
 $here = File.expand_path(File.dirname(__FILE__))
 $root = File.join($here, '..')
@@ -25,7 +24,7 @@ def figures(config)
 		end
 
 		print "\tGenerating Graphviz #{file} -> #{tofile}... "
-		unless system("dot -T#{config['graphformat']} '#{file}' -o '#{tofile}' 2>&1")
+		unless system("dot -T#{config['graphformat']} \"#{file}\" -o \"#{tofile}\" 2>&1")
 			STDERR.print "Error generating graphviz"
 			exit
 		end
@@ -41,7 +40,7 @@ def figures(config)
 		print "\tGenerating Inkscape #{file} -> #{tofile}... "
 
 		if config['graphformat'] == 'pdf' then
-			unless system("#{$inkscape} -f '#{file}' -A '#{tofile}' 2>&1")
+			unless system("#{$inkscape} -f \"#{file}\" -A \"#{tofile}\" 2>&1")
 				STDERR.print "Error generating inkscape"
 				exit
 			end
@@ -65,8 +64,9 @@ def command_exists?(command)
 	if File.executable?(command) then
 		return command
 	end
-	ENV['PATH'].split(/:/).map do |path|
-		File.executable?("#{path}/#{command}")
+	ENV['PATH'].split(File::PATH_SEPARATOR).map do |path|
+		cmd = "#{path}/#{command}"
+		File.executable?(cmd) || File.executable?("#{cmd}.exe") || File.executable?("#{cmd}.cmd")
 	end.inject{|a, b| a || b}
 end
 
@@ -157,10 +157,10 @@ docs.each do |doc|
 	end.join("\n\n")
 
 	print "\tParsing markdown... "
-	latex = pipe('pandoc -p --no-wrap -f markdown -t latex --chapters') do |stdin, stdout|
-		stdin.write(pre_pandoc(markdown, config))
-		stdin.close
-		post_pandoc(stdout.read, config)
+	latex = IO.popen('pandoc -p --no-wrap -f markdown -t latex --chapters', 'w+') do |pipe|
+		pipe.write(pre_pandoc(markdown, config))
+		pipe.close_write
+		post_pandoc(pipe.read, config)
 	end
 	puts "done"
 
@@ -176,16 +176,16 @@ docs.each do |doc|
 
 	puts "\tRunning XeTeX:"
 	3.times do |i|
-		print "\t\tPass #{i + 1}... "
-		pipe("xelatex -output-directory='#{dir}' '#{dir}/main.tex' 2>&1") do |_, stdout|
+		print "\t\tPass #{i + 1}..."
+		IO.popen("xelatex -output-directory=\"#{dir}\" \"#{dir}/main.tex\" 2>&1") do |pipe|
 			unless $DEBUG
 				if ~ /^!\s/
 					puts "failed with:\n\t\t\t#{$_.strip}"
 					puts "\tConsider running this again with --debug."
 					abort = true
-				end while stdout.gets and not abort
+				end while pipe.gets and not abort
 			else
-				STDERR.print while stdout.gets rescue abort = true
+				STDERR.print while pipe.gets rescue abort = true
 			end
 		end
 		break if abort
