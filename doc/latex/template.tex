@@ -24,7 +24,8 @@
 \setromanfont[Mapping=tex-text]{<%= config['font'] %>}
 \setmonofont{<%= config['mono'] %>}
 
-\XeTeXlinebreaklocale{<%= doc %>}
+<%= config['hyphrule'] %>
+\XeTeXlinebreaklocale{<%= config['lang'] %>}
 <%= config['langrule'] %>
 
 \settowidth{\parindent}{<%= config['indent'] %>}
@@ -120,7 +121,7 @@
 \newcommand{\presect}{<%= config['presect'] %>}
 \newcommand{\postsect}{<%= config['postsect'] %>}
 \makeatletter
-	\renewcommand{\chaptermark}[1]{\markboth{\textbf{\@chapapp \thechapter \postchap}\hspace*{1ex}#1}{}}
+	\renewcommand{\chaptermark}[1]{\markboth{\textbf{\@chapapp~\thechapter \postchap}\hspace*{1ex}#1}{}}
 	\renewcommand{\sectionmark}[1]{\markright{\textbf{\presect \thesection \postsect}\hspace*{1ex}#1}}
 \makeatother
 \newcommand{\chap}[1]{\newpage\thispagestyle{empty}\chapter{#1}\label{chap:\thechapter}}
@@ -138,7 +139,7 @@
   {\parindent \z@ \raggedright \normalfont
     \ifnum \c@secnumdepth >\m@ne
       \if@mainmatter
-        \huge\bfseries \@chapapp \thechapter \postchap
+        \huge\bfseries \@chapapp~\thechapter \postchap
         \par\nobreak
         \vskip 20\p@
       \fi

@@ -14,7 +14,9 @@ default:
   author: "Sandra Freihofer, Daniel Ritz"
   authorshort: "S.Freihofer, D.Ritz"
 
-  langrule: "\usepackage[ngerman]{babel}"
+  lang: "de"
+  langrule: "\\frenchspacing"
+  hyphrule: "\\usepackage[ngerman]{babel}"
   chaptername: "Kapitel "
   appendixname: "Anhang "
   postchap: ""
