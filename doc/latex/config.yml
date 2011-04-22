@@ -10,7 +10,9 @@ default:
   mono: Latin Modern Mono
 
   title: "HSZ-T Software-Projekt: Fraktale"
+  titleshort: "Fraktale"
   author: "Sandra Freihofer, Daniel Ritz"
+  authorshort: "S.Freihofer, D.Ritz"
 
   chaptername: "Kapitel "
   appendixname: "Anhang "

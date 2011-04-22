@@ -28,6 +28,8 @@
 
 \title{<%= config['title'] %>}
 \author{<%= config['author'] %>}
+\newcommand{\titleshort}{<%= config['titleshort'] %>}
+\newcommand{\authorshort}{<%= config['authorshort'] %>}
 
 \makeatletter
 \let\savedauthor=\@author
@@ -114,8 +116,10 @@
 \newcommand{\postchap}{<%= config['postchap'] %>}
 \newcommand{\presect}{<%= config['presect'] %>}
 \newcommand{\postsect}{<%= config['postsect'] %>}
-\renewcommand{\chaptermark}[1]{\markboth{\textbf{\@chapapp \thechapter \postchap}\hspace*{1ex}#1}{}}
-\renewcommand{\sectionmark}[1]{\markright{\textbf{\presect \thesection \postsect}\hspace*{1ex}#1}}
+\makeatletter
+	\renewcommand{\chaptermark}[1]{\markboth{\textbf{\@chapapp \thechapter \postchap}\hspace*{1ex}#1}{}}
+	\renewcommand{\sectionmark}[1]{\markright{\textbf{\presect \thesection \postsect}\hspace*{1ex}#1}}
+\makeatother
 \newcommand{\chap}[1]{\newpage\thispagestyle{empty}\chapter{#1}\label{chap:\thechapter}}
 \newcommand{\chapref}[1]{\hyperref[chap:#1]{\chaptername #1\postchap}}
 \newcommand{\imgref}[1]{\hyperref[img:#1]{<%= config['fig'] %>#1}}
@@ -156,7 +160,7 @@
 \fancyhf{}
 \fancyhead[LE]{{\small\leftmark}}
 \fancyhead[RO]{{\small\rightmark}}
-\fancyhead[RE,LO]{{\small\savedauthor\hspace*{1ex}\textbf{\savedtitle}}}
+\fancyhead[RE,LO]{{\small\authorshort\hspace*{1ex}\textbf{\titleshort}}}
 \fancyfoot[LE,RO]{\small\textbf\thepage}
 \pagestyle{fancy}
 
