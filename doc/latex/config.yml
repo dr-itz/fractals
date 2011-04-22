@@ -14,6 +14,7 @@ default:
   author: "Sandra Freihofer, Daniel Ritz"
   authorshort: "S.Freihofer, D.Ritz"
 
+  langrule: "\usepackage[ngerman]{babel}"
   chaptername: "Kapitel "
   appendixname: "Anhang "
   postchap: ""

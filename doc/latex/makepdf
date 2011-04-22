@@ -120,6 +120,10 @@ def post_pandoc(string, config)
 
 		# Shaded verbatim block
 		s /(\\begin\{verbatim\}.*?\\end\{verbatim\})/m, '\begin{shaded}\1\end{shaded}'
+
+		# verbatim to verbatimtab
+		s /\\begin\{verbatim\}/m, '\begin{verbatimtab}'
+		s /\\end\{verbatim\}/m, "\\end{verbatimtab}\n"
 	end
 end
 
