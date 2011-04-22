@@ -1,6 +1,6 @@
 ## Mandelbrot Fraktale ##
 
-Das Mandelbrot Fraktal ist ein Fraktal in der komplexen Zahlenebene. Auf die
+Das Mandelbrot-Fraktal ist ein Fraktal in der komplexen Zahlenebene. Auf die
 genaue Definition wird hier nicht weiter eingegangen. Um die Mandelbrot-Menge zu
 visualisieren eignet sich ein sogenannter "Escape Time Algorithm", also ein
 Algorithmus der für jeden Bildpunkt die Anzahl Iterationen zählt, mit der eine
@@ -21,12 +21,11 @@ maximale obere Grenze definiert, ab der abgebrochen wird.
 
 ## Julia-Fraktale ##
 
-Die Julia-Fraktale sind sehr ähnlich zu dem Mandelbrot-Fraktal, lediglich die
-Iterationsvorschrift ist ein wenig anders.
+Die Julia-Fraktale sind sehr ähnlich zu dem Mandelbrot-Fraktal.
 
 * Die Iterationsvorschrift ist dabei:
 
 	$z_{n+1} = z_n^2 + c$
 
-D.h. es wird nicht die Anfangzahl $z_0$ addiert, sonders eine frei wählbare
+D.h. es wird nicht die Anfangzahl $z_0$ addiert, sondern eine frei wählbare
 Konstante $c$.
