@@ -26,8 +26,8 @@
 
 \settowidth{\parindent}{<%= config['indent'] %>}
 
-\title{SW-Projekt: Fraktale}
-\author{Freihofer/Ritz}
+\title{<%= config['title'] %>}
+\author{<%= config['author'] %>}
 
 \makeatletter
 \let\savedauthor=\@author
@@ -109,14 +109,15 @@
 \newcounter{tab}[chapter]
 \renewcommand{\thetab}{\thechapter.\arabic{tab}}
 
-\newcommand{\prechap}{<%= config['prechap'] %>}
+\renewcommand{\chaptername}{<%= config['chaptername'] %>}
+\renewcommand{\appendixname}{<%= config['appendixname'] %>}
 \newcommand{\postchap}{<%= config['postchap'] %>}
 \newcommand{\presect}{<%= config['presect'] %>}
 \newcommand{\postsect}{<%= config['postsect'] %>}
-\renewcommand{\chaptermark}[1]{\markboth{\textbf{\prechap \thechapter \postchap}\hspace*{1ex}#1}{}}
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{\@chapapp \thechapter \postchap}\hspace*{1ex}#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{\textbf{\presect \thesection \postsect}\hspace*{1ex}#1}}
 \newcommand{\chap}[1]{\newpage\thispagestyle{empty}\chapter{#1}\label{chap:\thechapter}}
-\newcommand{\chapref}[1]{\hyperref[chap:#1]{\prechap #1\postchap}}
+\newcommand{\chapref}[1]{\hyperref[chap:#1]{\chaptername #1\postchap}}
 \newcommand{\imgref}[1]{\hyperref[img:#1]{<%= config['fig'] %>#1}}
 \newcommand{\tabref}[1]{\hyperref[tab:#1]{<%= config['tab'] %>#1}}
 \newcommand{\e}[1]{$ \times 10^{#1}$}
@@ -130,7 +131,7 @@
   {\parindent \z@ \raggedright \normalfont
     \ifnum \c@secnumdepth >\m@ne
       \if@mainmatter
-        \huge\bfseries \prechap \thechapter \postchap
+        \huge\bfseries \@chapapp \thechapter \postchap
         \par\nobreak
         \vskip 20\p@
       \fi

@@ -8,7 +8,12 @@ default:
 #  mono: Andale Mono
 #  mono: DejaVu Sans Mono
   mono: Latin Modern Mono
-  prechap: "Kapitel "
+
+  title: "HSZ-T Software-Projekt: Fraktale"
+  author: "Sandra Freihofer, Daniel Ritz"
+
+  chaptername: "Kapitel "
+  appendixname: "Anhang "
   postchap: ""
   presect: "Abschnitt "
   postsect: ""
