@@ -208,4 +208,26 @@ Performance-Vergleichen offensichtlich.
 
 ### Vergleich der Performance ###
 
-TODO
+Mit den oben vorgestellten Implementation wurden Tests durchgeführt. Dabei wurde
+die Zeit in Millisekunden gemessen, die benötigt wird, um ein Mandelbrot-Fraktal
+mit der Grösse 590x450 Pixel mit maximal 200 Iterationen pro Bildpunkt zu
+berechnen. Die Werte sind Durchschnitte aus 5 Durchläufen. Alle Messungen wurden
+mit Java 1.6.0\_20 auf einem Intel Core 2 Duo 6600 @2.4 GHz durchgeführt.
+
+
+Implementation      Zeit       Faktor
+--------------  --------    ---------
+double             269ms          1.0
+DoubleDouble      1654ms          6.1
+Apfloat         141016ms        524.2
+--------------  --------    ---------
+: Messresultate der verschiedenen Implementationen
+
+
+Die Werte zeigen auf, dass Apfloat mit nur 10 Stellen Genauigkeit 524x langsamer
+als ein normaler "double" ist. Aus diesem Grund wird der Ansatz mit Arbitrary
+Precision mittels Apfloat nicht weiter verfolgt.
+
+DoubleDouble mit ca. 30 Stellen Genauigkeit ist jedoch nur 6x langsamer. Auch
+dies ist ein grosser Unterschied und da höhere Präzision nur bei sehr hohem Zoom
+einen Unterschied macht, wird anfangs nicht mit DoubleDouble gearbeitet.
