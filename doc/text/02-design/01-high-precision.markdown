@@ -22,7 +22,7 @@ in der Java-Klasse "DoubleDouble" implementiert.
 Zuerst wurde eine Klasse "ComplexNumber" implementiert mit der minimal
 notwendigen Funktionalität:
 
-~~~~~~~~ {.java}
+~~~~~~~~ {.Java}
 public class ComplexNumber
 {
 	private double real;
@@ -42,7 +42,8 @@ public class ComplexNumber
 	{
 		double c = m.real;
 		double d = m.imaginary;
-		return new ComplexNumber(real * c - imaginary * d, real * d + imaginary * c);
+		return new ComplexNumber(real * c - imaginary * d,
+			real * d + imaginary * c);
 	}
 
 	public double absSqr()
@@ -58,7 +59,7 @@ Anspruch nehmen.
 
 Die Berechnung des Fraktal wird durch den folgenden Code durchgeführt:
 
-~~~~~~~~ {.java}
+~~~~~~~~ {.Java}
 double r = 1.0D / Math.min(width, height);
 for (int y = 0; y < height; y++) {
 	for (int x = 0; x < width; x++) {
@@ -92,7 +93,7 @@ Variabel `maxIter` legt dabei die maximale Anzahl Iterationen fest.
 Analog zu der Implementation mit "double" wurde eine Implementation mit der
 "DoubleDouble"-Klasse durchgeführt.
 
-~~~~~~~~ {.java}
+~~~~~~~~ {.Java}
 public class ComplexNumber
 {
 	private DoubleDouble real;
@@ -127,7 +128,7 @@ public class ComplexNumber
 
 Die Berechnung des Fraktal wird durch den folgenden Code durchgeführt:
 
-~~~~~~~~ {.java}
+~~~~~~~~ {.Java}
 DoubleDouble r = new DoubleDouble(1.0D).divide(
 	new DoubleDouble(Math.min(width, height)));
 DoubleDouble range = new DoubleDouble(4.0);
@@ -167,7 +168,7 @@ Rechenoperationen, die nun Aufrufe von Methoden darstellen.
 Die Apfloat-Library hat bereits eine Implementation von komplexen Zahlen,
 `Apcomplex`. Diese wird direkt verwendet:
 
-~~~~~~~~ {.java}
+~~~~~~~~ {.Java}
 int DIGITS = 10;
 Apfloat r = new Apfloat(1, DIGITS).divide(
 	new Apfloat(Math.min(width, height), DIGITS));
