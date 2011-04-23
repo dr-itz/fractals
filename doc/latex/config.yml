@@ -6,8 +6,8 @@ default:
   font: Latin Modern Roman
 #  bold: "{* Bold}"
 #  mono: Andale Mono
-#  mono: DejaVu Sans Mono
-  mono: Latin Modern Mono
+  mono: DejaVu Sans Mono
+  #mono: Latin Modern Mono
 
   title: "HSZ-T Software-Projekt: Fraktale"
   titleshort: "Fraktale"
