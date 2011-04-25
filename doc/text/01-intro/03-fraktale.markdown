@@ -14,7 +14,7 @@ maximale obere Grenze definiert, ab der abgebrochen wird.
 
 * Die Beschränkung:
 
-	$|z| > 2$
+	$|z| < 2$
 
 * Die Farbe eines Bildpunktes wird aus der Anzahl Iterationen abgeleitet
 
