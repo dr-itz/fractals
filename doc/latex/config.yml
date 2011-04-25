@@ -1,13 +1,10 @@
 default:
   graphformat: pdf
-#  font: Helvetica
-#  font: Bookman Old Style
 #  font: DejaVu Serif
+#  mono: DejaVu Sans Mono
   font: Latin Modern Roman
-#  bold: "{* Bold}"
-#  mono: Andale Mono
-  mono: DejaVu Sans Mono
-  #mono: Latin Modern Mono
+#  mono: Latin Modern Mono
+  mono: Courier
 
   title: "HSZ-T Software-Projekt: Fraktale"
   titleshort: "Fraktale"
