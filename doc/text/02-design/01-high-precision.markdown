@@ -71,7 +71,7 @@ for (int y = 0; y < height; y++) {
 
 		int count = 0;
 		while (z.absSqr() < 4 && count++ < maxIter)
-			z = z.sqr().add(z0);
+			z = z.multiply(z).add(z0);
 
 		if (count >= maxIter)
 			count = 0;
