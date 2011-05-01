@@ -4,7 +4,7 @@ Das Mandelbrot-Fraktal ist ein Fraktal in der komplexen Zahlenebene. Auf die
 genaue Definition wird hier nicht weiter eingegangen. Um die Mandelbrot-Menge zu
 visualisieren eignet sich ein sogenannter "Escape Time Algorithm", also ein
 Algorithmus der für jeden Bildpunkt die Anzahl Iterationen zählt, mit der eine
-iterative Folge aus einer Beschränkgung "flüchten" kann. Dabei wird auch eine
+iterative Folge aus einer Beschränkung "flüchten" kann. Dabei wird auch eine
 maximale obere Grenze definiert, ab der abgebrochen wird.
 
 * Die Iterationsvorschrift ist dabei:
