@@ -27,8 +27,33 @@ public interface ImageDisplay
 	BufferedImage createImage();
 
 	/**
+	 * returns the number of layers
+	 * @return
+	 */
+	int getLayers();
+
+	/**
+	 * adds a layer and returns it's index
+	 * @return layer index of the layer
+	 */
+	int addLayer();
+
+	/**
+	 * removes a layer
+	 * @param layer index of the layer
+	 */
+	void removeLayer(int layer);
+
+	/**
+	 * clears the contents of a layer, resetting it to transparent
+	 * @param layer index of the layer
+	 */
+	void clearLayer(int layer);
+
+
+	/**
 	 * updates the displayed image with the supplied one. Must be thread safe
 	 * @param img
 	 */
-	void updateImage(Image img);
+	void updateImage(Image img, int layer);
 }

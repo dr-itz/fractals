@@ -39,7 +39,7 @@ public class Dummy
 
 		setMinimumSize(new Dimension(600, 500));
 
-		displayArea = new DisplayArea();
+		displayArea = new DisplayArea(2);
 		displayArea.setMinimumSize(new Dimension(590, 450));
 		displayArea.setBackground(Color.BLACK);
 		startBtn = new JButton("Start");
@@ -66,21 +66,40 @@ public class Dummy
 			{
 				displayArea.createImages();
 
+				long start = System.currentTimeMillis();
+
 				/*
-				 * This shows to independently draw lines (a red and a black
-				 * one) with transparency.
+				 * This shows to how independently draw lines (a red and a black
+				 * one) with transparency and layers.
 				 */
 				Image img = displayArea.createImage();
 				Graphics g = img.getGraphics();
 				g.setColor(Color.BLACK);
 				g.drawLine(0, 0, displayArea.getWidth(), displayArea.getHeight());
-				displayArea.updateImage(img);
+				displayArea.updateImage(img, 0);
 
 				Image img2 = displayArea.createImage();
 				Graphics g2 = img2.getGraphics();
 				g2.setColor(Color.RED);
 				g2.drawLine(0, displayArea.getHeight(), displayArea.getWidth(), 0);
-				displayArea.updateImage(img2);
+				displayArea.updateImage(img2, 0);
+
+				// draw something on second layer
+				Image img3 = displayArea.createImage();
+				Graphics g3 = img3.getGraphics();
+				g3.setColor(Color.BLUE);
+				g3.drawLine(0, displayArea.getHeight()/2, displayArea.getWidth()/2, 0);
+				displayArea.updateImage(img3, 1);
+
+				// draw something on the layer below
+				g.setColor(Color.GREEN);
+				g.fillRect(
+					displayArea.getWidth() / 8, displayArea.getHeight() / 8,
+					3 * displayArea.getWidth() / 8, 3 * displayArea.getHeight() / 8);
+				displayArea.updateImage(img, 0);
+
+				long dur = System.currentTimeMillis() - start;
+				System.out.println(dur + "ms");
 			}
 		});
 	}
