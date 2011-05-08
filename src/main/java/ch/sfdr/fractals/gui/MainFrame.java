@@ -1,6 +1,7 @@
 package ch.sfdr.fractals.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 
@@ -17,6 +18,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 
+import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
 
@@ -50,7 +52,7 @@ public class MainFrame
 
 	public MainFrame()
 	{
-		super("Fractals");
+		super(Version.getVersion());
 		createGUI();
 	}
 
@@ -71,12 +73,16 @@ public class MainFrame
 		// Panel Top
 		displayArea = new DisplayArea(1);
 		displayArea.setBackground(Color.BLACK);
+		displayArea.setPreferredSize(new Dimension(350, 350));
 		JPanel pnlInfo = new JPanel(new GridBagLayout());
 		pnlInfo.setBorder(BorderFactory.createTitledBorder("Info"));
 		JPanel pnlClick = new JPanel(new GridBagLayout());
 		pnlClick.setBorder(BorderFactory.createTitledBorder("Click Action"));
 		JButton btnDraw = new JButton("Draw");
 		JButton btnReset = new JButton("Reset");
+		Dimension btnDim = new Dimension(80, btnDraw.getMinimumSize().height);
+		btnDraw.setPreferredSize(btnDim);
+		btnReset.setPreferredSize(btnDim);
 
 		pnlTop.add(displayArea,			GBC.get(0, 0, 1, 5, 1.0, 1.0, 'b', "nw"));
 		pnlTop.add(pnlInfo,				GBC.get(1, 0, 1, 1));
@@ -123,7 +129,7 @@ public class MainFrame
 		paneType.add("Fractals", pnlFractals);
 		pnlSettings = new JPanel(new GridBagLayout());
 
-		pnlBottom.add(paneType,			GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlBottom.add(paneType,			GBC.get(0, 0, 1, 1, 0.5, 0.0, 'b', "nw"));
 		pnlBottom.add(pnlSettings,		GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
 
 		// Panel Fractals
