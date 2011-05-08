@@ -1,13 +1,13 @@
 package ch.sfdr.fractals.gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,6 +40,12 @@ public class MainFrame
 	private JComboBox cbFractals;
 	private SpinnerNumberModel snmIterations;
 	private SpinnerNumberModel snmThreads;
+	private JPanel pnlColor;
+	private JPanel pnlPathDraw;
+	private JComboBox cbColor;
+	private JComboBox cbPathColor;
+	private JCheckBox chkAuto;
+	private SpinnerNumberModel snmDelay;
 
 
 	public MainFrame()
@@ -50,7 +56,6 @@ public class MainFrame
 
 	private void createGUI()
 	{
-		setMinimumSize(new Dimension(600, 500));
 		JPanel pane = new JPanel(new GridBagLayout());
 		setContentPane(pane);
 
@@ -59,31 +64,25 @@ public class MainFrame
 		JPanel pnlTop = new JPanel(new GridBagLayout());
 		JPanel pnlBottom = new JPanel(new GridBagLayout());
 
-		pane.add(pnlTop,			GBC.get(0, 0, 1, 1, 1.0, 1.0, 'b', "nw"));
-		pane.add(pnlBottom,			GBC.get(0, 1, 1, 1, 'h', "nw"));
+		pane.add(pnlTop,				GBC.get(0, 0, 1, 1, 1.0, 1.0, 'b', "nw"));
+		pane.add(pnlBottom,				GBC.get(0, 1, 1, 1, 'h', "nw"));
 
 		// Panel Top
 		displayArea = new DisplayArea(1);
 		displayArea.setBackground(Color.BLACK);
-		JLabel lblInfo = new JLabel("Info");
-		lblInfo.setFont(bold);
 		JPanel pnlInfo = new JPanel(new GridBagLayout());
-		pnlInfo.setBorder(BorderFactory.createLoweredBevelBorder());
-		JLabel lblClick = new JLabel("Click Action");
-		lblClick.setFont(bold);
+		pnlInfo.setBorder(BorderFactory.createTitledBorder("Info"));
 		JPanel pnlClick = new JPanel(new GridBagLayout());
-		pnlClick.setBorder(BorderFactory.createLoweredBevelBorder());
+		pnlClick.setBorder(BorderFactory.createTitledBorder("Click Action"));
 		JButton btnDraw = new JButton("Draw");
 		JButton btnReset = new JButton("Reset");
 
-		pnlTop.add(displayArea,		GBC.get(0, 0, 1, 7, 1.0, 1.0, 'b', "nw"));
-		pnlTop.add(lblInfo,			GBC.get(1, 0, 1, 1));
-		pnlTop.add(pnlInfo,			GBC.get(1, 1, 1, 1));
-		pnlTop.add(lblClick,		GBC.get(1, 2, 1, 1));
-		pnlTop.add(pnlClick,		GBC.get(1, 3, 1, 1));
-		pnlTop.add(new JPanel(), 	GBC.get(1, 4, 1, 1, 0.0, 1.0, 'v', "nw"));
-		pnlTop.add(btnDraw,			GBC.get(1, 5, 1, 1, 'n', "sw"));
-		pnlTop.add(btnReset,		GBC.get(1, 6, 1, 1, 'n', "sw"));
+		pnlTop.add(displayArea,			GBC.get(0, 0, 1, 5, 1.0, 1.0, 'b', "nw"));
+		pnlTop.add(pnlInfo,				GBC.get(1, 0, 1, 1));
+		pnlTop.add(pnlClick,			GBC.get(1, 1, 1, 1));
+		pnlTop.add(new JPanel(), 		GBC.get(1, 2, 1, 1, 0.0, 1.0, 'v', "nw"));
+		pnlTop.add(btnDraw,				GBC.get(1, 3, 1, 1, 'n', "sw"));
+		pnlTop.add(btnReset,			GBC.get(1, 4, 1, 1, 'n', "sw"));
 
 		// Panel Info
 		JLabel lblVisible = new JLabel("Visible Area");
@@ -97,13 +96,13 @@ public class MainFrame
 		lblTime.setFont(bold);
 		lblMilliSec = new JLabel("281ms");
 
-		pnlInfo.add(lblVisible,		GBC.get(0, 0, 1, 1));
-		pnlInfo.add(lblX,			GBC.get(0, 1, 1, 1));
-		pnlInfo.add(lblY,			GBC.get(0, 2, 1, 1));
-		pnlInfo.add(lblZoom,		GBC.get(0, 3, 1, 1));
-		pnlInfo.add(lblPercent,		GBC.get(0, 4, 1, 1));
-		pnlInfo.add(lblTime,		GBC.get(0, 5, 1, 1));
-		pnlInfo.add(lblMilliSec,	GBC.get(0, 6, 1, 1));
+		pnlInfo.add(lblVisible,			GBC.get(0, 0, 1, 1));
+		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
+		pnlInfo.add(lblY,				GBC.get(0, 2, 1, 1));
+		pnlInfo.add(lblZoom,			GBC.get(0, 3, 1, 1));
+		pnlInfo.add(lblPercent,			GBC.get(0, 4, 1, 1));
+		pnlInfo.add(lblTime,			GBC.get(0, 5, 1, 1));
+		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
 
 		// Panel Click Action
 		JRadioButton rbtnZoom = new JRadioButton("Zoom");
@@ -114,18 +113,17 @@ public class MainFrame
 		clickGroup.add(rbtnPath);
 		rbtnZoom.setSelected(true);
 
-		pnlClick.add(rbtnZoom,		GBC.get(0, 0, 1, 1));
-		pnlClick.add(rbtnPath,		GBC.get(0, 1, 1, 1));
+		pnlClick.add(rbtnZoom,			GBC.get(0, 0, 1, 1));
+		pnlClick.add(rbtnPath,			GBC.get(0, 1, 1, 1));
 
 		// Panel Bottom
 		paneType = new JTabbedPane();
 		pnlFractals = new JPanel(new GridBagLayout());
 		paneType.add("Fractals", pnlFractals);
-
 		pnlSettings = new JPanel(new GridBagLayout());
 
-		pnlBottom.add(paneType,		GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
-		pnlBottom.add(pnlSettings,	GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlBottom.add(paneType,			GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlBottom.add(pnlSettings,		GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
 
 		// Panel Fractals
 		cbFractals = new JComboBox(new String[] {"Mandelbrot"});
@@ -143,5 +141,32 @@ public class MainFrame
 		pnlFractals.add(spinThreads,	GBC.get(1, 2, 1, 1, "ne"));
 
 		// Panel Settings
+		pnlColor = new JPanel(new GridBagLayout());
+		pnlColor.setBorder(BorderFactory.createTitledBorder("Colorization"));
+		pnlPathDraw = new JPanel(new GridBagLayout());
+		pnlPathDraw.setBorder(BorderFactory.createTitledBorder("Path drawing"));
+
+		pnlSettings.add(pnlColor,		GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
+		pnlSettings.add(pnlPathDraw,	GBC.get(0, 1, 1, 1, "nw"));
+
+		// Panel Colorization
+		cbColor = new JComboBox(new String[] {"Gray scale"});
+
+		pnlColor.add(cbColor,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
+
+		// Panel Path Drawing
+		cbPathColor = new JComboBox(new String[] {"Red"});
+		chkAuto = new JCheckBox("Auto-cycle");
+		JLabel lblDelay = new JLabel("Step delay (ms)");
+		snmDelay = new SpinnerNumberModel(50, 0, 250, 10);
+		JSpinner spinDelay = new JSpinner(snmDelay);
+
+		pnlPathDraw.add(cbPathColor,	GBC.get(0, 0, 1, 1));
+		pnlPathDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
+		pnlPathDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
+		pnlPathDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
+
+		pack();
+		setMinimumSize(getPreferredSize());
 	}
 }

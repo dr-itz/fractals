@@ -99,7 +99,7 @@ public final class GBC
 	public static GridBagConstraints get(int x, int y, int width, int height,
 			double wx, double wy, char fill, String anchor)
 	{
-		return get(x, y, width, height, wx, wy, 5, 5, 5, 5, fill, anchor);
+		return get(x, y, width, height, wx, wy, 2, 2, 2, 2, fill, anchor);
 	}
 
 	/**
