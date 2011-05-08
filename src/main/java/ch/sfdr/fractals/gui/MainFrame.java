@@ -56,6 +56,7 @@ public class MainFrame
 
 	private void createGUI()
 	{
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JPanel pane = new JPanel(new GridBagLayout());
 		setContentPane(pane);
 
