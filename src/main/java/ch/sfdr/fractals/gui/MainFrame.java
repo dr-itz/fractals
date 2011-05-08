@@ -8,10 +8,14 @@ import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.JTabbedPane;
+import javax.swing.SpinnerNumberModel;
 
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
@@ -30,6 +34,12 @@ public class MainFrame
 	private JLabel lblY;
 	private JLabel lblPercent;
 	private JLabel lblMilliSec;
+	private JTabbedPane paneType;
+	private JPanel pnlFractals;
+	private JPanel pnlSettings;
+	private JComboBox cbFractals;
+	private SpinnerNumberModel snmIterations;
+	private SpinnerNumberModel snmThreads;
 
 
 	public MainFrame()
@@ -72,8 +82,8 @@ public class MainFrame
 		pnlTop.add(lblClick,		GBC.get(1, 2, 1, 1));
 		pnlTop.add(pnlClick,		GBC.get(1, 3, 1, 1));
 		pnlTop.add(new JPanel(), 	GBC.get(1, 4, 1, 1, 0.0, 1.0, 'v', "nw"));
-		pnlTop.add(btnDraw,			GBC.get(1, 5, 1, 1, 'n', "se"));
-		pnlTop.add(btnReset,		GBC.get(1, 6, 1, 1, 'n', "se"));
+		pnlTop.add(btnDraw,			GBC.get(1, 5, 1, 1, 'n', "sw"));
+		pnlTop.add(btnReset,		GBC.get(1, 6, 1, 1, 'n', "sw"));
 
 		// Panel Info
 		JLabel lblVisible = new JLabel("Visible Area");
@@ -108,6 +118,30 @@ public class MainFrame
 		pnlClick.add(rbtnPath,		GBC.get(0, 1, 1, 1));
 
 		// Panel Bottom
+		paneType = new JTabbedPane();
+		pnlFractals = new JPanel(new GridBagLayout());
+		paneType.add("Fractals", pnlFractals);
 
+		pnlSettings = new JPanel(new GridBagLayout());
+
+		pnlBottom.add(paneType,		GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlBottom.add(pnlSettings,	GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+
+		// Panel Fractals
+		cbFractals = new JComboBox(new String[] {"Mandelbrot"});
+		JLabel lblIterations = new JLabel("Max. # of Iterations");
+		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
+		JSpinner spinIterations = new JSpinner(snmIterations);
+		JLabel lblThreads = new JLabel("# Concurrent Threads");
+		snmThreads = new SpinnerNumberModel(2, 1, 10, 1);
+		JSpinner spinThreads = new JSpinner(snmThreads);
+
+		pnlFractals.add(cbFractals,		GBC.get(0, 0, 2, 1, 0.5, 0.0, 'h', "nw"));
+		pnlFractals.add(lblIterations,	GBC.get(0, 1, 1, 1));
+		pnlFractals.add(spinIterations,	GBC.get(1, 1, 1, 1, "ne"));
+		pnlFractals.add(lblThreads,		GBC.get(0, 2, 1, 1));
+		pnlFractals.add(spinThreads,	GBC.get(1, 2, 1, 1, "ne"));
+
+		// Panel Settings
 	}
 }
