@@ -76,6 +76,13 @@
 		<pathelement location="${instrumented.dir}"/>
 	</path>
 
+	<pathconvert property="manifest.classpath" pathsep=" ">
+		<path refid="compile.classpath"/>
+		<mapper>
+			<flattenmapper/>
+		</mapper>
+	</pathconvert>
+
 	<!-- version: generate .X from .X.template -->
 	<macrodef name="versiongen">
 		<attribute name="basedir"/>
@@ -141,6 +148,10 @@
 			<zipfileset dir="${src.dir}">
 				<include name="**/*.properties"/>
 			</zipfileset>
+			<manifest>
+				<attribute name="Main-Class" value="${app.mainclass}"/>
+				<attribute name="Class-Path" value="${manifest.classpath}"/>
+			</manifest>
 		</jar>
 	</target>
 
