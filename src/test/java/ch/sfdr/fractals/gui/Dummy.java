@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import ch.sfdr.fractals.gui.component.AreaSelectionListener;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
 
@@ -27,6 +29,7 @@ import ch.sfdr.fractals.gui.component.GBC;
  */
 public class Dummy
 	extends JFrame
+	implements AreaSelectionListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +45,7 @@ public class Dummy
 		displayArea = new DisplayArea(2);
 		displayArea.setMinimumSize(new Dimension(590, 450));
 		displayArea.setBackground(Color.BLACK);
+		displayArea.setSelectionListner(this);
 		startBtn = new JButton("Start");
 
 		JPanel p = new JPanel(new GridBagLayout());
@@ -102,6 +106,13 @@ public class Dummy
 				System.out.println(dur + "ms");
 			}
 		});
+	}
+
+
+	@Override
+	public void areaSelected(Rectangle rect)
+	{
+		System.out.println(rect);
 	}
 
 	/**

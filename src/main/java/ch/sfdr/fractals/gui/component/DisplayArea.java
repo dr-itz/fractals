@@ -1,13 +1,18 @@
 package ch.sfdr.fractals.gui.component;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -19,19 +24,58 @@ public class DisplayArea
 {
 	private static final long serialVersionUID = 1L;
 
+	private static final Color SEL_COLOR = new Color(192, 192, 192, 128);
+	private static final Color SEL_BORDER_COLOR = new Color(255, 255, 255, 255);
+
 	private Image bufferImage;
 	private Graphics bufferGraphics;
 
 	private List<Layer> layers = new ArrayList<Layer>();
+
+	private SelectionRect selectionRect;
+	private boolean selectionMode = true;
+	private AreaSelectionListener selectionListener;
 
 	/**
 	 * creates the DisplayArea
 	 */
 	public DisplayArea(int numLayers)
 	{
-		super();
+		super(null, true);
 		for (int i = 0; i < numLayers; i++)
 			layers.add(new Layer());
+
+		selectionRect = new SelectionRect();
+		selectionRect.setVisible(false);
+		add(selectionRect);
+
+		MouseAdapter ma = new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e)
+			{
+				if (!selectionMode)
+					return;
+				selectionRect.start(e.getX(), e.getY());
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+				if (!selectionMode)
+					return;
+				selectionRect.drag(e.getX(), e.getY());
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				if (!selectionMode)
+					return;
+				selectionRect.end();
+			}
+		};
+		addMouseListener(ma);
+		addMouseMotionListener(ma);
 	}
 
 	/**
@@ -51,14 +95,60 @@ public class DisplayArea
 			l.createImage();
 	}
 
-	/*
-	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	/**
+	 * @param selectionMode the selectionMode to set
 	 */
+	public void setSelectionMode(boolean selectionMode)
+	{
+		this.selectionMode = selectionMode;
+	}
+
+	/**
+	 * @return the selectionMode
+	 */
+	public boolean isSelectionMode()
+	{
+		return selectionMode;
+	}
+
+
+	/**
+	 * @param keepAspectRatio the keepAspectRatio to set
+	 */
+	public void setKeepAspectRatio(boolean keepAspectRatio)
+	{
+		selectionRect.keepAspectRatio = keepAspectRatio;
+	}
+
+	/**
+	 * @return the keepAspectRatio
+	 */
+	public boolean isKeepAspectRatio()
+	{
+		return selectionRect.keepAspectRatio;
+	}
+
+	/**
+	 * @param selectionListner the selectionListner to set
+	 */
+	public void setSelectionListner(AreaSelectionListener selectionListner)
+	{
+		this.selectionListener = selectionListner;
+	}
+
+	/**
+	 * @return the selectionListner
+	 */
+	public AreaSelectionListener getSelectionListner()
+	{
+		return selectionListener;
+	}
+
 	@Override
-	public void paint(Graphics g)
+	public void paintComponent(Graphics g)
 	{
 		if (bufferImage == null) {
-			super.paint(g);
+			super.paintComponent(g);
 			return;
 		}
 
@@ -149,6 +239,105 @@ public class DisplayArea
 	public void clearLayer(int layer)
 	{
 		layers.get(layer).createImage();
+	}
+
+	/**
+	 * A panel on top to draw a semi-transparent selection
+	 */
+	private class SelectionRect
+		extends JComponent
+	{
+		private static final long serialVersionUID = 1L;
+		private boolean inSelection = false;
+		private Rectangle selection;
+		private boolean keepAspectRatio = true;
+
+		public SelectionRect()
+		{
+			super();
+			setOpaque(false);
+		}
+
+		@Override
+		public void paint(Graphics g)
+		{
+			int w = getWidth();
+			int h = getHeight();
+			g.setColor(SEL_COLOR);
+			g.fillRect(1, 1, w - 2, h - 2);
+			g.setColor(Color.BLACK);
+			g.setXORMode(SEL_BORDER_COLOR);
+			g.drawRect(0, 0, w - 1, h - 1);
+		}
+
+		public void start(int x, int y)
+		{
+			inSelection = true;
+			selection = new Rectangle(x, y, 0, 0);
+			setLocation(x, y);
+			setSize(0, 0);
+			setVisible(true);
+		}
+
+		public void drag(int x, int y)
+		{
+			if (!inSelection)
+				return;
+
+			int cwidth = x - selection.x;
+			int cheight = y - selection.y;
+
+			if (keepAspectRatio) {
+				int w = getImageWidth();
+				int h = getImageHeight();
+				double r = Math.max((double) Math.abs(cwidth) / w,
+					(double) Math.abs(cheight) / h);
+				cwidth = (int) (w * r * Math.signum(cwidth));
+				cheight = (int) (h * r * Math.signum(cheight));
+			}
+			selection.setSize(cwidth, cheight);
+
+			int cx = selection.x;
+			int cy = selection.y;
+			if (cwidth < 0) {
+				cx = selection.x + cwidth;
+				cwidth = -cwidth;
+			}
+			if (cheight < 0) {
+				cy = selection.y + cheight;
+				cheight = -cheight;
+			}
+			setBounds(cx, cy, cwidth, cheight);
+		}
+
+		public void end()
+		{
+			if (!inSelection)
+				return;
+			inSelection = false;
+			setVisible(false);
+
+			Rectangle sel = getSelection();
+			if (sel.width > 0 && sel.height > 0 && selectionListener != null)
+				selectionListener.areaSelected(sel);
+		}
+
+		public Rectangle getSelection()
+		{
+			int cx = selection.x;
+			int cy = selection.y;
+			int cwidth = selection.width;
+			int cheight = selection.height;
+			if (cwidth < 0) {
+				cx = selection.x + cwidth;
+				cwidth = -cwidth;
+			}
+			if (cheight < 0) {
+				cy = selection.y + cheight;
+				cheight = -cheight;
+			}
+			return new Rectangle(cx, cy, cwidth, cheight);
+		}
 	}
 
 	/**
