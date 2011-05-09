@@ -12,6 +12,15 @@ public class ComplexNumberTest
 	private static final double TOL = 1.0e-5;
 
 	@Test
+	public void testClone()
+	{
+		ComplexNumber x = new ComplexNumber(1.0, 2.0);
+		ComplexNumber z = x.clone();
+		assertEquals(1.0, z.getReal(), TOL);
+		assertEquals(2.0, z.getImaginary(), TOL);
+	}
+
+	@Test
 	public void testAdd()
 	{
 		ComplexNumber x = new ComplexNumber(1.0, 2.0);

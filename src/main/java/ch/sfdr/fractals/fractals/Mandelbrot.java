@@ -42,8 +42,8 @@ public class Mandelbrot
 	 * .ComplexNumber, ch.sfdr.fractals.math.ComplexNumber)
 	 */
 	@Override
-	public ComplexNumber step(ComplexNumber start, ComplexNumber last)
+	public void step(ComplexNumber start, ComplexNumber var)
 	{
-		return last.square().add(start);
+		var.square().add(start);
 	}
 }

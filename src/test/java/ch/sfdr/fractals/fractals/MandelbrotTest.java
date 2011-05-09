@@ -42,9 +42,9 @@ public class MandelbrotTest
 	public void testStep()
 	{
 		ComplexNumber start = new ComplexNumber(1.0, 2.0);
-		ComplexNumber last = new ComplexNumber(2.0, 3.0);
-		ComplexNumber z = me.step(start, last);
-		assertEquals(-4.0, z.getReal(), TOL);
-		assertEquals(14.0, z.getImaginary(), TOL);
+		ComplexNumber var = new ComplexNumber(2.0, 3.0);
+		me.step(start, var);
+		assertEquals(-4.0, var.getReal(), TOL);
+		assertEquals(14.0, var.getImaginary(), TOL);
 	}
 }

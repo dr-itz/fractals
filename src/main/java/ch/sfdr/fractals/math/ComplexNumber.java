@@ -1,7 +1,8 @@
 package ch.sfdr.fractals.math;
 
+
 /**
- * Represents an immutable complex number based on DoubleDouble values (~30 digits)
+ * Represents an mutable(!) complex number based on double values (~15 digits)
  * FIXME: it's minimal and incomplete: divide() and other ops are missing
  */
 public class ComplexNumber
@@ -21,6 +22,33 @@ public class ComplexNumber
 		this.imaginary = imaginary;
 	}
 
+	/*
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	public ComplexNumber clone()
+	{
+		try {
+			return (ComplexNumber) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return null; // never reached
+		}
+	}
+
+	/**
+	 * sets the current complex number to new real/imaginary values
+	 * @param real the real part
+	 * @param imaginary the imaginary part
+	 * @return ComplexNumber
+	 */
+	public ComplexNumber set(double real, double imaginary)
+	{
+		this.real = real;
+		this.imaginary = imaginary;
+		return this;
+	}
+
+
 	/**
 	 * adds another ComplexNumber and returns the result
 	 * @param b the complex number to add
@@ -28,7 +56,7 @@ public class ComplexNumber
 	 */
 	public ComplexNumber add(ComplexNumber b)
 	{
-		return new ComplexNumber(real + b.real, imaginary + b.imaginary);
+		return set(real + b.real, imaginary + b.imaginary);
 	}
 
 	/**
@@ -38,7 +66,7 @@ public class ComplexNumber
 	 */
 	public ComplexNumber subtract(ComplexNumber b)
 	{
-		return new ComplexNumber(real - b.real, imaginary - b.imaginary);
+		return set(real - b.real, imaginary - b.imaginary);
 	}
 
 	/**
@@ -51,7 +79,7 @@ public class ComplexNumber
 	{
 		double c = m.real;
 		double d = m.imaginary;
-		return new ComplexNumber(real * c - imaginary * d,
+		return set(real * c - imaginary * d,
 			real * d + imaginary * c);
 	}
 
@@ -62,7 +90,7 @@ public class ComplexNumber
 	 */
 	public ComplexNumber multiply(double m)
 	{
-		return new ComplexNumber(real * m, imaginary * m);
+		return set(real * m, imaginary * m);
 	}
 
 	/**

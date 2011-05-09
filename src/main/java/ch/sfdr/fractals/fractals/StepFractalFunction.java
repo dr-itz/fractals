@@ -29,8 +29,9 @@ public interface StepFractalFunction
 	/**
 	 * Calculates a single step
 	 * @param start the starting number (z0)
-	 * @param last the last number (zn)
-	 * @return calculated number (z(n+1))
+	 * @param var initially the last number (z_n), updated by the function to be
+	 * 		the next number z_{n+1}. Since this is mutable it is trickier to
+	 * 		handle for certain operations.
 	 */
-	ComplexNumber step(ComplexNumber start, ComplexNumber last);
+	void step(ComplexNumber start, ComplexNumber var);
 }
