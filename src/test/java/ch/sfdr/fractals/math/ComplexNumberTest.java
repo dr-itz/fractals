@@ -9,7 +9,7 @@ import org.junit.Test;
  */
 public class ComplexNumberTest
 {
-	private static final double TOL = 1.0e-5;
+	private static final double TOL = 1.0e-10;
 
 	@Test
 	public void testClone()
@@ -60,12 +60,32 @@ public class ComplexNumberTest
 	}
 
 	@Test
+	public void testDivide()
+	{
+		ComplexNumber x = new ComplexNumber(3.0, 4.0);
+		ComplexNumber y = new ComplexNumber(5.0, 6.0);
+		ComplexNumber z = x.divide(y);
+        assertEquals(39.0 / 61.0, z.getReal(), TOL);
+        assertEquals(2.0 / 61.0, z.getImaginary(), TOL);
+    }
+
+
+	@Test
 	public void testSquare()
 	{
 		ComplexNumber x = new ComplexNumber(3.0, 4.0);
 		ComplexNumber z = x.square();
 		assertEquals(-7.0, z.getReal(), TOL);
 		assertEquals(24.0, z.getImaginary(), TOL);
+	}
+
+	@Test
+	public void testPow()
+	{
+		ComplexNumber x = new ComplexNumber(3.0, 4.0);
+		x.pow(3);
+		assertEquals(-117.0, x.getReal(), TOL);
+		assertEquals(44.0, x.getImaginary(), TOL);
 	}
 
 	@Test

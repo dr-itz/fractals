@@ -3,7 +3,7 @@ package ch.sfdr.fractals.math;
 
 /**
  * Represents an mutable(!) complex number based on double values (~15 digits)
- * FIXME: it's minimal and incomplete: divide() and other ops are missing
+ * @author D.Ritz
  */
 public class ComplexNumber
 	implements Cloneable
@@ -94,12 +94,48 @@ public class ComplexNumber
 	}
 
 	/**
+	 * divides by another complex
+	 * @param div the divisor
+	 * @return result
+	 */
+	public ComplexNumber divide(ComplexNumber div)
+	{
+		double c = div.real;
+		double d = div.imaginary;
+
+		double q = d / c;
+		double denom = d * q + c;
+		return set((imaginary * q + real) / denom,
+			(imaginary - real * q) / denom);
+	}
+
+	/**
 	 * returns the square of this complex number
 	 * @return square
 	 */
 	public ComplexNumber square()
 	{
 		return multiply(this);
+	}
+
+	/**
+	 * Raises this complex number to the power of n. This implementation uses
+	 * a series of multiplications, don't use for large n.
+	 * @param n
+	 * @return this
+	 */
+	public ComplexNumber pow(int n)
+	{
+		double c = real;
+		double d = imaginary;
+
+		for (int i = 1; i < n; i++) {
+			double re = real * c - imaginary * d;
+			double im = real * d + imaginary * c;
+			real = re;
+			imaginary = im;
+		}
+		return this;
 	}
 
 	/**
