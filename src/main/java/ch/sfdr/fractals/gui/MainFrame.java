@@ -19,6 +19,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 
 import ch.sfdr.fractals.Version;
+import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
 
@@ -133,7 +134,7 @@ public class MainFrame
 		pnlBottom.add(pnlSettings,		GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
 
 		// Panel Fractals
-		cbFractals = new JComboBox(new String[] {"Mandelbrot"});
+		cbFractals = new JComboBox(FractalFactory.getFractalFunctionsNames());
 		JLabel lblIterations = new JLabel("Max. # of Iterations");
 		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
 		JSpinner spinIterations = new JSpinner(snmIterations);
