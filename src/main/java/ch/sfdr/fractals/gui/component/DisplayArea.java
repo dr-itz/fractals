@@ -27,8 +27,8 @@ public class DisplayArea
 	private static final Color SEL_COLOR = new Color(192, 192, 192, 128);
 	private static final Color SEL_BORDER_COLOR = new Color(255, 255, 255, 255);
 
-	private Image bufferImage;
-	private Graphics bufferGraphics;
+	private BufferedImage bufferImage;
+	private Graphics2D bufferGraphics;
 
 	private List<Layer> layers = new ArrayList<Layer>();
 
@@ -88,8 +88,8 @@ public class DisplayArea
 		if (bufferImage != null)
 			bufferImage.flush();
 
-		bufferImage = createImage(getImageWidth(), getImageHeight());
-		bufferGraphics = bufferImage.getGraphics();
+		bufferImage = createImage();
+		bufferGraphics = bufferImage.createGraphics();
 
 		for (Layer l : layers)
 			l.createImage();
@@ -190,7 +190,11 @@ public class DisplayArea
 	public synchronized void updateImage(Image img, int layer)
 	{
 		layers.get(layer).updateImage(img);
+		repaintAllLayers();
+	}
 
+	private void repaintAllLayers()
+	{
 		for (Layer l : layers)
 			bufferGraphics.drawImage(l.getImage(), 0, 0, null);
 		EventQueue.invokeLater(new Runnable() {
@@ -230,15 +234,17 @@ public class DisplayArea
 	public void removeLayer(int layer)
 	{
 		layers.remove(layer);
+		repaintAllLayers();
 	}
 
 	/*
 	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#clearLayer(int)
 	 */
 	@Override
-	public void clearLayer(int layer)
+	public synchronized void clearLayer(int layer)
 	{
 		layers.get(layer).createImage();
+		repaintAllLayers();
 	}
 
 	/**
