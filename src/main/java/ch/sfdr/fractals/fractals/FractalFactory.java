@@ -32,10 +32,13 @@ public class FractalFactory
 	 * @return instance of the fractal function
 	 * @throws Exception on any kind of error
 	 */
-	public StepFractalFunction getFractalFunction(int idx)
-		throws Exception
+	public static StepFractalFunction getFractalFunction(int idx)
 	{
-		return FUNCTIONS[idx].clazz.newInstance();
+		try {
+			return FUNCTIONS[idx].clazz.newInstance();
+		} catch (Exception e) {
+		}
+		return null;
 	}
 
 	/**
@@ -44,12 +47,14 @@ public class FractalFactory
 	 * @return instance of the fractal function or null if not found
 	 * @throws Exception on any kind of error
 	 */
-	public StepFractalFunction getFractalFunction(String name)
-		throws Exception
+	public static StepFractalFunction getFractalFunction(String name)
 	{
-		for (Pair p : FUNCTIONS) {
-			if (p.name.equals(name))
-				return p.clazz.newInstance();
+		try {
+			for (Pair p : FUNCTIONS) {
+				if (p.name.equals(name))
+					return p.clazz.newInstance();
+			}
+		} catch (Exception e) {
 		}
 		return null;
 	}

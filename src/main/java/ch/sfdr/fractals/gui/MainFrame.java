@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -19,9 +21,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 
 import ch.sfdr.fractals.Version;
+import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
+import ch.sfdr.fractals.math.Scaler;
 
 /**
  * Fractals main application window
@@ -50,11 +54,14 @@ public class MainFrame
 	private JCheckBox chkAuto;
 	private SpinnerNumberModel snmDelay;
 
+	private Scaler scaler;
+	private ComplexEscapeFractal fractal;
 
 	public MainFrame()
 	{
 		super(Version.getVersion());
 		createGUI();
+		initialize();
 	}
 
 	private void createGUI()
@@ -176,5 +183,21 @@ public class MainFrame
 
 		pack();
 		setMinimumSize(getPreferredSize());
+
+		btnDraw.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				displayArea.createImages();
+				fractal.drawFractal(snmIterations.getNumber().intValue());
+			}
+		});
+	}
+
+	private void initialize()
+	{
+		scaler = new Scaler();
+		fractal = new ComplexEscapeFractal(displayArea, scaler,
+			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()));
 	}
 }
