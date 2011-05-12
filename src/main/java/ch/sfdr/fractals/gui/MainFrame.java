@@ -192,6 +192,15 @@ public class MainFrame
 				fractal.drawFractal(snmIterations.getNumber().intValue());
 			}
 		});
+
+		btnReset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				displayArea.createImages();
+				fractal.drawFractal(snmIterations.getNumber().intValue());
+			}
+		});
 	}
 
 	private void initialize()
