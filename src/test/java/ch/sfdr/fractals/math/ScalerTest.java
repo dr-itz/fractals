@@ -2,6 +2,8 @@ package ch.sfdr.fractals.math;
 
 import static org.junit.Assert.*;
 
+import java.awt.Rectangle;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -49,6 +51,28 @@ public class ScalerTest
 		assertEquals(-1.6, me.scaleY(20), TOL);
 
 		initHeightGtWidth();
-		assertEquals(-0.6, me.scaleY(20), TOL);
+		assertEquals(-2.6, me.scaleY(20), TOL);
+	}
+
+	@Test
+	public void testZoomIn()
+	{
+		initWithGtHeight();
+		Rectangle rect = new Rectangle(60, 50, 150, 100);
+		me.zoomIn(rect);
+
+		assertEquals(2.0, me.getZoom(), TOL);
+		assertEquals(-1.6, me.scaleX(20), TOL);
+		assertEquals(-0.8, me.scaleY(20), TOL);
+
+		me.resetZoom();
+
+		initHeightGtWidth();
+		rect = new Rectangle(50, 60, 100, 150);
+		me.zoomIn(rect);
+
+		assertEquals(2.0, me.getZoom(), TOL);
+		assertEquals(-0.8, me.scaleX(20), TOL);
+		assertEquals(-1.6, me.scaleY(20), TOL);
 	}
 }

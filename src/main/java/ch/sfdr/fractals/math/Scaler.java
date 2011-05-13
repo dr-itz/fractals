@@ -1,5 +1,7 @@
 package ch.sfdr.fractals.math;
 
+import java.awt.Rectangle;
+
 /**
  * Scaler - Conversion between screen coordinates and scaled numbers with
  * zooming.
@@ -81,6 +83,50 @@ public class Scaler
 	}
 
 	/**
+	 * zooms into the selected rectangle
+	 * @param rect
+	 */
+	public void zoomIn(Rectangle rect)
+	{
+		// offset in x/y direction
+		double sx = width > height ? width - height : 0.0;
+		double sy = height > width ? height - width : 0.0;
+		viewX += r * (rect.x - sx / 2.0D);
+		viewY += r * (rect.y - sy / 2.0D);
+
+		// new zoom
+		zoom *= Math.max((double) width / rect.width,
+			(double) height / rect.height);
+
+		// calculate new r and offsets
+		preCalculate();
+
+		// correct the offsets for new zoom
+		viewX += r * sx / 2.0D;
+		viewY += r * sy / 2.0D;
+	}
+
+	/**
+	 * resets the zoom to 1.0
+	 */
+	public void resetZoom()
+	{
+		zoom = 1.0D;
+		viewX = 0.0D;
+		viewY = 0.0D;
+		preCalculate();
+	}
+
+	/**
+	 * returns the current level of zoom
+	 * @return current zoom
+	 */
+	public double getZoom()
+	{
+		return zoom;
+	}
+
+	/**
 	 * scales an x value to the scaled images double
 	 * @param x image x coordinate
 	 * @return scaled x coordinate
@@ -97,6 +143,6 @@ public class Scaler
 	 */
 	public double scaleY(int y)
 	{
-		return yrange * (y * r + viewY) + ymin + offsetY;
+		return yrange * (y * r + viewY) + ymin - offsetY;
 	}
 }

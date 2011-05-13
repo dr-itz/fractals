@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,6 +24,7 @@ import javax.swing.SpinnerNumberModel;
 import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.FractalFactory;
+import ch.sfdr.fractals.gui.component.AreaSelectionListener;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
 import ch.sfdr.fractals.math.Scaler;
@@ -33,6 +35,7 @@ import ch.sfdr.fractals.math.Scaler;
  */
 public class MainFrame
 	extends JFrame
+	implements AreaSelectionListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -82,6 +85,8 @@ public class MainFrame
 		displayArea = new DisplayArea(1);
 		displayArea.setBackground(Color.BLACK);
 		displayArea.setPreferredSize(new Dimension(350, 350));
+		displayArea.setSelectionListner(this);
+
 		JPanel pnlInfo = new JPanel(new GridBagLayout());
 		pnlInfo.setBorder(BorderFactory.createTitledBorder("Info"));
 		JPanel pnlClick = new JPanel(new GridBagLayout());
@@ -197,6 +202,7 @@ public class MainFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				scaler.resetZoom();
 				displayArea.createImages();
 				fractal.drawFractal(snmIterations.getNumber().intValue());
 			}
@@ -208,5 +214,12 @@ public class MainFrame
 		scaler = new Scaler();
 		fractal = new ComplexEscapeFractal(displayArea, scaler,
 			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()));
+	}
+
+	@Override
+	public void areaSelected(Rectangle rect)
+	{
+		scaler.zoomIn(rect);
+		fractal.drawFractal(snmIterations.getNumber().intValue());
 	}
 }
