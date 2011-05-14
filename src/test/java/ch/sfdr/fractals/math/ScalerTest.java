@@ -75,4 +75,29 @@ public class ScalerTest
 		assertEquals(-0.8, me.scaleX(20), TOL);
 		assertEquals(-1.6, me.scaleY(20), TOL);
 	}
+
+
+	@Test
+	public void testUnscaleX()
+	{
+		initWithGtHeight();
+		double scaledX = me.scaleX(20);
+		assertEquals(20, me.unscaleX(scaledX));
+
+		initHeightGtWidth();
+		scaledX = me.scaleX(20);
+		assertEquals(20, me.unscaleX(scaledX));
+	}
+
+	@Test
+	public void testUnscaleY()
+	{
+		initWithGtHeight();
+		double scaledY = me.scaleY(20);
+		assertEquals(20, me.unscaleY(scaledY));
+
+		initHeightGtWidth();
+		scaledY = me.scaleY(20);
+		assertEquals(20, me.unscaleY(scaledY));
+	}
 }

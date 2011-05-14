@@ -145,4 +145,26 @@ public class Scaler
 	{
 		return yrange * (y * r + viewY) + ymin - offsetY;
 	}
+
+	/**
+	 * calculates the screen coordinate for a scaled number
+	 * @param scaledX the scaled number
+	 * @return the screen coordinate
+	 */
+	public int unscaleX(double scaledX)
+	{
+		double t = ((scaledX + offsetX - xmin) / xrange - viewX) / r;
+		return (int) Math.round(t);
+	}
+
+	/**
+	 * calculates the screen coordinate for a scaled number
+	 * @param scaledX the scaled number
+	 * @return the screen coordinate
+	 */
+	public int unscaleY(double scaledY)
+	{
+		double t = ((scaledY + offsetY - ymin) / yrange - viewY) / r;
+		return (int) Math.round(t);
+	}
 }
