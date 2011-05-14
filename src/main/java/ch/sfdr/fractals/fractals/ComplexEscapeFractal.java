@@ -31,6 +31,10 @@ public class ComplexEscapeFractal
 	private Color orbitColor;
 	private long orbitDelay;
 
+	private StatisticsObserver statObserver;
+	private long stepCount;
+	private long drawTime;
+
 	/**
 	 * Creates the ComplexEscapeFractal
 	 * @param display the display area to draw on
@@ -71,6 +75,24 @@ public class ComplexEscapeFractal
 	}
 
 	/**
+	 * Sets the StatisticsObserver
+	 * @param statObserver the statObserver to set
+	 */
+	public void setStatObserver(StatisticsObserver statObserver)
+	{
+		this.statObserver = statObserver;
+	}
+
+	/**
+	 * Gets the StatisticsObserver
+	 * @return the statObserver
+	 */
+	public StatisticsObserver getStatObserver()
+	{
+		return statObserver;
+	}
+
+	/**
 	 * Draws the fractal with a max number of iterations per point
 	 * @param maxIterations the max number of iterations
 	 */
@@ -81,7 +103,14 @@ public class ComplexEscapeFractal
 			@Override
 			public void run()
 			{
+				long start = System.currentTimeMillis();
+
 				doDrawFractal();
+
+				drawTime = System.currentTimeMillis() - start;
+
+				if (statObserver != null)
+					statObserver.statisticsDataAvailable();
 			}
 		};
 		thread.start();
@@ -114,6 +143,8 @@ public class ComplexEscapeFractal
 
 	private void doDrawFractal()
 	{
+		stepCount = 0;
+
 		int width = display.getImageWidth();
 		int height = display.getImageHeight();
 
@@ -158,6 +189,8 @@ public class ComplexEscapeFractal
 					int count = 0;
 					while (z.absSqr() < boundarySqr && count++ < maxIterations)
 						function.step(z0, z);
+
+					stepCount += count;
 
 					// map to color and draw pixel
 					Color color = getColor(count);
@@ -221,5 +254,23 @@ public class ComplexEscapeFractal
 		if (count >= maxIterations)
 			return Color.BLACK;
 		return colorMap.getColor(count);
+	}
+
+	/**
+	 * Gets the count of all steps
+	 * @return the stepCount
+	 */
+	public long getStepCount()
+	{
+		return stepCount;
+	}
+
+	/**
+	 * Gets the time to draw in milliseconds
+	 * @return the drawTime
+	 */
+	public long getDrawTime()
+	{
+		return drawTime;
 	}
 }

@@ -2,6 +2,7 @@ package ch.sfdr.fractals.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
@@ -26,6 +27,7 @@ import javax.swing.SpinnerNumberModel;
 import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.FractalFactory;
+import ch.sfdr.fractals.fractals.StatisticsObserver;
 import ch.sfdr.fractals.gui.component.AreaSelectionListener;
 import ch.sfdr.fractals.gui.component.ColorMapFactory;
 import ch.sfdr.fractals.gui.component.ColorSelection;
@@ -39,14 +41,14 @@ import ch.sfdr.fractals.math.Scaler;
  */
 public class MainFrame
 	extends JFrame
-	implements AreaSelectionListener
+	implements AreaSelectionListener, StatisticsObserver
 {
 	private static final long serialVersionUID = 1L;
 
 	private DisplayArea displayArea;
 	private JLabel lblX;
 	private JLabel lblY;
-	private JLabel lblPercent;
+	private JLabel lblZoomValue;
 	private JLabel lblMilliSec;
 	private JTabbedPane paneType;
 	private JPanel pnlFractalsTab;
@@ -62,6 +64,7 @@ public class MainFrame
 	private JButton btnDraw;
 	private JRadioButton rbtnZoom;
 	private JRadioButton rbtnPath;
+	private JLabel lblStepCount;
 
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
@@ -117,18 +120,23 @@ public class MainFrame
 		lblY = new JLabel("y blub");
 		JLabel lblZoom = new JLabel("Zoom");
 		lblZoom.setFont(bold);
-		lblPercent = new JLabel("100%");
+		lblZoomValue = new JLabel("100%");
 		JLabel lblTime = new JLabel("Time to draw");
 		lblTime.setFont(bold);
 		lblMilliSec = new JLabel("281ms");
+		JLabel lblSteps = new JLabel("Steps calculated");
+		lblSteps.setFont(bold);
+		lblStepCount = new JLabel("0");
 
 		pnlInfo.add(lblVisible,			GBC.get(0, 0, 1, 1));
 		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
 		pnlInfo.add(lblY,				GBC.get(0, 2, 1, 1));
 		pnlInfo.add(lblZoom,			GBC.get(0, 3, 1, 1));
-		pnlInfo.add(lblPercent,			GBC.get(0, 4, 1, 1));
+		pnlInfo.add(lblZoomValue,			GBC.get(0, 4, 1, 1));
 		pnlInfo.add(lblTime,			GBC.get(0, 5, 1, 1));
 		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
+		pnlInfo.add(lblSteps,			GBC.get(0, 7, 1, 1));
+		pnlInfo.add(lblStepCount,		GBC.get(0, 8, 1, 1));
 
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
@@ -276,6 +284,8 @@ public class MainFrame
 			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()),
 			ColorMapFactory.getMap(cbColor.getSelectedIndex()));
 
+		fractal.setStatObserver(this);
+
 		// Simulate click to draw the fractal immediately
 		btnDraw.doClick();
 	}
@@ -285,5 +295,19 @@ public class MainFrame
 	{
 		scaler.zoomIn(rect);
 		fractal.drawFractal(snmIterations.getNumber().intValue());
+	}
+
+	@Override
+	public void statisticsDataAvailable()
+	{
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				lblStepCount.setText(Long.toString(fractal.getStepCount()));
+				lblZoomValue.setText(Long.toString(Math.round(scaler.getZoom())) + "x");
+				lblMilliSec.setText(Long.toString(fractal.getDrawTime()) + "ms");
+			}
+		});
 	}
 }
