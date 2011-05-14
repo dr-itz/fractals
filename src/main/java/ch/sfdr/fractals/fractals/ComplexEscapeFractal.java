@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import ch.sfdr.fractals.gui.component.ColorMap;
 import ch.sfdr.fractals.gui.component.ImageDisplay;
 import ch.sfdr.fractals.math.ComplexNumber;
 import ch.sfdr.fractals.math.Scaler;
@@ -17,6 +18,7 @@ public class ComplexEscapeFractal
 	private ImageDisplay display;
 	private Scaler scaler;
 	private StepFractalFunction function;
+	private ColorMap colorMap;
 
 	private double boundarySqr;
 	private int maxIterations;
@@ -28,10 +30,11 @@ public class ComplexEscapeFractal
 	 * @param function the function to use
 	 */
 	public ComplexEscapeFractal(ImageDisplay display, Scaler scaler,
-			StepFractalFunction function)
+			StepFractalFunction function, ColorMap colorMap)
 	{
 		this.display = display;
 		this.scaler = scaler;
+		this.colorMap = colorMap;
 		setFractalFunction(function);
 	}
 
@@ -48,6 +51,15 @@ public class ComplexEscapeFractal
 			function.getLowerBounds().getImaginary(),
 			function.getUpperBounds().getReal(),
 			function.getUpperBounds().getImaginary());
+	}
+
+	/**
+	 * Sets the specific ColorMap
+	 * @param colorMap the colorMap to set
+	 */
+	public void setColorMap(ColorMap colorMap)
+	{
+		this.colorMap = colorMap;
 	}
 
 	/**
@@ -115,6 +127,6 @@ public class ComplexEscapeFractal
 	{
 		if (count >= maxIterations)
 			return Color.BLACK;
-		return Color.WHITE;
+		return colorMap.getColor(count);
 	}
 }

@@ -25,6 +25,7 @@ import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.gui.component.AreaSelectionListener;
+import ch.sfdr.fractals.gui.component.ColorMapFactory;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
 import ch.sfdr.fractals.math.Scaler;
@@ -174,7 +175,7 @@ public class MainFrame
 		pnlSettings.add(pnlPathDraw,	GBC.get(0, 1, 1, 1, "nw"));
 
 		// Panel Colorization
-		cbColor = new JComboBox(new String[] {"Gray scale"});
+		cbColor = new JComboBox(ColorMapFactory.getNames());
 
 		pnlColor.add(cbColor,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
@@ -193,6 +194,7 @@ public class MainFrame
 		pack();
 		setMinimumSize(getPreferredSize());
 
+		// Drawing handler
 		btnDraw.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -202,11 +204,24 @@ public class MainFrame
 			}
 		});
 
+		// Reset handler
 		btnReset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				scaler.resetZoom();
+				displayArea.createImages();
+				fractal.drawFractal(snmIterations.getNumber().intValue());
+			}
+		});
+
+		// Color scheme handler
+		cbColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent paramActionEvent)
+			{
+				fractal.setColorMap(ColorMapFactory.getMap(
+					cbColor.getSelectedIndex()));
 				displayArea.createImages();
 				fractal.drawFractal(snmIterations.getNumber().intValue());
 			}
@@ -217,7 +232,8 @@ public class MainFrame
 	{
 		scaler = new Scaler();
 		fractal = new ComplexEscapeFractal(displayArea, scaler,
-			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()));
+			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()),
+			ColorMapFactory.getMap(cbColor.getSelectedIndex()));
 	}
 
 	@Override
