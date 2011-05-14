@@ -258,6 +258,12 @@ public class MainFrame
 					snmIterations.getNumber().intValue(),
 					ColorSelection.getColor(cbPathColor.getSelectedIndex()),
 					snmDelay.getNumber().intValue());
+
+				// auto-cycle color
+				if (chkAuto.isSelected()) {
+					cbPathColor.setSelectedIndex(
+						(cbPathColor.getSelectedIndex() + 1) % cbPathColor.getItemCount());
+				}
 			}
 		};
 		displayArea.addMouseListener(ma);
