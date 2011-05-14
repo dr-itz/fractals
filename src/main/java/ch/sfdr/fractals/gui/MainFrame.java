@@ -56,6 +56,7 @@ public class MainFrame
 	private JComboBox cbPathColor;
 	private JCheckBox chkAuto;
 	private SpinnerNumberModel snmDelay;
+	private JButton btnDraw;
 
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
@@ -91,7 +92,7 @@ public class MainFrame
 		pnlInfo.setBorder(BorderFactory.createTitledBorder("Info"));
 		JPanel pnlClick = new JPanel(new GridBagLayout());
 		pnlClick.setBorder(BorderFactory.createTitledBorder("Click Action"));
-		JButton btnDraw = new JButton("Draw");
+		btnDraw = new JButton("Draw");
 		JButton btnReset = new JButton("Reset");
 		Dimension btnDim = new Dimension(80, btnDraw.getMinimumSize().height);
 		btnDraw.setPreferredSize(btnDim);
@@ -234,6 +235,10 @@ public class MainFrame
 		fractal = new ComplexEscapeFractal(displayArea, scaler,
 			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()),
 			ColorMapFactory.getMap(cbColor.getSelectedIndex()));
+
+		// Simulate click to draw the fractal immediately
+		btnDraw.doClick();
+
 	}
 
 	@Override
