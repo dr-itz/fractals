@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -57,6 +59,8 @@ public class MainFrame
 	private JCheckBox chkAuto;
 	private SpinnerNumberModel snmDelay;
 	private JButton btnDraw;
+	private JRadioButton rbtnZoom;
+	private JRadioButton rbtnPath;
 
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
@@ -83,7 +87,7 @@ public class MainFrame
 		pane.add(pnlBottom,				GBC.get(0, 1, 1, 1, 'h', "nw"));
 
 		// Panel Top
-		displayArea = new DisplayArea(1);
+		displayArea = new DisplayArea(2);
 		displayArea.setBackground(Color.BLACK);
 		displayArea.setPreferredSize(new Dimension(350, 350));
 		displayArea.setSelectionListner(this);
@@ -126,8 +130,8 @@ public class MainFrame
 		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
 
 		// Panel Click Action
-		JRadioButton rbtnZoom = new JRadioButton("Zoom");
-		JRadioButton rbtnPath = new JRadioButton("Draw path");
+		rbtnZoom = new JRadioButton("Zoom");
+		rbtnPath = new JRadioButton("Draw path");
 
 		ButtonGroup clickGroup = new ButtonGroup();
 		clickGroup.add(rbtnZoom);
@@ -184,7 +188,7 @@ public class MainFrame
 		cbPathColor = new JComboBox(new String[] {"Red"});
 		chkAuto = new JCheckBox("Auto-cycle");
 		JLabel lblDelay = new JLabel("Step delay (ms)");
-		snmDelay = new SpinnerNumberModel(50, 0, 250, 10);
+		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
 		JSpinner spinDelay = new JSpinner(snmDelay);
 
 		pnlPathDraw.add(cbPathColor,	GBC.get(0, 0, 1, 1));
@@ -227,6 +231,34 @@ public class MainFrame
 				fractal.drawFractal(snmIterations.getNumber().intValue());
 			}
 		});
+
+		// Click handler
+		ActionListener clickActionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				displayArea.setSelectionMode(rbtnZoom.isSelected());
+			}
+		};
+
+		rbtnZoom.addActionListener(clickActionListener);
+		rbtnPath.addActionListener(clickActionListener);
+
+		MouseAdapter ma = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (!rbtnPath.isSelected())
+					return;
+				if (e.getButton() != 1)
+					return;
+
+				fractal.drawOrbit(e.getX(), e.getY(),
+					snmIterations.getNumber().intValue(), Color.RED,
+					snmDelay.getNumber().intValue());
+			}
+		};
+		displayArea.addMouseListener(ma);
 	}
 
 	private void initialize()
@@ -238,7 +270,6 @@ public class MainFrame
 
 		// Simulate click to draw the fractal immediately
 		btnDraw.doClick();
-
 	}
 
 	@Override

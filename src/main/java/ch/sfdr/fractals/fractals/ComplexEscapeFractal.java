@@ -1,7 +1,9 @@
 package ch.sfdr.fractals.fractals;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import ch.sfdr.fractals.gui.component.ColorMap;
@@ -22,6 +24,11 @@ public class ComplexEscapeFractal
 
 	private double boundarySqr;
 	private int maxIterations;
+
+	private int orbitX;
+	private int orbitY;
+	private Color orbitColor;
+	private long orbitDelay;
 
 	/**
 	 * Creates the ComplexEscapeFractal
@@ -79,6 +86,31 @@ public class ComplexEscapeFractal
 		thread.start();
 	}
 
+	/**
+	 * Draws the orbit for the given coordinates and step delay
+	 * @param x the display coordinate in x direction
+	 * @param y the display coordinate in y direction
+	 * @param maxIter the max number of iterations
+	 * @param stepDelay the delay in milliseconds
+	 */
+	public void drawOrbit(int x, int y, int maxIterations, Color color, long stepDelay)
+	{
+		this.orbitX = x;
+		this.orbitY = y;
+		this.maxIterations = maxIterations;
+		this.orbitColor = color;
+		this.orbitDelay = stepDelay;
+
+		Thread thread = new Thread() {
+			@Override
+			public void run()
+			{
+				doDrawOrbit();
+			}
+		};
+		thread.start();
+	}
+
 	private void doDrawFractal()
 	{
 		int width = display.getImageWidth();
@@ -121,6 +153,53 @@ public class ComplexEscapeFractal
 			}
 		}
 		display.updateImage(img, 0);
+	}
+
+	private void doDrawOrbit()
+	{
+		ComplexNumber z0 = new ComplexNumber(
+			scaler.scaleX(orbitX), scaler.scaleY(orbitY));
+		ComplexNumber z = z0.clone();
+
+		BufferedImage img = display.createImage();
+		Graphics2D g = img.createGraphics();
+
+		g.setStroke(new BasicStroke(0.4f));
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			RenderingHints.VALUE_ANTIALIAS_ON);
+
+		g.setColor(orbitColor);
+
+		int lastX = orbitX;
+		int lastY = orbitY;
+
+		int count = 0;
+		while (z.absSqr() < boundarySqr && count++ < maxIterations) {
+			function.step(z0, z);
+
+			int x = scaler.unscaleX(z.getReal());
+			int y = scaler.unscaleY(z.getImaginary());
+
+			g.drawLine(lastX, lastY, x, y);
+
+			lastX = x;
+			lastY = y;
+
+			// only show the first 30 steps "animated", the rest in one go
+			if (count < 30 && orbitDelay > 0) {
+				display.updateImage(img, 1);
+				sleep(orbitDelay);
+			}
+		}
+		display.updateImage(img, 1);
+	}
+
+	private static void sleep(long delay)
+	{
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
+		}
 	}
 
 	private Color getColor(int count)
