@@ -28,6 +28,7 @@ import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.gui.component.AreaSelectionListener;
 import ch.sfdr.fractals.gui.component.ColorMapFactory;
+import ch.sfdr.fractals.gui.component.ColorSelection;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
 import ch.sfdr.fractals.math.Scaler;
@@ -185,7 +186,7 @@ public class MainFrame
 		pnlColor.add(cbColor,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Path Drawing
-		cbPathColor = new JComboBox(new String[] {"Red"});
+		cbPathColor = new JComboBox(ColorSelection.getNames());
 		chkAuto = new JCheckBox("Auto-cycle");
 		JLabel lblDelay = new JLabel("Step delay (ms)");
 		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
@@ -254,7 +255,8 @@ public class MainFrame
 					return;
 
 				fractal.drawOrbit(e.getX(), e.getY(),
-					snmIterations.getNumber().intValue(), Color.RED,
+					snmIterations.getNumber().intValue(),
+					ColorSelection.getColor(cbPathColor.getSelectedIndex()),
 					snmDelay.getNumber().intValue());
 			}
 		};
