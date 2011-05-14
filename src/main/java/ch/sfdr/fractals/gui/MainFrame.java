@@ -90,7 +90,7 @@ public class MainFrame
 		// Panel Top
 		displayArea = new DisplayArea(2);
 		displayArea.setBackground(Color.BLACK);
-		displayArea.setPreferredSize(new Dimension(350, 350));
+		displayArea.setPreferredSize(new Dimension(600, 400));
 		displayArea.setSelectionListner(this);
 
 		JPanel pnlInfo = new JPanel(new GridBagLayout());
