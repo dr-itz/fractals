@@ -14,6 +14,7 @@ import ch.sfdr.fractals.math.Scaler;
 /**
  * A fractal based on escape time algorithm
  * @author S.Freihofer
+ * @author D.Ritz
  */
 public class ComplexEscapeFractal
 {
@@ -127,32 +128,45 @@ public class ComplexEscapeFractal
 
 		/*
 		 * main loop for all pixels
+		 *
+		 * loop hierarchy:
+		 * - from coarse to fine
+		 * -- rows
+		 * --- pixels
 		 */
-		// outer loop: rows
-		for (int y = 0; y < height; y++) {
+		for (int step = 16, oldStep = 32; step > 0; oldStep = step, step /= 2) {
+			for (int y = 0; y < height; y += step) {
+				int start = 0;
+				int inc = step;
+				// skip pixel already drawn in last iteration
+				if (step < 16 && y % oldStep == 0) {
+					start = step;
+					inc = oldStep;
+				}
 
-			double fractalY = scaler.scaleY(y);
+				double fractalY = scaler.scaleY(y);
 
-			// inner loop: pixels
-			for (int x = 0; x < width; x++) {
-				double fractalX = scaler.scaleX(x);
+				// inner loop: pixels
+				for (int x = start; x < width; x += inc) {
+					double fractalX = scaler.scaleX(x);
 
-				// set the z0 and the variable z to the current values
-				z0.set(fractalX, fractalY);
-				z.set(fractalX, fractalY);
+					// set the z0 and the variable z to the current values
+					z0.set(fractalX, fractalY);
+					z.set(fractalX, fractalY);
 
-				// get iteration count using the step() function
-				int count = 0;
-				while (z.absSqr() < boundarySqr && count++ < maxIterations)
-					function.step(z0, z);
+					// get iteration count using the step() function
+					int count = 0;
+					while (z.absSqr() < boundarySqr && count++ < maxIterations)
+						function.step(z0, z);
 
-				// map to color and draw pixel
-				Color color = getColor(count);
-				g.setColor(color);
-		        g.fillRect(x, y, 1, 1);
+					// map to color and draw pixel
+					Color color = getColor(count);
+					g.setColor(color);
+			        g.fillRect(x, y, step, step);
+				}
 			}
+			display.updateImage(img, 0);
 		}
-		display.updateImage(img, 0);
 	}
 
 	private void doDrawOrbit()
