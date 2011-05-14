@@ -45,8 +45,7 @@ public class MainFrame
 	private JLabel lblPercent;
 	private JLabel lblMilliSec;
 	private JTabbedPane paneType;
-	private JPanel pnlFractals;
-	private JPanel pnlSettings;
+	private JPanel pnlFractalsTab;
 	private JComboBox cbFractals;
 	private SpinnerNumberModel snmIterations;
 	private SpinnerNumberModel snmThreads;
@@ -138,12 +137,17 @@ public class MainFrame
 
 		// Panel Bottom
 		paneType = new JTabbedPane();
-		pnlFractals = new JPanel(new GridBagLayout());
-		paneType.add("Fractals", pnlFractals);
-		pnlSettings = new JPanel(new GridBagLayout());
+		pnlFractalsTab = new JPanel(new GridBagLayout());
+		paneType.add("Fractals", pnlFractalsTab);
 
-		pnlBottom.add(paneType,			GBC.get(0, 0, 1, 1, 0.5, 0.0, 'b', "nw"));
-		pnlBottom.add(pnlSettings,		GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlBottom.add(paneType,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'b', "nw"));
+
+		// Panel FractalsTab
+		JPanel pnlFractals = new JPanel(new GridBagLayout());
+		JPanel pnlSettings = new JPanel(new GridBagLayout());
+
+		pnlFractalsTab.add(pnlFractals,	GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlFractalsTab.add(pnlSettings,	GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
 
 		// Panel Fractals
 		cbFractals = new JComboBox(FractalFactory.getFractalFunctionsNames());
