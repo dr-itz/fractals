@@ -10,12 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,16 +25,22 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.fractals.StatisticsObserver;
+import ch.sfdr.fractals.fractals.StepFractalFunction;
+import ch.sfdr.fractals.fractals.StepFractalFunctionWithConst;
 import ch.sfdr.fractals.gui.component.AreaSelectionListener;
 import ch.sfdr.fractals.gui.component.ColorMapFactory;
 import ch.sfdr.fractals.gui.component.ColorSelection;
 import ch.sfdr.fractals.gui.component.DisplayArea;
 import ch.sfdr.fractals.gui.component.GBC;
+import ch.sfdr.fractals.math.ComplexNumber;
 import ch.sfdr.fractals.math.Scaler;
 
 /**
@@ -45,12 +53,19 @@ public class MainFrame
 {
 	private static final long serialVersionUID = 1L;
 
+	// the displaying component
 	private DisplayArea displayArea;
+
+	// info panel
 	private JLabel lblX;
 	private JLabel lblY;
 	private JLabel lblZoomValue;
 	private JLabel lblMilliSec;
+
+	// bottom pane
 	private JTabbedPane paneType;
+
+	// fractals tab
 	private JPanel pnlFractalsTab;
 	private JComboBox cbFractals;
 	private SpinnerNumberModel snmIterations;
@@ -67,7 +82,13 @@ public class MainFrame
 	private JRadioButton rbtnZoom;
 	private JRadioButton rbtnPath;
 	private JLabel lblStepCount;
+	// constant panel
+	private JPanel pnlConst;
+	private JFormattedTextField ftfConstReal;
+	private JFormattedTextField ftfConstImag;
+	private DefaultFormatterFactory fmtFactory;
 
+	// scaler and fractal core
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
 
@@ -80,6 +101,13 @@ public class MainFrame
 
 	private void createGUI()
 	{
+		// the formatting used in all formatted text fields
+		DefaultFormatter fmt = new NumberFormatter(
+			new DecimalFormat("#0.0#################"));
+		fmt.setValueClass(Double.class);
+		fmt.setAllowsInvalid(false);
+		fmtFactory = new DefaultFormatterFactory(fmt, fmt, fmt);
+
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JPanel pane = new JPanel(new GridBagLayout());
 		setContentPane(pane);
@@ -110,7 +138,7 @@ public class MainFrame
 
 		pnlTop.add(displayArea,			GBC.get(0, 0, 1, 5, 1.0, 1.0, 'b', "nw"));
 		pnlTop.add(pnlInfo,				GBC.get(1, 0, 1, 1));
-		pnlTop.add(pnlClick,			GBC.get(1, 1, 1, 1));
+		pnlTop.add(pnlClick,			GBC.get(1, 1, 1, 1, 'h'));
 		pnlTop.add(new JPanel(), 		GBC.get(1, 2, 1, 1, 0.0, 1.0, 'v', "nw"));
 		pnlTop.add(btnDraw,				GBC.get(1, 3, 1, 1, 'n', "sw"));
 		pnlTop.add(btnReset,			GBC.get(1, 4, 1, 1, 'n', "sw"));
@@ -134,7 +162,7 @@ public class MainFrame
 		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
 		pnlInfo.add(lblY,				GBC.get(0, 2, 1, 1));
 		pnlInfo.add(lblZoom,			GBC.get(0, 3, 1, 1));
-		pnlInfo.add(lblZoomValue,			GBC.get(0, 4, 1, 1));
+		pnlInfo.add(lblZoomValue,		GBC.get(0, 4, 1, 1));
 		pnlInfo.add(lblTime,			GBC.get(0, 5, 1, 1));
 		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
 		pnlInfo.add(lblSteps,			GBC.get(0, 7, 1, 1));
@@ -149,8 +177,8 @@ public class MainFrame
 		clickGroup.add(rbtnPath);
 		rbtnZoom.setSelected(true);
 
-		pnlClick.add(rbtnZoom,			GBC.get(0, 0, 1, 1));
-		pnlClick.add(rbtnPath,			GBC.get(0, 1, 1, 1));
+		pnlClick.add(rbtnZoom,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
+		pnlClick.add(rbtnPath,			GBC.get(0, 1, 1, 1, "nw"));
 
 		// Panel Bottom
 		paneType = new JTabbedPane();
@@ -168,6 +196,18 @@ public class MainFrame
 
 		// Panel Fractals
 		cbFractals = new JComboBox(FractalFactory.getFractalFunctionsNames());
+
+		pnlConst = new JPanel(new GridBagLayout());
+		pnlConst.setVisible(false);
+		JLabel lblConstReal = new JLabel("Const Real:");
+		ftfConstReal = createDoubleTextField();
+		JLabel lblConstImag = new JLabel("Const Imag:");
+		ftfConstImag = createDoubleTextField();
+		pnlConst.add(lblConstReal,	GBC.get(0, 1, 1, 1, 0.5, 0.0, 'v', "nw"));
+		pnlConst.add(ftfConstReal,	GBC.get(1, 1, 1, 1, 0.5, 0.0, 'h', "ne"));
+		pnlConst.add(lblConstImag,	GBC.get(0, 2, 1, 1));
+		pnlConst.add(ftfConstImag,	GBC.get(1, 2, 1, 1, 0.5, 0.0, 'h', "ne"));
+
 		JLabel lblIterations = new JLabel("Max. # of Iterations");
 		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
 		JSpinner spinIterations = new JSpinner(snmIterations);
@@ -176,10 +216,11 @@ public class MainFrame
 		JSpinner spinThreads = new JSpinner(snmThreads);
 
 		pnlFractals.add(cbFractals,		GBC.get(0, 0, 2, 1, 0.5, 0.0, 'h', "nw"));
-		pnlFractals.add(lblIterations,	GBC.get(0, 1, 1, 1));
-		pnlFractals.add(spinIterations,	GBC.get(1, 1, 1, 1, "ne"));
-		pnlFractals.add(lblThreads,		GBC.get(0, 2, 1, 1));
-		pnlFractals.add(spinThreads,	GBC.get(1, 2, 1, 1, "ne"));
+		pnlFractals.add(pnlConst,		GBC.get(0, 1, 2, 1, 'h', "nw"));
+		pnlFractals.add(lblIterations,	GBC.get(0, 2, 1, 1));
+		pnlFractals.add(spinIterations,	GBC.get(1, 2, 1, 1, "ne"));
+		pnlFractals.add(lblThreads,		GBC.get(0, 3, 1, 1));
+		pnlFractals.add(spinThreads,	GBC.get(1, 3, 1, 1, "ne"));
 
 		// Panel Settings
 		pnlColor = new JPanel(new GridBagLayout());
@@ -203,6 +244,7 @@ public class MainFrame
 		// Panel Path Drawing
 		cbPathColor = new JComboBox(ColorSelection.getNames());
 		chkAuto = new JCheckBox("Auto-cycle");
+		chkAuto.setSelected(true);
 		JLabel lblDelay = new JLabel("Step delay (ms)");
 		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
 		JSpinner spinDelay = new JSpinner(snmDelay);
@@ -219,8 +261,20 @@ public class MainFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fractal.setFractalFunction(
-					FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()));
+				StepFractalFunction fct = FractalFactory.getFractalFunction(
+					cbFractals.getSelectedIndex());
+				fractal.setFractalFunction(fct);
+
+				if (fct instanceof StepFractalFunctionWithConst) {
+					pnlConst.setVisible(true);
+					StepFractalFunctionWithConst cfct = (StepFractalFunctionWithConst) fct;
+					ComplexNumber constant = cfct.getConstant();
+					ftfConstReal.setValue(constant.getReal());
+					ftfConstImag.setValue(constant.getImaginary());
+				} else {
+					pnlConst.setVisible(false);
+				}
+
 				btnReset.doClick();
 			}
 		});
@@ -230,8 +284,7 @@ public class MainFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				displayArea.createImages();
-				fractal.drawFractal(snmIterations.getNumber().intValue());
+				drawFractal();
 			}
 		});
 
@@ -241,8 +294,7 @@ public class MainFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				scaler.resetZoom();
-				displayArea.createImages();
-				fractal.drawFractal(snmIterations.getNumber().intValue());
+				drawFractal();
 			}
 		});
 
@@ -260,8 +312,7 @@ public class MainFrame
 				fractal.setSetColor(ColorSelection.getColor(
 					cbSetColor.getSelectedIndex()));
 
-				displayArea.createImages();
-				fractal.drawFractal(snmIterations.getNumber().intValue());
+				drawFractal();
 			}
 		};
 		cbColor.addActionListener(colorActionListener);
@@ -314,6 +365,13 @@ public class MainFrame
 		displayArea.addMouseListener(ma);
 	}
 
+	private JFormattedTextField createDoubleTextField()
+	{
+		JFormattedTextField ret = new JFormattedTextField(fmtFactory);;
+		ret.setHorizontalAlignment(JFormattedTextField.RIGHT);
+		return ret;
+	}
+
 	private void initialize()
 	{
 		scaler = new Scaler();
@@ -336,10 +394,30 @@ public class MainFrame
 		cbPathColor.setSelectedIndex(idx);
 	}
 
+	private void setFractalFunctionConstant()
+	{
+		StepFractalFunction fct = fractal.getFunction();
+		if (fct instanceof StepFractalFunctionWithConst) {
+			StepFractalFunctionWithConst cfct = (StepFractalFunctionWithConst) fct;
+			double re = ((Double) ftfConstReal.getValue()).doubleValue();
+			double im = ((Double) ftfConstImag.getValue()).doubleValue();
+			ComplexNumber constant = new ComplexNumber(re, im);
+			cfct.setConstant(constant);
+		}
+	}
+
+	private void drawFractal()
+	{
+		displayArea.createImages();
+		setFractalFunctionConstant();
+		fractal.drawFractal(snmIterations.getNumber().intValue());
+	}
+
 	@Override
 	public void areaSelected(Rectangle rect)
 	{
 		scaler.zoomIn(rect);
+		setFractalFunctionConstant();
 		fractal.drawFractal(snmIterations.getNumber().intValue());
 	}
 

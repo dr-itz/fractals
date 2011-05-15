@@ -67,6 +67,15 @@ public class ComplexEscapeFractal
 	}
 
 	/**
+	 * Returns the currently used fractal function
+	 * @return the function
+	 */
+	public StepFractalFunction getFunction()
+	{
+		return function;
+	}
+
+	/**
 	 * Sets the specific ColorMap
 	 * @param colorMap the colorMap to set
 	 */

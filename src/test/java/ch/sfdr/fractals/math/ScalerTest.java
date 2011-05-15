@@ -48,10 +48,10 @@ public class ScalerTest
 	public void testScaleY()
 	{
 		initWithGtHeight();
-		assertEquals(-1.6, me.scaleY(20), TOL);
+		assertEquals(1.6, me.scaleY(20), TOL);
 
 		initHeightGtWidth();
-		assertEquals(-2.6, me.scaleY(20), TOL);
+		assertEquals(2.6, me.scaleY(20), TOL);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ScalerTest
 
 		assertEquals(2.0, me.getZoom(), TOL);
 		assertEquals(-1.6, me.scaleX(20), TOL);
-		assertEquals(-0.8, me.scaleY(20), TOL);
+		assertEquals(0.8, me.scaleY(20), TOL);
 
 		me.resetZoom();
 
@@ -73,7 +73,7 @@ public class ScalerTest
 
 		assertEquals(2.0, me.getZoom(), TOL);
 		assertEquals(-0.8, me.scaleX(20), TOL);
-		assertEquals(-1.6, me.scaleY(20), TOL);
+		assertEquals(1.6, me.scaleY(20), TOL);
 	}
 
 

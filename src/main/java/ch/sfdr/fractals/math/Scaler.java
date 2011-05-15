@@ -51,7 +51,7 @@ public class Scaler
 		viewY = 0.0D;
 
 		xrange = Math.abs(xmax - xmin);
-		yrange = Math.abs(ymax - ymin);
+		yrange = -Math.abs(ymax - ymin);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class Scaler
 	 */
 	public double scaleY(int y)
 	{
-		return yrange * (y * r + viewY) + ymin - offsetY;
+		return yrange * (y * r + viewY) - ymin + offsetY;
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class Scaler
 	 */
 	public int unscaleY(double scaledY)
 	{
-		double t = ((scaledY + offsetY - ymin) / yrange - viewY) / r;
+		double t = ((scaledY - offsetY + ymin) / yrange - viewY) / r;
 		return (int) Math.round(t);
 	}
 }
