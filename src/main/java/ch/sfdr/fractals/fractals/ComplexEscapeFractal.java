@@ -22,6 +22,7 @@ public class ComplexEscapeFractal
 	private Scaler scaler;
 	private StepFractalFunction function;
 	private ColorMap colorMap;
+	private Color setColor = Color.BLACK;
 
 	private double boundarySqr;
 	private int maxIterations;
@@ -72,6 +73,15 @@ public class ComplexEscapeFractal
 	public void setColorMap(ColorMap colorMap)
 	{
 		this.colorMap = colorMap;
+	}
+
+	/**
+	 * Sets the set color
+	 * @param setColor the setColor to set
+	 */
+	public void setSetColor(Color setColor)
+	{
+		this.setColor = setColor;
 	}
 
 	/**
@@ -252,7 +262,7 @@ public class ComplexEscapeFractal
 	private Color getColor(int count)
 	{
 		if (count >= maxIterations)
-			return Color.BLACK;
+			return setColor;
 		return colorMap.getColor(count);
 	}
 

@@ -17,6 +17,7 @@ public class ColorSelection
 		"Magenta",	Color.MAGENTA,
 		"Orange",	Color.ORANGE,
 		"Pink",		Color.PINK,
+		"Black",	Color.BLACK,
 	};
 
 	/**

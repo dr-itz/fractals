@@ -58,6 +58,7 @@ public class MainFrame
 	private JPanel pnlColor;
 	private JPanel pnlPathDraw;
 	private JComboBox cbColor;
+	private JComboBox cbSetColor;
 	private JComboBox cbPathColor;
 	private JCheckBox chkAuto;
 	private SpinnerNumberModel snmDelay;
@@ -190,8 +191,13 @@ public class MainFrame
 
 		// Panel Colorization
 		cbColor = new JComboBox(ColorMapFactory.getNames());
+		JLabel lblSetColor = new JLabel("Set color");
+		cbSetColor = new JComboBox(ColorSelection.getNames());
+		cbSetColor.setSelectedIndex(cbSetColor.getItemCount() - 1);
 
 		pnlColor.add(cbColor,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
+		pnlColor.add(lblSetColor,		GBC.get(1, 0, 1, 1, 'v', "nw"));
+		pnlColor.add(cbSetColor,		GBC.get(2, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Path Drawing
 		cbPathColor = new JComboBox(ColorSelection.getNames());
@@ -230,14 +236,35 @@ public class MainFrame
 		});
 
 		// Color scheme handler
-		cbColor.addActionListener(new ActionListener() {
+		ActionListener colorActionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent paramActionEvent)
 			{
 				fractal.setColorMap(ColorMapFactory.getMap(
 					cbColor.getSelectedIndex()));
+
+				// ensure path and set color are not the same
+				if (cbSetColor.getSelectedIndex() == cbPathColor.getSelectedIndex())
+					cyclePathColor();
+				fractal.setSetColor(ColorSelection.getColor(
+					cbSetColor.getSelectedIndex()));
+
 				displayArea.createImages();
 				fractal.drawFractal(snmIterations.getNumber().intValue());
+			}
+		};
+		cbColor.addActionListener(colorActionListener);
+		cbSetColor.addActionListener(colorActionListener);
+
+		cbPathColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				int idx = cbSetColor.getSelectedIndex();
+				if (cbPathColor.getSelectedIndex() == idx) {
+					cbSetColor.setSelectedIndex(
+						(idx + 1) % cbSetColor.getItemCount());
+				}
 			}
 		});
 
@@ -269,8 +296,7 @@ public class MainFrame
 
 				// auto-cycle color
 				if (chkAuto.isSelected()) {
-					cbPathColor.setSelectedIndex(
-						(cbPathColor.getSelectedIndex() + 1) % cbPathColor.getItemCount());
+					cyclePathColor();
 				}
 			}
 		};
@@ -288,6 +314,15 @@ public class MainFrame
 
 		// Simulate click to draw the fractal immediately
 		btnDraw.doClick();
+	}
+
+	private void cyclePathColor()
+	{
+		int idx = cbPathColor.getSelectedIndex();
+		do {
+			idx = (idx + 1) % cbPathColor.getItemCount();
+		} while (idx == cbSetColor.getSelectedIndex());
+		cbPathColor.setSelectedIndex(idx);
 	}
 
 	@Override
