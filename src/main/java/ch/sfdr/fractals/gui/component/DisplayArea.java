@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -187,7 +186,7 @@ public class DisplayArea
 	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#updateImage(java.awt.Image)
 	 */
 	@Override
-	public synchronized void updateImage(Image img, int layer)
+	public synchronized void updateImage(BufferedImage img, int layer)
 	{
 		layers.get(layer).updateImage(img);
 		repaintAllLayers();
@@ -354,7 +353,7 @@ public class DisplayArea
 		private BufferedImage image;
 		private Graphics2D graphics;
 
-		public void updateImage(Image img)
+		public void updateImage(BufferedImage img)
 		{
 			graphics.drawImage(img, 0, 0, null);
 		}

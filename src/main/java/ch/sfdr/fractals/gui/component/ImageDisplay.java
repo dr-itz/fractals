@@ -1,6 +1,5 @@
 package ch.sfdr.fractals.gui.component;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 /**
@@ -55,5 +54,5 @@ public interface ImageDisplay
 	 * updates the displayed image with the supplied one. Must be thread safe
 	 * @param img
 	 */
-	void updateImage(Image img, int layer);
+	void updateImage(BufferedImage img, int layer);
 }

@@ -63,6 +63,7 @@ public class MainFrame
 	private JCheckBox chkAuto;
 	private SpinnerNumberModel snmDelay;
 	private JButton btnDraw;
+	private JButton btnReset;
 	private JRadioButton rbtnZoom;
 	private JRadioButton rbtnPath;
 	private JLabel lblStepCount;
@@ -102,7 +103,7 @@ public class MainFrame
 		JPanel pnlClick = new JPanel(new GridBagLayout());
 		pnlClick.setBorder(BorderFactory.createTitledBorder("Click Action"));
 		btnDraw = new JButton("Draw");
-		JButton btnReset = new JButton("Reset");
+		btnReset = new JButton("Reset");
 		Dimension btnDim = new Dimension(80, btnDraw.getMinimumSize().height);
 		btnDraw.setPreferredSize(btnDim);
 		btnReset.setPreferredSize(btnDim);
@@ -213,6 +214,16 @@ public class MainFrame
 
 		pack();
 		setMinimumSize(getPreferredSize());
+
+		cbFractals.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				fractal.setFractalFunction(
+					FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()));
+				btnReset.doClick();
+			}
+		});
 
 		// Drawing handler
 		btnDraw.addActionListener(new ActionListener() {

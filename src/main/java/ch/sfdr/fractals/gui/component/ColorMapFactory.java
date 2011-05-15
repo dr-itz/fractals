@@ -14,7 +14,7 @@ public class ColorMapFactory
 	 */
 	private static final ColorMapDefinition[] DEFINITIONS = {
 		defineMap("Grayscale", new int[][] {
-			{16, 0, 0, 0}, {32, 255, 255, 255}
+			{1, 0, 0, 0}, {16, 40, 40, 40}, {32, 255, 255, 255}
 		}),
 
 		defineMap("Blue", new int[][] {

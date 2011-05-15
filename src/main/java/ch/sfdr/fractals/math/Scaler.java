@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 /**
  * Scaler - Conversion between screen coordinates and scaled numbers with
  * zooming.
+ * @author D.Ritz
  */
 public class Scaler
 {

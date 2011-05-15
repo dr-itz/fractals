@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -76,20 +76,20 @@ public class Dummy
 				 * This shows to how independently draw lines (a red and a black
 				 * one) with transparency and layers.
 				 */
-				Image img = displayArea.createImage();
+				BufferedImage img = displayArea.createImage();
 				Graphics g = img.getGraphics();
 				g.setColor(Color.BLACK);
 				g.drawLine(0, 0, displayArea.getWidth(), displayArea.getHeight());
 				displayArea.updateImage(img, 0);
 
-				Image img2 = displayArea.createImage();
+				BufferedImage img2 = displayArea.createImage();
 				Graphics g2 = img2.getGraphics();
 				g2.setColor(Color.RED);
 				g2.drawLine(0, displayArea.getHeight(), displayArea.getWidth(), 0);
 				displayArea.updateImage(img2, 0);
 
 				// draw something on second layer
-				Image img3 = displayArea.createImage();
+				BufferedImage img3 = displayArea.createImage();
 				Graphics g3 = img3.getGraphics();
 				g3.setColor(Color.BLUE);
 				g3.drawLine(0, displayArea.getHeight()/2, displayArea.getWidth()/2, 0);
