@@ -92,6 +92,12 @@ public class MainFrame
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
 
+	// formatting
+	private static DecimalFormat decimalFmt =
+		new DecimalFormat("###,###,###,###");
+	private static DecimalFormat doubleFmt =
+		new DecimalFormat("0.0###############");
+
 	public MainFrame()
 	{
 		super(Version.getVersion());
@@ -144,7 +150,7 @@ public class MainFrame
 		pnlTop.add(btnReset,			GBC.get(1, 4, 1, 1, 'n', "sw"));
 
 		// Panel Info
-		JLabel lblVisible = new JLabel("Visible Area");
+		JLabel lblVisible = new JLabel("Coordinate                  ");
 		lblVisible.setFont(bold);
 		lblX = new JLabel("x blub");
 		lblY = new JLabel("y blub");
@@ -361,8 +367,23 @@ public class MainFrame
 					cyclePathColor();
 				}
 			}
+
+			@Override
+			public void mouseMoved(MouseEvent e)
+			{
+				lblX.setText(doubleFmt.format(scaler.scaleX(e.getX())));
+				lblY.setText(doubleFmt.format(scaler.scaleY(e.getY())) + "i");
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e)
+			{
+				lblX.setText("(none)");
+				lblY.setText("(none)i");
+			}
 		};
 		displayArea.addMouseListener(ma);
+		displayArea.addMouseMotionListener(ma);
 	}
 
 	private JFormattedTextField createDoubleTextField()
@@ -428,9 +449,12 @@ public class MainFrame
 			@Override
 			public void run()
 			{
-				lblStepCount.setText(Long.toString(fractal.getStepCount()));
-				lblZoomValue.setText(Long.toString(Math.round(scaler.getZoom())) + "x");
-				lblMilliSec.setText(Long.toString(fractal.getDrawTime()) + "ms");
+				lblStepCount.setText(decimalFmt.format(
+					fractal.getStepCount()));
+				lblZoomValue.setText(decimalFmt.format(
+					Math.round(scaler.getZoom())) + "x");
+				lblMilliSec.setText(decimalFmt.format(
+					fractal.getDrawTime()) + "ms");
 			}
 		});
 	}
