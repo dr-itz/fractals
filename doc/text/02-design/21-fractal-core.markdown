@@ -1,11 +1,9 @@
 ### Kernstück ###
 
 Dieser Abschnitt beschreibt das Kernstück der Fraktalberechnung, die Klasse
-`ComplexEscapeFractal`. Sobald das GUI kreiert und ersichtlich ist, wird durch 
-eine Initialisierungs-Methode ein als Standard gewähltes Fraktal gezeichnet. Dieses 
-Standard-Fraktal ist in unserem Fall das Mandelbrot-Fraktal. Anhand der als Standard 
-definierten Werten wie Mandelbrot als Funktion und Grayscale als Farb-Schema 
-wird beim Starten der Software dieses Fraktal gezeichnet.
+`ComplexEscapeFractal`. Diese Klasse übernimmt die Hauptaufgaben wie 
+das Ausführen der Schrittfunktion und das Zeichnen der Fraktale oder der Orbits.
+
 
 #### Initialisierung ####
 
