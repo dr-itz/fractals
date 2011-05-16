@@ -27,5 +27,5 @@ Die Julia-Fraktale sind sehr ähnlich zu dem Mandelbrot-Fraktal.
 
 	$z_{n+1} = z_n^2 + c$
 
-D.h. es wird nicht die Anfangzahl $z_0$ addiert, sondern eine frei wählbare
+D.h. es wird nicht die Anfangszahl $z_0$ addiert, sondern eine frei wählbare
 Konstante $c$.
