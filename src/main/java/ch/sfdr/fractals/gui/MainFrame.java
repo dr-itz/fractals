@@ -82,6 +82,7 @@ public class MainFrame
 	private JRadioButton rbtnZoom;
 	private JRadioButton rbtnPath;
 	private JLabel lblStepCount;
+	private JButton btnClearOrbits;
 	// constant panel
 	private JPanel pnlConst;
 	private JFormattedTextField ftfConstReal;
@@ -251,6 +252,7 @@ public class MainFrame
 		cbPathColor = new JComboBox(ColorSelection.getNames());
 		chkAuto = new JCheckBox("Auto-cycle");
 		chkAuto.setSelected(true);
+		btnClearOrbits = new JButton("Clear Orbits");
 		JLabel lblDelay = new JLabel("Step delay (ms)");
 		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
 		JSpinner spinDelay = new JSpinner(snmDelay);
@@ -259,6 +261,7 @@ public class MainFrame
 		pnlPathDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
 		pnlPathDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
 		pnlPathDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
+		pnlPathDraw.add(btnClearOrbits,	GBC.get(2, 1, 1, 1));
 
 		pack();
 		setMinimumSize(getPreferredSize());
@@ -301,6 +304,15 @@ public class MainFrame
 			{
 				scaler.resetZoom();
 				drawFractal();
+			}
+		});
+
+		// Clear orbits handler
+		btnClearOrbits.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				displayArea.clearLayer(1);
 			}
 		});
 
