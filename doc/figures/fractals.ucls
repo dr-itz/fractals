@@ -1,0 +1,53 @@
+<class-diagram version="1.0.1" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true">  
+  <interface id="1" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.fractals.StepFractalFunction" 
+    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/fractals/StepFractalFunction.java" binary="false">    
+    <position x="456" y="65" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </interface>  
+  <interface id="2" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.fractals.StepFractalFunctionWithConst" 
+    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/fractals/StepFractalFunctionWithConst.java" 
+    binary="false">    
+    <position x="212" y="217" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </interface>  
+  <class id="3" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.fractals.Mandelbrot" project="Fractals" 
+    file="/Fractals/src/main/java/ch/sfdr/fractals/fractals/Mandelbrot.java" binary="false">    
+    <position x="567" y="245" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </class>  
+  <class id="4" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.fractals.Julia" project="Fractals" 
+    file="/Fractals/src/main/java/ch/sfdr/fractals/fractals/Julia.java" binary="false">    
+    <position x="64" y="374" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </class>  
+  <generalization>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </generalization>  
+  <realization>    
+    <end type="SOURCE" nodeId="3"/>    
+    <end type="TARGET" nodeId="1"/>  
+  </realization>  
+  <realization>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </realization>  
+  <classifier-display autosize="true" package="true" initial-value="false" signature="false" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="false"/>    
+    <operations public="true" package="true" protected="true" private="false"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

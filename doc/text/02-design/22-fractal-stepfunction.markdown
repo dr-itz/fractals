@@ -1,12 +1,18 @@
 ### Die Schrittfunktion ###
 
+![Klassendiagramm der Schrittfunktionen und Fraktale](figures/fractals.png)
+
 Die eigentliche Funktion für einen einzelnen Schritt bei der Berechnung eines
 Fraktals sind getrennt vom Kern implementiert. Dabei wird nur das Interface 
 `StepFractalFunction` vorgegeben. Dieses definiert die Methoden die vom Kern
 aufgerufen werden. Dadurch ist es möglich, die Funktionen einfach auszutauschen
 und sehr einfach neue hinzuzufügen.
 
-#### Das Interface ####
+Das Interface `StepFractalFuntionWithConstant` erlaubt zusätzlich das Setzen
+einer Konstante, z.B. für das Julia-Fraktal.
+
+
+#### Das Interface StepFractalFuntion ####
 
 ~~~~~~~~ {.Java}
 public interface StepFractalFunction
@@ -65,6 +71,40 @@ Die folgenden Funktionen müssen implementiert sein:
 `getLowerBound()` und `getUpperBounds()` liessen sich auch aus dem Rückgabewert
 von `getBoundarySquare()` errechnen, dies wurde aber absichtlich nicht gemacht,
 um die visuelle Anzeige flexibler zu gestallten.
+
+
+#### Das Interface StepFractalFuntionWithConstant ####
+
+Das Interface StepFractalFunctionWithConstant erweitert das Interface um zwei
+zusätzliche Methoden, nämlich dem Setzen und Auslesen einer Konstante.
+
+~~~~~~~~ {.Java}
+public interface StepFractalFunctionWithConst
+	extends StepFractalFunction
+{
+	/**
+	 * returns the constant currently set
+	 * @return ComplexNumber constant
+	 */
+	ComplexNumber getConstant();
+
+	/**
+	 * sets the constant used in calculations
+	 * @param constant the constant as ComplexNumber
+	 */
+	void setConstant(ComplexNumber constant);
+}
+~~~~~~~~
+
+Die folgendenden Funktionen müssen implementiert sein:
+
+  * **`getConstant()`**
+
+	Gibt die aktuell gesetzte Konstante als ComplexNumber zurück.
+
+  * **`setConstant()`**
+
+	Setzt die Konstante als ComplexNumber.
 
 
 #### Die Factory ####
