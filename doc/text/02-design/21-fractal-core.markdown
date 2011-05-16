@@ -1,6 +1,6 @@
 ### Kernstück ###
 
-Dieses Abschnitt beschreibt das Kernstück der Fraktalberechnung, die Klasse
+Dieser Abschnitt beschreibt das Kernstück der Fraktalberechnung, die Klasse
 `ComplexEscapeFractal`.
 
 * Berechnung im eigenen Thread um GUI nicht zu blockieren

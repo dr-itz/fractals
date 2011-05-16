@@ -6,7 +6,7 @@ Die eigentliche Funktion für einen einzelnen Schritt bei der Berechnung eines
 Fraktals sind getrennt vom Kern implementiert. Dabei wird nur das Interface 
 `StepFractalFunction` vorgegeben. Dieses definiert die Methoden die vom Kern
 aufgerufen werden. Dadurch ist es möglich, die Funktionen einfach auszutauschen
-und sehr einfach neue hinzuzufügen.
+und sehr einfach neue Funktionen hinzuzufügen.
 
 Das Interface `StepFractalFuntionWithConstant` erlaubt zusätzlich das Setzen
 einer Konstante, z.B. für das Julia-Fraktal.
@@ -50,32 +50,32 @@ Die folgenden Funktionen müssen implementiert sein:
 
   * **`getLowerBounds()`**
 
-	Diese Funktion gibt die untere sichtbare Begenzung als komplexe Zahl zurück.
+	Diese Funktion gibt die untere sichtbare Begrenzung als komplexe Zahl zurück.
 
   * **`getUpperBounds()`**
 
-	Diese Funktion gibt die obere sichtbare Begenzung als komplexe Zahl zurück.
+	Diese Funktion gibt die obere sichtbare Begrenzung als komplexe Zahl zurück.
 
-  * **`getBoundarySqaure()`**
+  * **`getBoundarySqr()`**
 
-	Diese Funktion gibt das Quadrat des absuluten Wert der komplexen Zahl
+	Diese Funktion gibt das Quadrat des absoluten Wertes der komplexen Zahl
 	zurück, welche die Begrenzung darstellt. Für Mandelbrot ist diese Bedingung
 	$|z| < 2$, also muss diese Funktion $2^2 = 4$ zurückgeben.
 
-  * **`getBoundarySqaure()`**
+  * **`step()`**
 
 	Diese Funktion führt den eigentlichen Rechenschritt für
-	$z_{n+1} = f(z_n, z_0)$ aus. Der übergebene Startwert darf nicht verändert
+	$z_{n+1} = f(z_n, z_0)$ aus. Der übergebene Startwert $z_0 darf nicht verändert
 	werden, die variable ComplexNumber hingegen muss verändert werden.
 
-`getLowerBound()` und `getUpperBounds()` liessen sich auch aus dem Rückgabewert
-von `getBoundarySquare()` errechnen, dies wurde aber absichtlich nicht gemacht,
-um die visuelle Anzeige flexibler zu gestallten.
+`getLowerBounds()` und `getUpperBounds()` liessen sich auch aus dem Rückgabewert
+von `getBoundarySqr()` errechnen, dies wurde aber absichtlich nicht gemacht,
+um die visuelle Anzeige flexibler zu gestalten.
 
 
 #### Das Interface StepFractalFuntionWithConstant ####
 
-Das Interface StepFractalFunctionWithConstant erweitert das Interface um zwei
+Das Interface `StepFractalFunctionWithConstant` erweitert das Interface um zwei
 zusätzliche Methoden, nämlich dem Setzen und Auslesen einer Konstante.
 
 ~~~~~~~~ {.Java}
@@ -96,7 +96,7 @@ public interface StepFractalFunctionWithConst
 }
 ~~~~~~~~
 
-Die folgendenden Funktionen müssen implementiert sein:
+Die folgenden Funktionen müssen implementiert sein:
 
   * **`getConstant()`**
 
@@ -110,9 +110,9 @@ Die folgendenden Funktionen müssen implementiert sein:
 #### Die Factory ####
 
 Die Schrittfunktionen folgen dem Factory-Pattern. Dabei ist eine Factory die
-zentralle Stelle um Instanzen der Schrittfunktion zu erhalten. Die Factory ist
-die einzige Stelle, welche die einzelnen Implementation kennt. Das GUI fragt die
-Factory nach einer Liste aller vorhanden Funktionen, wählt der Benutzer eine
+zentrale Stelle um Instanzen der Schrittfunktion zu erhalten. Die Factory ist
+die einzige Stelle, welche die einzelnen Implementationen kennt. Das GUI fragt die
+Factory nach einer Liste aller vorhandenen Funktionen, wählt der Benutzer eine
 aus, wird wieder die Factory nach einer Instanz der Funktion gefragt. Neue
 Funktionen zu registrieren geschieht also nur in der Factory.
 
@@ -120,19 +120,19 @@ Funktionen zu registrieren geschieht also nur in der Factory.
 #### Hinzufügen einer neuen Funktion ####
 
 Eine Anforderung an das Design war, neue Funktionen sehr einfach hinzufügen zu
-können. Dieses Ziel wird erreicht durch das Oben beschriebene Interface sowie
+können. Dieses Ziel wird erreicht durch das oben beschriebene Interface, sowie
 der Factory. Als kleines Beispiel wird hier gezeigt wie eine Mandelbrot-Funktion
 mit der folgenden Form hinzugefügt wird:
 
 $$z_{n+1} = z_n^4 + z_0$$
 
 Diese Funktion unterscheidet sich nur minimal von der normalen
-Mandelbrot-Funktioen $z_{n+1} = z_n^2 + z_0$. Für die Implementation wird nicht
-auf die bereits vorhanden Klasse `Mandelbrot` zurückgegriffen, die abgeleitet
+Mandelbrot-Funktion $z_{n+1} = z_n^2 + z_0$. Für die Implementation wird nicht
+auf die bereits vorhandene Klasse `Mandelbrot` zurückgegriffen, die abgeleitet
 werden könnte. Die neue Klasse soll `Mandelbrot4` heissen.
 
 Zuerst wird die Implementation erstellt. Auf die Kommentare wird hier der
-Übersichtlichkeit halber verzichtet;
+Übersichtlichkeit halber verzichtet.
 
 ~~~~~~~~ {.Java}
 // src/main/java/ch/sfdr/fractals/fractals/Mandelbrot4.java
@@ -171,7 +171,7 @@ public class Mandelbrot4
 
 Um die neue Funktion dem Rest der Software bekannt zu machen, muss diese nur
 noch in der Factory registriert werden. Dabei muss eine einzelne Zeile in der
-Klasse FractalFactory in das Array FUNCTIONS eingefügt werden:
+Klasse `FractalFactory` in das Array FUNCTIONS eingefügt werden:
 
 
 ~~~~~~~~ {.Java}
