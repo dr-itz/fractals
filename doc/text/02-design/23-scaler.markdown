@@ -24,5 +24,3 @@ Merkpunkte zum Scaler:
 * Bei der Selektion eines Bereiches teilt das GUI dies dem Scaler mit, welcher
   den Zoom damit neu berechnet.
 
-Berechnungen:
-* TODO

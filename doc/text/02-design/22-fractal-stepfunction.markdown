@@ -186,6 +186,7 @@ Dies sieht dann z.B. so aus:
 	 */
 	private static Pair[] FUNCTIONS = {
 		get("Mandelbrot", Mandelbrot.class),
+		get("Julia", Julia.class),
 		get("Mandelbrot ^4", Mandelbrot4.class),
 	};
 ~~~~~~~~
