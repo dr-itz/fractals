@@ -24,6 +24,8 @@ public class ComplexEscapeFractal
 	private ColorMap colorMap;
 	private Color setColor = Color.BLACK;
 
+	private Thread thread;
+
 	private double boundarySqr;
 	private int maxIterations;
 
@@ -114,11 +116,22 @@ public class ComplexEscapeFractal
 	/**
 	 * Draws the fractal with a max number of iterations per point
 	 * @param maxIterations the max number of iterations
+	 * @throws InterruptedException
 	 */
-	public void drawFractal(int maxIterations)
+	public synchronized void drawFractal(int maxIterations)
 	{
+		// if there's a previous thread: interrupt and wait for it
+		if (thread != null) {
+			thread.interrupt();
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+			}
+		}
+
+		// create and start the new thread
 		this.maxIterations = maxIterations;
-		Thread thread = new Thread() {
+		thread = new Thread() {
 			@Override
 			public void run()
 			{
@@ -194,6 +207,9 @@ public class ComplexEscapeFractal
 					inc = oldStep;
 				}
 
+				if (Thread.interrupted())
+					return;
+
 				double fractalY = scaler.scaleY(y);
 
 				// inner loop: pixels
@@ -218,6 +234,10 @@ public class ComplexEscapeFractal
 				}
 			}
 			display.updateImage(img, 0);
+		}
+
+		synchronized (this) {
+			thread = null;
 		}
 	}
 

@@ -8,9 +8,13 @@ import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -92,6 +96,10 @@ public class MainFrame
 	// scaler and fractal core
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
+
+	// timer for delayed drawing on resize
+	private Timer delayedDrawTimer = new Timer();
+	private TimerTask delayedDrawTask;
 
 	// formatting
 	private static DecimalFormat decimalFmt =
@@ -396,6 +404,14 @@ public class MainFrame
 		};
 		displayArea.addMouseListener(ma);
 		displayArea.addMouseMotionListener(ma);
+
+		displayArea.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e)
+			{
+				delayedDrawFractal();
+			}
+		});
 	}
 
 	private JFormattedTextField createDoubleTextField()
@@ -437,6 +453,24 @@ public class MainFrame
 			ComplexNumber constant = new ComplexNumber(re, im);
 			cfct.setConstant(constant);
 		}
+	}
+
+	private void delayedDrawFractal()
+	{
+		// cancel previous task if one exists
+		if (delayedDrawTask != null)
+			delayedDrawTask.cancel();
+
+		// TimerTasks are a one-time thing, so create a new one
+		delayedDrawTask = new TimerTask() {
+			@Override
+			public void run()
+			{
+				drawFractal();
+			}
+		};
+		// schedule with 50ms delay
+		delayedDrawTimer.schedule(delayedDrawTask, 50);
 	}
 
 	private void drawFractal()
