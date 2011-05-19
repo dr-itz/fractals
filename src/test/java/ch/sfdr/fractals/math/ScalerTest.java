@@ -24,7 +24,7 @@ public class ScalerTest
 		me.init(-2D, -2D, 2D, 2D);
 	}
 
-	private void initWithGtHeight()
+	private void initWidthGtHeight()
 	{
 		me.setDimension(300, 200);
 	}
@@ -37,7 +37,7 @@ public class ScalerTest
 	@Test
 	public void testScaleX()
 	{
-		initWithGtHeight();
+		initWidthGtHeight();
 		assertEquals(-2.6, me.scaleX(20), TOL);
 
 		initHeightGtWidth();
@@ -47,7 +47,7 @@ public class ScalerTest
 	@Test
 	public void testScaleY()
 	{
-		initWithGtHeight();
+		initWidthGtHeight();
 		assertEquals(1.6, me.scaleY(20), TOL);
 
 		initHeightGtWidth();
@@ -57,7 +57,7 @@ public class ScalerTest
 	@Test
 	public void testZoomIn()
 	{
-		initWithGtHeight();
+		initWidthGtHeight();
 		Rectangle rect = new Rectangle(60, 50, 150, 100);
 		me.zoomIn(rect);
 
@@ -76,11 +76,41 @@ public class ScalerTest
 		assertEquals(1.6, me.scaleY(20), TOL);
 	}
 
+	@Test
+	public void testZoomOut()
+	{
+		initWidthGtHeight();
+		Rectangle rect = new Rectangle(60, 50, 75, 50);
+
+		me.zoomIn(rect);
+		assertEquals(4.0, me.getZoom(), TOL);
+
+		me.zoomOut(50, 50, 2);
+		assertEquals(2.0, me.getZoom(), TOL);
+		assertEquals(-2.6, me.scaleX(20), TOL);
+		assertEquals(1.55, me.scaleY(20), TOL);
+
+		me.resetZoom();
+
+		initHeightGtWidth();
+		rect = new Rectangle(50, 60, 50, 75);
+		me.zoomIn(rect);
+		assertEquals(4.0, me.getZoom(), TOL);
+
+		me.zoomOut(50, 50, 2);
+		assertEquals(2.0, me.getZoom(), TOL);
+		assertEquals(-1.55, me.scaleX(20), TOL);
+		assertEquals(2.6, me.scaleY(20), TOL);
+
+		me.zoomOut(50, 50, 3);
+		assertEquals(1.0, me.getZoom(), TOL);
+	}
+
 
 	@Test
 	public void testUnscaleX()
 	{
-		initWithGtHeight();
+		initWidthGtHeight();
 		double scaledX = me.scaleX(20);
 		assertEquals(20, me.unscaleX(scaledX));
 
@@ -92,7 +122,7 @@ public class ScalerTest
 	@Test
 	public void testUnscaleY()
 	{
-		initWithGtHeight();
+		initWidthGtHeight();
 		double scaledY = me.scaleY(20);
 		assertEquals(20, me.unscaleY(scaledY));
 

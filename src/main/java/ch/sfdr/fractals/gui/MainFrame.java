@@ -368,23 +368,17 @@ public class MainFrame
 		rbtnZoom.addActionListener(clickActionListener);
 		rbtnPath.addActionListener(clickActionListener);
 
+		// mouse actions in display area
 		MouseAdapter ma = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (!rbtnPath.isSelected())
-					return;
-				if (e.getButton() != 1)
-					return;
+				if (rbtnZoom.isSelected() && e.getButton() == 3) {
+					scaler.zoomOut(e.getX(), e.getY(), 3);
+					drawFractal();
 
-				fractal.drawOrbit(e.getX(), e.getY(),
-					snmIterations.getNumber().intValue(),
-					ColorSelection.getColor(cbPathColor.getSelectedIndex()),
-					snmDelay.getNumber().intValue());
-
-				// auto-cycle color
-				if (chkAuto.isSelected()) {
-					cyclePathColor();
+				} else if (rbtnPath.isSelected() && e.getButton() == 1) {
+					drawOrbit(e.getX(), e.getY());
 				}
 			}
 
@@ -405,6 +399,7 @@ public class MainFrame
 		displayArea.addMouseListener(ma);
 		displayArea.addMouseMotionListener(ma);
 
+		// automatic resizing
 		displayArea.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e)
@@ -478,6 +473,19 @@ public class MainFrame
 		displayArea.createImages();
 		setFractalFunctionConstant();
 		fractal.drawFractal(snmIterations.getNumber().intValue());
+	}
+
+	private void drawOrbit(int x, int y)
+	{
+		fractal.drawOrbit(x, y,
+			snmIterations.getNumber().intValue(),
+			ColorSelection.getColor(cbPathColor.getSelectedIndex()),
+			snmDelay.getNumber().intValue());
+
+		// auto-cycle color
+		if (chkAuto.isSelected()) {
+			cyclePathColor();
+		}
 	}
 
 	@Override

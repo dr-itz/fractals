@@ -90,10 +90,10 @@ public class Scaler
 	public void zoomIn(Rectangle rect)
 	{
 		// offset in x/y direction
-		double sx = width > height ? width - height : 0.0;
-		double sy = height > width ? height - width : 0.0;
-		viewX += r * (rect.x - sx / 2.0D);
-		viewY += r * (rect.y - sy / 2.0D);
+		double sx = width > height ? (width - height) / 2.0D : 0.0;
+		double sy = height > width ? (height - width) / 2.0D : 0.0;
+		viewX += r * (rect.x - sx);
+		viewY += r * (rect.y - sy);
 
 		// new zoom
 		zoom *= Math.max((double) width / rect.width,
@@ -103,8 +103,8 @@ public class Scaler
 		preCalculate();
 
 		// correct the offsets for new zoom
-		viewX += r * sx / 2.0D;
-		viewY += r * sy / 2.0D;
+		viewX += r * sx;
+		viewY += r * sy;
 	}
 
 	/**
@@ -116,6 +116,39 @@ public class Scaler
 		viewX = 0.0D;
 		viewY = 0.0D;
 		preCalculate();
+	}
+
+	/**
+	 * zoom out, making the x/y coordinate the new screen center
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 * @param factor divide the current zoom by this
+	 */
+	public void zoomOut(int x, int y, int factor)
+	{
+		double sx = width > height ? width - height : 0.0;
+		double sy = height > width ? height - width : 0.0;
+
+		// center on x/y
+		viewX -= (width / 2.0 - x - sx) * r;
+		viewY -= (height / 2.0 - y - sy) * r;
+
+		// add half in old R
+		viewX += r * width / 2.0;
+		viewY += r * height / 2.0;
+
+		// new zoom
+		zoom /= factor;
+		if (zoom < 1) {
+			resetZoom();
+			return;
+		}
+
+		preCalculate();
+
+		// subtract half in new R
+		viewX -= r * width / 2.0;
+		viewY -= r * height / 2.0;
 	}
 
 	/**
