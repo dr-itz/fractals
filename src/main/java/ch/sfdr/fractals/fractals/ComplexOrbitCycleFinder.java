@@ -1,5 +1,8 @@
 package ch.sfdr.fractals.fractals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.sfdr.fractals.math.ComplexNumber;
 
 /**
@@ -11,24 +14,37 @@ import ch.sfdr.fractals.math.ComplexNumber;
  */
 public class ComplexOrbitCycleFinder
 {
-	// the tolerance
+	// the tolerance in the newton finding
 	private static final double TOL = 1e-13;
 
-	// the "h" used in diff. Smaller values would case NaN problems
+	// the tolerance comparing cycle start points
+	private static final double POINT_TOL = 1e-4;
+
+	// the "h" used in diff. Smaller values would cause NaN problems
 	private static final double DIFF_H = 1e-8;
 
 	private StepFractalFunction function;
 	private int cycleLength;
+	private long delay;
 
 	// the maximum number of iterations
 	private int maxIter = 400;
 
+	private ComplexOrbitCycleListener listener;
+	private Thread thread;
+	private List<ComplexNumber> cycleStartPoints;
+
 	/**
 	 * constructs a cycle finder for the given fractal function
+	 * @param function the fractal step function
+	 * @param listener the listener
 	 */
-	public ComplexOrbitCycleFinder(StepFractalFunction function)
+	public ComplexOrbitCycleFinder(StepFractalFunction function,
+			ComplexOrbitCycleListener listener)
 	{
 		this.function = function;
+		this.listener = listener;
+		cycleStartPoints = new ArrayList<ComplexNumber>();
 	}
 
 	/**
@@ -49,6 +65,7 @@ public class ComplexOrbitCycleFinder
 		this.maxIter = maxIter;
 	}
 
+
 	/**
 	 * finds a cycle of given length, starting the Newton iteration with the
 	 * given start value
@@ -56,10 +73,8 @@ public class ComplexOrbitCycleFinder
 	 * @param start the start value for the Newton iteration
 	 * @return One possible point as ComplexNumber where a cycle occurs
 	 */
-	public ComplexNumber findCycle(int cycleLenght, ComplexNumber start)
+	private ComplexNumber findCycle(int cycleLenght, ComplexNumber start)
 	{
-		long startTime = System.currentTimeMillis();
-
 		this.cycleLength = cycleLenght;
 
 		// the value that should converge to the solution
@@ -96,13 +111,123 @@ public class ComplexOrbitCycleFinder
 			z.subtract(delta);
 		}
 
-		long dur = System.currentTimeMillis() - startTime;
-		System.out.println("Duration: " + dur + "ms; Iterations: " + i + "; z: " + z);
-
 		if (i >= maxIter || z.isNaN())
 			return null;
 
 		return z;
+	}
+
+
+	/**
+	 * Tries to find all cycles of a given length. The Listener will be called
+	 * with the results
+	 * @param function the fractal step function
+	 * @param length the length of the cycles
+	 * @param delay the delay in milliseconds between each cycle found
+	 */
+	public synchronized void findAllCycles(StepFractalFunction function,
+			int length, long delay)
+	{
+		if (thread != null) {
+			thread.interrupt();
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+			}
+		}
+
+		this.function = function;
+		this.cycleLength = length;
+		this.delay = delay;
+		cycleStartPoints.clear();
+
+		thread = new Thread() {
+			@Override
+			public void run()
+			{
+				doFindAllCycles();
+			};
+		};
+		thread.start();
+	}
+
+	/**
+	 * Scans over the whole boundary area. The area is divided into
+	 * (5 * cycleLength) pieces in both directions.
+	 */
+	private void doFindAllCycles()
+	{
+		double xmin = function.getLowerBounds().getReal();
+		double ymin = function.getLowerBounds().getImaginary();
+		double xmax = function.getUpperBounds().getReal();
+		double ymax = function.getUpperBounds().getImaginary();
+		double boundary = function.getBoundarySqr();
+
+		double stepSizeX = Math.abs(xmax - xmin) / (5 * cycleLength);
+		double stepSizeY = Math.abs(ymax - ymin) / (5 * cycleLength);
+
+		ComplexNumber start = new ComplexNumber(0, 0);
+
+		long lastCycleTs = System.currentTimeMillis();
+
+		for (double x = xmin; x < xmax; x += stepSizeX) {
+			for (double y = ymin; y < ymax; y += stepSizeY) {
+				if (Thread.interrupted())
+					return;
+
+				// skip points outside the boundary circle
+				if (x * x + y * y > boundary)
+					continue;
+
+				start.set(x, y);
+				ComplexNumber z = findCycle(cycleLength, start);
+
+				// check list if this (very similar) point has already been found
+				boolean newCycle = addNewCycle(z);
+				if (newCycle) {
+					boolean cont = listener.cycleFound(z, cycleLength);
+					if (!cont)
+						return;
+
+					// delay the next cycle
+					long dur = System.currentTimeMillis() - lastCycleTs;
+					long sleepDelay = delay - dur;
+					if (sleepDelay > 0) {
+						try {
+							Thread.sleep(delay);
+						} catch (InterruptedException e) {
+						}
+					}
+					lastCycleTs = System.currentTimeMillis();
+				}
+			}
+		}
+	}
+
+	/**
+	 * checks if a cycle is new by looking it up in the list
+	 * @param z the start point of the cycle
+	 * @return true if the cycle is new, false if already found before
+	 */
+	private boolean addNewCycle(ComplexNumber z)
+	{
+		// max iterations count reached or NaN
+		if (z == null)
+			return false;
+
+		// compare against points found previously
+		for (ComplexNumber c : cycleStartPoints) {
+			if (Math.abs(c.getReal() - z.getReal()) < POINT_TOL &&
+				Math.abs(c.getImaginary() - z.getImaginary()) < POINT_TOL)
+			{
+				return false;
+			}
+		}
+
+		// new...add it to the list
+		cycleStartPoints.add(z);
+
+		return true;
 	}
 
 	/**

@@ -36,6 +36,7 @@ import javax.swing.text.NumberFormatter;
 import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
 import ch.sfdr.fractals.fractals.ComplexOrbitCycleFinder;
+import ch.sfdr.fractals.fractals.ComplexOrbitCycleListener;
 import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.fractals.StatisticsObserver;
 import ch.sfdr.fractals.fractals.StepFractalFunction;
@@ -54,7 +55,8 @@ import ch.sfdr.fractals.math.Scaler;
  */
 public class MainFrame
 	extends JFrame
-	implements AreaSelectionListener, StatisticsObserver
+	implements AreaSelectionListener, StatisticsObserver,
+		ComplexOrbitCycleListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -86,13 +88,14 @@ public class MainFrame
 	private JButton btnReset;
 	private JRadioButton rbtnZoom;
 	private JRadioButton rbtnPath;
-	private JRadioButton rbtnCycle;
-	private SpinnerNumberModel snmCycleLength;
 	private JLabel lblStepCount;
 	private JButton btnClearOrbits;
 	private JFormattedTextField ftfStartReal;
 	private JFormattedTextField ftfStartImag;
 	private JButton btnDrawOrbit;
+	private SpinnerNumberModel snmCycleLength;
+	private JButton btnFindCycles;
+	private SpinnerNumberModel snmCycleDelay;
 	// constant panel
 	private JPanel pnlConst;
 	private JFormattedTextField ftfConstReal;
@@ -102,6 +105,7 @@ public class MainFrame
 	// scaler and fractal core
 	private Scaler scaler;
 	private ComplexEscapeFractal fractal;
+	private ComplexOrbitCycleFinder cycleFinder;
 
 	// timer for delayed drawing on resize
 	private Timer delayedDrawTimer = new Timer();
@@ -192,20 +196,14 @@ public class MainFrame
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
 		rbtnPath = new JRadioButton("Draw path");
-		rbtnCycle = new JRadioButton("Find cycle");
-		snmCycleLength = new SpinnerNumberModel(3, 2, 10, 1);
-		JSpinner spinCycleLength = new JSpinner(snmCycleLength);
 
 		ButtonGroup clickGroup = new ButtonGroup();
 		clickGroup.add(rbtnZoom);
 		clickGroup.add(rbtnPath);
-		clickGroup.add(rbtnCycle);
 		rbtnZoom.setSelected(true);
 
 		pnlClick.add(rbtnZoom,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 		pnlClick.add(rbtnPath,			GBC.get(0, 1, 1, 1, "nw"));
-		pnlClick.add(rbtnCycle,			GBC.get(0, 2, 1, 1, "nw"));
-		pnlClick.add(spinCycleLength,	GBC.get(0, 3, 1, 1, "nw"));
 
 		// Panel Bottom
 		paneType = new JTabbedPane();
@@ -282,16 +280,33 @@ public class MainFrame
 		ftfStartImag = createDoubleTextField();
 		btnDrawOrbit = new JButton("Draw Orbit");
 
-		pnlPathDraw.add(cbPathColor,	GBC.get(0, 0, 1, 1));
+		JPanel pnlCycle = new JPanel(new GridBagLayout());
+
+		pnlPathDraw.add(cbPathColor,	GBC.get(0, 0, 1, 1, 0.25, 0.0, 'h'));
 		pnlPathDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
-		pnlPathDraw.add(lblStartReal,	GBC.get(2, 0, 1, 1));
-		pnlPathDraw.add(ftfStartReal,	GBC.get(3, 0, 1, 1, 1.0, 0.0, 'h'));
+		pnlPathDraw.add(lblStartReal,	GBC.get(2, 0, 1, 1, "e"));
+		pnlPathDraw.add(ftfStartReal,	GBC.get(3, 0, 2, 1, 1.0, 0.0, 'h'));
 		pnlPathDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
 		pnlPathDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
-		pnlPathDraw.add(lblStartImag,	GBC.get(2, 1, 1, 1));
-		pnlPathDraw.add(ftfStartImag,	GBC.get(3, 1, 1, 1, 1.0, 0.0, 'h'));
-		pnlPathDraw.add(btnClearOrbits,	GBC.get(0, 2, 1, 1));
-		pnlPathDraw.add(btnDrawOrbit,	GBC.get(3, 2, 1, 1, "ne"));
+		pnlPathDraw.add(lblStartImag,	GBC.get(2, 1, 1, 1, "e"));
+		pnlPathDraw.add(ftfStartImag,	GBC.get(3, 1, 2, 1, 1.0, 0.0, 'h'));
+		pnlPathDraw.add(pnlCycle,		GBC.get(0, 2, 3, 1, "nw"));
+		pnlPathDraw.add(btnClearOrbits,	GBC.get(3, 2, 1, 1));
+		pnlPathDraw.add(btnDrawOrbit,	GBC.get(4, 2, 1, 1, "e"));
+
+		btnFindCycles = new JButton("Find cycles");
+		JLabel lblCycle = new JLabel("of length");
+		snmCycleLength = new SpinnerNumberModel(3, 2, 10, 1);
+		JSpinner spinCycleLength = new JSpinner(snmCycleLength);
+		JLabel lblCycleDelay = new JLabel("Delay (ms)");
+		snmCycleDelay = new SpinnerNumberModel(750, 100, 1500, 10);
+		JSpinner spinCycleDelay = new JSpinner(snmCycleDelay);
+
+		pnlCycle.add(btnFindCycles,		GBC.get(0, 0, 1, 1, "w"));
+		pnlCycle.add(lblCycle,			GBC.get(1, 0, 1, 1, 'v', "w"));
+		pnlCycle.add(spinCycleLength,	GBC.get(2, 0, 1, 1, "c"));
+		pnlCycle.add(lblCycleDelay,		GBC.get(3, 0, 1, 1, 'v', "w"));
+		pnlCycle.add(spinCycleDelay,	GBC.get(4, 0, 1, 1, "c"));
 
 		pack();
 		setMinimumSize(getPreferredSize());
@@ -401,7 +416,17 @@ public class MainFrame
 
 		rbtnZoom.addActionListener(clickActionListener);
 		rbtnPath.addActionListener(clickActionListener);
-		rbtnCycle.addActionListener(clickActionListener);
+
+		// cycle finder
+		btnFindCycles.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				cycleFinder.findAllCycles(fractal.getFunction(),
+					snmCycleLength.getNumber().intValue(),
+					snmCycleDelay.getNumber().longValue());
+			}
+		});
 
 		// mouse actions in display area
 		MouseAdapter ma = new MouseAdapter() {
@@ -414,9 +439,6 @@ public class MainFrame
 
 				} else if (rbtnPath.isSelected() && e.getButton() == 1) {
 					drawOrbit(e.getX(), e.getY());
-
-				} else if (rbtnCycle.isSelected() && e.getButton() == 1) {
-					findCycle(e.getX(), e.getY());
 				}
 			}
 
@@ -451,6 +473,7 @@ public class MainFrame
 	{
 		JFormattedTextField ret = new JFormattedTextField(fmtFactory);;
 		ret.setHorizontalAlignment(JFormattedTextField.RIGHT);
+		ret.setColumns(25);
 		return ret;
 	}
 
@@ -463,8 +486,10 @@ public class MainFrame
 
 		fractal.setStatObserver(this);
 
-		// Simulate click to draw the fractal immediately
-		btnDraw.doClick();
+		cycleFinder = new ComplexOrbitCycleFinder(fractal.getFunction(), this);
+
+		// draw the fractal immediately
+		drawFractal();
 	}
 
 	private void cyclePathColor()
@@ -524,33 +549,14 @@ public class MainFrame
 
 	private void drawOrbit(ComplexNumber c)
 	{
-		fractal.drawOrbit(c,
-			snmIterations.getNumber().intValue(),
-			ColorSelection.getColor(cbPathColor.getSelectedIndex()),
+		drawOrbit(c, snmIterations.getNumber().intValue(),
 			snmDelay.getNumber().intValue());
-
-		// auto-cycle color
-		if (chkAuto.isSelected()) {
-			cyclePathColor();
-		}
 	}
 
-	private void findCycle(int x, int y)
+	private void drawOrbit(ComplexNumber c, int iterations, long delay)
 	{
-		ComplexOrbitCycleFinder cycleFinder =
-			new ComplexOrbitCycleFinder(fractal.getFunction());
-
-		ComplexNumber c = cycleFinder.findCycle(
-			snmCycleLength.getNumber().intValue(),
-			new ComplexNumber(scaler.scaleX(x), scaler.scaleY(y)));
-
-		if (c == null)
-			return;
-
-		fractal.drawOrbit(c,
-			2*snmCycleLength.getNumber().intValue(),
-			ColorSelection.getColor(cbPathColor.getSelectedIndex()),
-			0);
+		fractal.drawOrbit(c, iterations,
+			ColorSelection.getColor(cbPathColor.getSelectedIndex()), delay);
 
 		// auto-cycle color
 		if (chkAuto.isSelected()) {
@@ -581,5 +587,18 @@ public class MainFrame
 					fractal.getDrawTime()) + "ms");
 			}
 		});
+	}
+
+	@Override
+	public boolean cycleFound(final ComplexNumber start, final int length)
+	{
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run()
+			{
+				drawOrbit(start, 2 * length, 0);
+			}
+		});
+		return true;
 	}
 }
