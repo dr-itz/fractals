@@ -259,7 +259,6 @@ public class ComplexEscapeFractal
 		BufferedImage img = display.createImage();
 		Graphics2D g = img.createGraphics();
 
-		g.setStroke(new BasicStroke(0.4f));
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -267,6 +266,13 @@ public class ComplexEscapeFractal
 
 		int lastX = scaler.unscaleX(z0.getReal());
 		int lastY = scaler.unscaleY(z0.getImaginary());
+
+		// draw a little circle indicating the starting point
+		g.setStroke(new BasicStroke(1.5f));
+		g.drawOval(lastX - 5, lastY - 5, 10, 10);
+
+		// a thinner stroke for the lines
+		g.setStroke(new BasicStroke(0.4f));
 
 		int count = 0;
 		while (z.absSqr() < boundarySqr && count++ < maxIterations) {
