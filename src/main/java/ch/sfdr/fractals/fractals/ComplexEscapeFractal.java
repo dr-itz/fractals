@@ -29,8 +29,7 @@ public class ComplexEscapeFractal
 	private double boundarySqr;
 	private int maxIterations;
 
-	private int orbitX;
-	private int orbitY;
+	private ComplexNumber orbitStart;
 	private Color orbitColor;
 	private long orbitDelay;
 
@@ -157,8 +156,19 @@ public class ComplexEscapeFractal
 	 */
 	public void drawOrbit(int x, int y, int maxIterations, Color color, long stepDelay)
 	{
-		this.orbitX = x;
-		this.orbitY = y;
+		drawOrbit(new ComplexNumber(scaler.scaleX(x), scaler.scaleY(y)),
+			maxIterations, color, stepDelay);
+	}
+
+	/**
+	 * Draws the orbit for the given coordinates and step delay
+	 * @param start the start coordinate as complex number
+	 * @param maxIter the max number of iterations
+	 * @param stepDelay the delay in milliseconds
+	 */
+	public void drawOrbit(ComplexNumber start, int maxIterations, Color color, long stepDelay)
+	{
+		this.orbitStart = start;
 		this.maxIterations = maxIterations;
 		this.orbitColor = color;
 		this.orbitDelay = stepDelay;
@@ -243,8 +253,7 @@ public class ComplexEscapeFractal
 
 	private void doDrawOrbit()
 	{
-		ComplexNumber z0 = new ComplexNumber(
-			scaler.scaleX(orbitX), scaler.scaleY(orbitY));
+		ComplexNumber z0 = orbitStart;
 		ComplexNumber z = z0.clone();
 
 		BufferedImage img = display.createImage();
@@ -256,8 +265,8 @@ public class ComplexEscapeFractal
 
 		g.setColor(orbitColor);
 
-		int lastX = orbitX;
-		int lastY = orbitY;
+		int lastX = scaler.unscaleX(z0.getReal());
+		int lastY = scaler.unscaleY(z0.getImaginary());
 
 		int count = 0;
 		while (z.absSqr() < boundarySqr && count++ < maxIterations) {
