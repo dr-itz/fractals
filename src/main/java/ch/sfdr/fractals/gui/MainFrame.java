@@ -90,6 +90,9 @@ public class MainFrame
 	private SpinnerNumberModel snmCycleLength;
 	private JLabel lblStepCount;
 	private JButton btnClearOrbits;
+	private JFormattedTextField ftfStartReal;
+	private JFormattedTextField ftfStartImag;
+	private JButton btnDrawOrbit;
 	// constant panel
 	private JPanel pnlConst;
 	private JFormattedTextField ftfConstReal;
@@ -253,7 +256,7 @@ public class MainFrame
 		pnlPathDraw.setBorder(BorderFactory.createTitledBorder("Path drawing"));
 
 		pnlSettings.add(pnlColor,		GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
-		pnlSettings.add(pnlPathDraw,	GBC.get(0, 1, 1, 1, "nw"));
+		pnlSettings.add(pnlPathDraw,	GBC.get(0, 1, 1, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Colorization
 		cbColor = new JComboBox(ColorMapFactory.getNames());
@@ -269,16 +272,26 @@ public class MainFrame
 		cbPathColor = new JComboBox(ColorSelection.getNames());
 		chkAuto = new JCheckBox("Auto-cycle");
 		chkAuto.setSelected(true);
-		btnClearOrbits = new JButton("Clear Orbits");
 		JLabel lblDelay = new JLabel("Step delay (ms)");
 		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
 		JSpinner spinDelay = new JSpinner(snmDelay);
+		btnClearOrbits = new JButton("Clear Orbits");
+		JLabel lblStartReal = new JLabel("Start Real:");
+		ftfStartReal = createDoubleTextField();
+		JLabel lblStartImag = new JLabel("Start Imag:");
+		ftfStartImag = createDoubleTextField();
+		btnDrawOrbit = new JButton("Draw Orbit");
 
 		pnlPathDraw.add(cbPathColor,	GBC.get(0, 0, 1, 1));
 		pnlPathDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
+		pnlPathDraw.add(lblStartReal,	GBC.get(2, 0, 1, 1));
+		pnlPathDraw.add(ftfStartReal,	GBC.get(3, 0, 1, 1, 1.0, 0.0, 'h'));
 		pnlPathDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
 		pnlPathDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
-		pnlPathDraw.add(btnClearOrbits,	GBC.get(2, 1, 1, 1));
+		pnlPathDraw.add(lblStartImag,	GBC.get(2, 1, 1, 1));
+		pnlPathDraw.add(ftfStartImag,	GBC.get(3, 1, 1, 1, 1.0, 0.0, 'h'));
+		pnlPathDraw.add(btnClearOrbits,	GBC.get(0, 2, 1, 1));
+		pnlPathDraw.add(btnDrawOrbit,	GBC.get(3, 2, 1, 1, "ne"));
 
 		pack();
 		setMinimumSize(getPreferredSize());
@@ -330,6 +343,18 @@ public class MainFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				displayArea.clearLayer(1);
+			}
+		});
+
+		// Draw orbit handler
+		btnDrawOrbit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				double re = ((Double) ftfStartReal.getValue()).doubleValue();
+				double im = ((Double) ftfStartImag.getValue()).doubleValue();
+				ComplexNumber c = new ComplexNumber(re, im);
+				drawOrbit(c);
 			}
 		});
 
@@ -490,7 +515,16 @@ public class MainFrame
 
 	private void drawOrbit(int x, int y)
 	{
-		fractal.drawOrbit(x, y,
+		ComplexNumber c = new ComplexNumber(scaler.scaleX(x), scaler.scaleY(y));
+		ftfStartReal.setValue(c.getReal());
+		ftfStartImag.setValue(c.getImaginary());
+
+		drawOrbit(c);
+	}
+
+	private void drawOrbit(ComplexNumber c)
+	{
+		fractal.drawOrbit(c,
 			snmIterations.getNumber().intValue(),
 			ColorSelection.getColor(cbPathColor.getSelectedIndex()),
 			snmDelay.getNumber().intValue());
