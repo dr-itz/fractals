@@ -171,4 +171,15 @@ public class ComplexNumber
 	{
 		return imaginary;
 	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(real);
+		if (imaginary >= 0.0)
+			sb.append("+");
+		sb.append(imaginary).append("i");
+		return sb.toString();
+	}
 }

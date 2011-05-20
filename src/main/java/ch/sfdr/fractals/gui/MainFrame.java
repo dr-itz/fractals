@@ -35,6 +35,7 @@ import javax.swing.text.NumberFormatter;
 
 import ch.sfdr.fractals.Version;
 import ch.sfdr.fractals.fractals.ComplexEscapeFractal;
+import ch.sfdr.fractals.fractals.ComplexOrbitCycleFinder;
 import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.fractals.StatisticsObserver;
 import ch.sfdr.fractals.fractals.StepFractalFunction;
@@ -85,6 +86,8 @@ public class MainFrame
 	private JButton btnReset;
 	private JRadioButton rbtnZoom;
 	private JRadioButton rbtnPath;
+	private JRadioButton rbtnCycle;
+	private SpinnerNumberModel snmCycleLength;
 	private JLabel lblStepCount;
 	private JButton btnClearOrbits;
 	// constant panel
@@ -186,14 +189,20 @@ public class MainFrame
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
 		rbtnPath = new JRadioButton("Draw path");
+		rbtnCycle = new JRadioButton("Find cycle");
+		snmCycleLength = new SpinnerNumberModel(3, 2, 10, 1);
+		JSpinner spinCycleLength = new JSpinner(snmCycleLength);
 
 		ButtonGroup clickGroup = new ButtonGroup();
 		clickGroup.add(rbtnZoom);
 		clickGroup.add(rbtnPath);
+		clickGroup.add(rbtnCycle);
 		rbtnZoom.setSelected(true);
 
 		pnlClick.add(rbtnZoom,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 		pnlClick.add(rbtnPath,			GBC.get(0, 1, 1, 1, "nw"));
+		pnlClick.add(rbtnCycle,			GBC.get(0, 2, 1, 1, "nw"));
+		pnlClick.add(spinCycleLength,	GBC.get(0, 3, 1, 1, "nw"));
 
 		// Panel Bottom
 		paneType = new JTabbedPane();
@@ -367,6 +376,7 @@ public class MainFrame
 
 		rbtnZoom.addActionListener(clickActionListener);
 		rbtnPath.addActionListener(clickActionListener);
+		rbtnCycle.addActionListener(clickActionListener);
 
 		// mouse actions in display area
 		MouseAdapter ma = new MouseAdapter() {
@@ -379,6 +389,9 @@ public class MainFrame
 
 				} else if (rbtnPath.isSelected() && e.getButton() == 1) {
 					drawOrbit(e.getX(), e.getY());
+
+				} else if (rbtnCycle.isSelected() && e.getButton() == 1) {
+					findCycle(e.getX(), e.getY());
 				}
 			}
 
@@ -481,6 +494,29 @@ public class MainFrame
 			snmIterations.getNumber().intValue(),
 			ColorSelection.getColor(cbPathColor.getSelectedIndex()),
 			snmDelay.getNumber().intValue());
+
+		// auto-cycle color
+		if (chkAuto.isSelected()) {
+			cyclePathColor();
+		}
+	}
+
+	private void findCycle(int x, int y)
+	{
+		ComplexOrbitCycleFinder cycleFinder =
+			new ComplexOrbitCycleFinder(fractal.getFunction());
+
+		ComplexNumber c = cycleFinder.findCycle(
+			snmCycleLength.getNumber().intValue(),
+			new ComplexNumber(scaler.scaleX(x), scaler.scaleY(y)));
+
+		if (c == null)
+			return;
+
+		fractal.drawOrbit(c,
+			2*snmCycleLength.getNumber().intValue(),
+			ColorSelection.getColor(cbPathColor.getSelectedIndex()),
+			0);
 
 		// auto-cycle color
 		if (chkAuto.isSelected()) {
