@@ -48,6 +48,16 @@ public class ComplexNumber
 		return this;
 	}
 
+	/**
+	 * sets the current complex number to the value of another complex number
+	 * @param other the other complex number
+	 * @return reference to this
+	 */
+	public ComplexNumber set(ComplexNumber other)
+	{
+		return set(other.real, other.imaginary);
+	}
+
 
 	/**
 	 * adds another ComplexNumber and returns the result
@@ -170,6 +180,15 @@ public class ComplexNumber
 	public double getImaginary()
 	{
 		return imaginary;
+	}
+
+	/**
+	 * returns true if this complex is NotANumber
+	 * @return NaN
+	 */
+	public boolean isNaN()
+	{
+		return Double.isNaN(real) || Double.isNaN(imaginary);
 	}
 
 	@Override
