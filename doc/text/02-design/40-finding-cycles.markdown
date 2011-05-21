@@ -1,15 +1,14 @@
 ## Erweiterung: Finden von Zkylen ##
 
 Eine der möglichen Erweiterungen die umgesetzt wurden, ist das Finden von
-zyklischen Orbits, implementert in der Klasse `ComplexOrbitCycleFinder`.
-Dabei geht es darum, Orbits zu finden welche sich zyklisch verhalten,
-d.h. nach einer bestimmten Anzahl Schritten wieder am Ausgangspunkt
-sind. Für Mandelbrot z.B. finden sich alle Zyklen der Länge drei durch das Lösen
-der folgenden Gleichung:
+zyklischen Orbits, implementert in der Klasse `ComplexOrbitCycleFinder`.  Dabei
+geht es darum, Orbits zu finden welche sich zyklisch verhalten, d.h. nach einer
+bestimmten Anzahl Schritten wieder am Ausgangspunkt sind. Für Mandelbrot z.B.
+finden sich alle Zyklen der Länge drei durch das Lösen der folgenden Gleichung:
 $$z = ((z^2 + z)^2 + z)^2 + z$$
 
 Im Vergleich dazu finden sich Zyklen der Länge drei in der Julia-Menge durch das
-Auflösen der folgenden Gleichung:
+Lösen der folgenden Gleichung:
 $$z = ((z^2 + c)^2 + c)^2 + c$$
 
 
@@ -23,7 +22,7 @@ $$F(z) = ((z^2 + z)^2 + z)^2 = 0$$
 
 Diese werden mittels des Newton-Verfahren in zwei Dimensionen gelöst. Die
 Iterationsvorschrift hierzu lautet:
-$$z_{n+1} = z_n - J(z_n)^-1 \cdot F(z)$$
+$$z_{n+1} = z_n - J(z_n)^{-1} \cdot F(z)$$
 
 
 $J(z{n_n})$ ist dabei die Jacobi-Matrix an der Stelle $z_n$. Die komplexen
@@ -57,10 +56,10 @@ $$\displaystyle
 Da die hier verwendete Jacboi-Matrix nur 2x2 gross ist, ist die Berechnung der
 Inversen besonders einfach:
 
-$$A = \begin{pmatrix} a_11 & a_12 \\ a_21 & a_22 \end{pmatrix}
+$$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
 \rightarrow A^{-1} = 
-\frac{1}{a_11 \cdot a_22 - a_12 \cdot a_21} \cdot
-\begin{pmatrix} a_22 & -a_12 \\ -a_21 & a_11 \end{pmatrix}$$
+\frac{1}{a_11 \cdot a_{22} - a_{12} \cdot a_{21}} \cdot
+\begin{pmatrix} a_{22} & -a_{12} \\ -a_{21} & a_{11} \end{pmatrix}$$
 
 Im Java-Code wurde dazu eine innere Klasse zu `ComplexOrbitCycleFinder`
 implementiert. Diese Klasse trägt den Namen `Jacobian2x2` und stellt eine 2x2
@@ -69,9 +68,7 @@ Jacobi-Matrix dar die sich selbst invertierten kann:
 ~~~~~~~~ {.Java}
 public void invert()
 {
-	double det = elem[0][0] * elem[1][1] -
-		elem[0][1] * elem[1][0];
-
+	double det = elem[0][0] * elem[1][1] - elem[0][1] * elem[1][0];
 	inv[0][0] =  elem[1][1] / det;
 	inv[0][1] = -elem[0][1] / det;
 	inv[1][0] = -elem[1][0] / det;
@@ -188,15 +185,15 @@ private ComplexNumber findCycle(int cycleLenght, ComplexNumber start)
 ### Finden von allen Zyklen einer bestimmten Länge ###
 
 Da das Newton-Verfahren jeweils nur eine Lösung, gegeben durch den Startwert,
-finden kann, müssen geeignete Startwerte gefunden werden die zu allen Lösungen
+finden kann, müssen geeignete Startwerte gefunden werden, die zu allen Lösungen
 führen. Die gewählte Methode funktioniert wie folgt:
 
-* Der begrenzende Kreise wird in x- und y-Richtung in $5 \cdot cycleLength$
+* Der begrenzende Kreise wird in x- und y-Richtung in $5 \cdot Zykluslänge$
   Schritte aufgeteilt. Dies ergibt ein Gitter dass über den Kreis gelegt wird.
 * Die linke untere Ecke dieser Rechtecke bzw. Quadrate dient als Startwert für
-  das Newton-Verfahren
+  das Newton-Verfahren.
 * Wird eine Lösung gefunden, wird diese mit allen vorher gefundenen Lösungen
-  verglichen um zu entscheiden, ob es sich um eine neue Lösung handelt. Dabei
+  verglichen, um zu entscheiden, ob es sich um eine neue Lösung handelt. Dabei
   werden die Real- und Imaginärteile verglichen. Liegen beide innerhalb einer
   gewissen Toleranz, gilt die Lösung als bereits bekannt und wird verworfen.
 
@@ -205,4 +202,26 @@ Für Mandelbrot und eine Zykluslänge von 4 ergibt sich also ein 20x20-Raster da
 Startwerte durchgerechnet werden. Die restlichen 85 liegen ausserhalb des
 Kreises und werden somit nicht berücksichtigt.
 
+
+~~~~~~~~ {.Java}
+...
+for (double x = xmin; x < xmax; x += stepSizeX) {
+	for (double y = ymin; y < ymax; y += stepSizeY) {
+		// skip points outside the boundary circle
+		if (x * x + y * y > boundary)
+			continue;
+
+		start.set(x, y);
+		ComplexNumber z = findCycle(cycleLength, start);
+
+		...
+
+		// check list if this (very similar) point has already been found
+		boolean newCycle = addNewCycle(z);
+		if (newCycle)
+			listener.cycleFound(z, cycleLength);
+	}
+}
+...
+~~~~~~~~
 
