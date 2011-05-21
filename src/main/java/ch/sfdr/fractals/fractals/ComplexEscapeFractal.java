@@ -27,11 +27,6 @@ public class ComplexEscapeFractal
 	private Thread thread;
 
 	private double boundarySqr;
-	private int maxIterations;
-
-	private ComplexNumber orbitStart;
-	private Color orbitColor;
-	private long orbitDelay;
 
 	private StatisticsObserver statObserver;
 	private long stepCount;
@@ -117,7 +112,7 @@ public class ComplexEscapeFractal
 	 * @param maxIterations the max number of iterations
 	 * @throws InterruptedException
 	 */
-	public synchronized void drawFractal(int maxIterations)
+	public synchronized void drawFractal(final int maxIterations)
 	{
 		// if there's a previous thread: interrupt and wait for it
 		if (thread != null) {
@@ -129,14 +124,13 @@ public class ComplexEscapeFractal
 		}
 
 		// create and start the new thread
-		this.maxIterations = maxIterations;
 		thread = new Thread() {
 			@Override
 			public void run()
 			{
 				long start = System.currentTimeMillis();
 
-				doDrawFractal();
+				doDrawFractal(maxIterations);
 
 				drawTime = System.currentTimeMillis() - start;
 
@@ -166,24 +160,20 @@ public class ComplexEscapeFractal
 	 * @param maxIter the max number of iterations
 	 * @param stepDelay the delay in milliseconds
 	 */
-	public void drawOrbit(ComplexNumber start, int maxIterations, Color color, long stepDelay)
+	public void drawOrbit(final ComplexNumber start, final int maxIterations,
+			final Color color, final long stepDelay)
 	{
-		this.orbitStart = start;
-		this.maxIterations = maxIterations;
-		this.orbitColor = color;
-		this.orbitDelay = stepDelay;
-
 		Thread thread = new Thread() {
 			@Override
 			public void run()
 			{
-				doDrawOrbit();
+				doDrawOrbit(start, maxIterations, color, stepDelay);
 			}
 		};
 		thread.start();
 	}
 
-	private void doDrawFractal()
+	private void doDrawFractal(int maxIterations)
 	{
 		stepCount = 0;
 
@@ -238,7 +228,7 @@ public class ComplexEscapeFractal
 					stepCount += count;
 
 					// map to color and draw pixel
-					Color color = getColor(count);
+					Color color = getColor(count, maxIterations);
 					g.setColor(color);
 			        g.fillRect(x, y, step, step);
 				}
@@ -251,7 +241,8 @@ public class ComplexEscapeFractal
 		}
 	}
 
-	private void doDrawOrbit()
+	private void doDrawOrbit(ComplexNumber orbitStart, int maxIterations,
+			Color orbitColor, long orbitDelay)
 	{
 		ComplexNumber z0 = orbitStart;
 		ComplexNumber z = z0.clone();
@@ -303,7 +294,7 @@ public class ComplexEscapeFractal
 		}
 	}
 
-	private Color getColor(int count)
+	private Color getColor(int count, int maxIterations)
 	{
 		if (count >= maxIterations)
 			return setColor;

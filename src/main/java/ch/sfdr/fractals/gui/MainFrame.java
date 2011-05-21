@@ -533,6 +533,7 @@ public class MainFrame
 
 	private void drawFractal()
 	{
+		cycleFinder.stop();
 		displayArea.createImages();
 		setFractalFunctionConstant();
 		fractal.drawFractal(snmIterations.getNumber().intValue());
@@ -568,8 +569,7 @@ public class MainFrame
 	public void areaSelected(Rectangle rect)
 	{
 		scaler.zoomIn(rect);
-		setFractalFunctionConstant();
-		fractal.drawFractal(snmIterations.getNumber().intValue());
+		drawFractal();
 	}
 
 	@Override

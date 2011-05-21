@@ -230,7 +230,7 @@ public class DisplayArea
 	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#removeLayer(int)
 	 */
 	@Override
-	public void removeLayer(int layer)
+	public synchronized void removeLayer(int layer)
 	{
 		layers.remove(layer);
 		repaintAllLayers();

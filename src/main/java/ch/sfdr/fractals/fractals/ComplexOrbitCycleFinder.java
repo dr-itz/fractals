@@ -128,13 +128,7 @@ public class ComplexOrbitCycleFinder
 	public synchronized void findAllCycles(StepFractalFunction function,
 			int length, long delay)
 	{
-		if (thread != null) {
-			thread.interrupt();
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-			}
-		}
+		stop();
 
 		this.function = function;
 		this.cycleLength = length;
@@ -149,6 +143,21 @@ public class ComplexOrbitCycleFinder
 			};
 		};
 		thread.start();
+	}
+
+	/**
+	 * stop any running calculation
+	 */
+	public synchronized void stop()
+	{
+		if (thread != null) {
+			thread.interrupt();
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+			}
+			thread = null;
+		}
 	}
 
 	/**
@@ -172,15 +181,15 @@ public class ComplexOrbitCycleFinder
 
 		for (double x = xmin; x < xmax; x += stepSizeX) {
 			for (double y = ymin; y < ymax; y += stepSizeY) {
-				if (Thread.interrupted())
-					return;
-
 				// skip points outside the boundary circle
 				if (x * x + y * y > boundary)
 					continue;
 
 				start.set(x, y);
 				ComplexNumber z = findCycle(cycleLength, start);
+
+				if (Thread.interrupted())
+					return;
 
 				// check list if this (very similar) point has already been found
 				boolean newCycle = addNewCycle(z);
@@ -194,8 +203,9 @@ public class ComplexOrbitCycleFinder
 					long sleepDelay = delay - dur;
 					if (sleepDelay > 0) {
 						try {
-							Thread.sleep(delay);
+							Thread.sleep(sleepDelay);
 						} catch (InterruptedException e) {
+							return;
 						}
 					}
 					lastCycleTs = System.currentTimeMillis();
