@@ -169,10 +169,13 @@ public class MainFrame
 		pnlTop.add(btnReset,			GBC.get(1, 4, 1, 1, 'n', "sw"));
 
 		// Panel Info
-		JLabel lblVisible = new JLabel("Coordinate                  ");
+		JLabel lblVisible = new JLabel("Coordinate");
 		lblVisible.setFont(bold);
-		lblX = new JLabel("x blub");
-		lblY = new JLabel("y blub");
+		lblX = new JLabel("(none)");
+		// avoid resizing later
+		lblY = new JLabel("0.099999999999999999i");
+		lblVisible.setPreferredSize(lblY.getMinimumSize());
+		lblY.setText("(none)i");
 		JLabel lblZoom = new JLabel("Zoom");
 		lblZoom.setFont(bold);
 		lblZoomValue = new JLabel("100%");
