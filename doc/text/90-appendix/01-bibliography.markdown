@@ -24,3 +24,10 @@
 
 #. **Apfloat**: http://www.apfloat.org/apfloat_java/
 
+
+### Newton-Verfahren ###
+
+#. **Allgemein**: http://de.wikipedia.org/wiki/Newton-Verfahren
+
+#. **Jacobi-Matrix**: http://en.wikipedia.org/wiki/Jacobian_matrix
+

@@ -3,17 +3,42 @@
 Die Klasse `ComplexNumber` implementiert die Repräsentation der komplexen Zahl die,
 für die Fraktal-Berechnung verwendet wird. Die Klasse basiert auf zwei
 double-Werten, die den reellen und den imaginären Teil der komplexen Zahl
-darstellen. Die folgenden Operationen werden implementiert, zusäzliche
+darstellen. Die folgenden Operationen sind implementiert, zusäzliche
 Operationen können nach Bedarf implementiert werden:
 
-* Addition
-* Subtraktion
-* Multiplikation mit reeller Zahl
-* Multiplikation mit komplexer Zahl
-* Division
-* Potenzieren mit integer Zahl
-* Bestimmen des Betrags
-* Bestimmen des Quadrates des Betrags (aus Performance-Gründen)
+  * Addition
+
+	$(a + bi) + (c + di) = (a + c) + (b + d) \cdot i$
+
+  * Subtraktion
+
+	$(a + bi) - (c + di) = (a - c) + (b - d) \cdot i$
+
+  * Multiplikation mit reeller Zahl
+
+	$(a + bi) \cdot n = (a \cdot n) + (b \cdot n \cdot i)$
+
+  * Multiplikation mit komplexer Zahl
+
+	$(a + bi) \cdot (c + di) = (a \cdot c - b \cdot d) + (b \cdot c + a \cdot d)
+	\cdot i$
+
+  * Division
+
+	$\displaystyle \frac{a + bi}{c + di} = \left({ac + bd \over c^2 + d^2}\right) +
+	\left( {bc - ad \over c^2 + d^2} \right) \cdot i$
+
+  * Potenzieren mit integer Zahl, als folge von Multiplikationen
+
+	$\displaystyle (a + bi)^n = \prod_{k=1}^n (a + bi)$
+
+  * Bestimmen des Betrags
+
+	$\displaystyle |(a + bi)| = \sqrt{a^2 + b^2}$
+
+  * Bestimmen des Quadrates des Betrags (aus Performance-Gründen)
+
+	$\displaystyle |(a + bi)|^2 = a^2 + b^2$
 
 
 #### Veränderbarkeit ####
