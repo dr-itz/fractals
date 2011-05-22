@@ -36,13 +36,10 @@ public class ComplexOrbitCycleFinder
 
 	/**
 	 * constructs a cycle finder for the given fractal function
-	 * @param function the fractal step function
 	 * @param listener the listener
 	 */
-	public ComplexOrbitCycleFinder(StepFractalFunction function,
-			ComplexOrbitCycleListener listener)
+	public ComplexOrbitCycleFinder(ComplexOrbitCycleListener listener)
 	{
-		this.function = function;
 		this.listener = listener;
 		cycleStartPoints = new ArrayList<ComplexNumber>();
 	}
@@ -158,6 +155,21 @@ public class ComplexOrbitCycleFinder
 			}
 			thread = null;
 		}
+	}
+
+	/**
+	 * waits for completion
+	 * @throws InterruptedException
+	 */
+	public void waitForCompletion()
+		throws InterruptedException
+	{
+		Thread t;
+		synchronized (this) {
+			t = thread;
+		}
+		if (t != null)
+			thread.join();
 	}
 
 	/**

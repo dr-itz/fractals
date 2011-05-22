@@ -489,7 +489,7 @@ public class MainFrame
 
 		fractal.setStatObserver(this);
 
-		cycleFinder = new ComplexOrbitCycleFinder(fractal.getFunction(), this);
+		cycleFinder = new ComplexOrbitCycleFinder(this);
 
 		// draw the fractal immediately
 		drawFractal();
