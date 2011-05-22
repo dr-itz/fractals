@@ -279,8 +279,10 @@ public class MainFrame
 		btnClearOrbits = new JButton("Clear Orbits");
 		JLabel lblStartReal = new JLabel("Start Real:");
 		ftfStartReal = createDoubleTextField();
+		ftfStartReal.setValue(0.0D);
 		JLabel lblStartImag = new JLabel("Start Imag:");
 		ftfStartImag = createDoubleTextField();
+		ftfStartImag.setValue(0.0D);
 		btnDrawOrbit = new JButton("Draw Orbit");
 
 		JPanel pnlCycle = new JPanel(new GridBagLayout());
