@@ -12,6 +12,7 @@ public class FractalFactory
 	 */
 	private static Pair[] FUNCTIONS = {
 		get("Mandelbrot", Mandelbrot.class),
+		get("Mandelbrot ^3", Mandelbrot3.class),
 		get("Julia", Julia.class),
 	};
 
