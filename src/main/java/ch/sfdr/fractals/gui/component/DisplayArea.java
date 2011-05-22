@@ -52,7 +52,7 @@ public class DisplayArea
 			@Override
 			public void mousePressed(MouseEvent e)
 			{
-				if (!selectionMode)
+				if (!selectionMode || e.getButton() != 1)
 					return;
 				selectionRect.start(e.getX(), e.getY());
 			}
