@@ -14,9 +14,11 @@ public class FractalFactoryTest
 	public void testGetFractalFunctionsNames()
 	{
 		String[] ret = FractalFactory.getFractalFunctionsNames();
-		assertEquals(2, ret.length);
+		assertEquals(4, ret.length);
 		assertEquals("Mandelbrot", ret[0]);
-		assertEquals("Julia", ret[1]);
+		assertEquals("Mandelbrot ^3", ret[1]);
+		assertEquals("Julia", ret[2]);
+		assertEquals("Julia ^3", ret[3]);
 	}
 
 	@Test
