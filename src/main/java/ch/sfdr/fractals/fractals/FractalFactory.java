@@ -14,6 +14,7 @@ public class FractalFactory
 		get("Mandelbrot", Mandelbrot.class),
 		get("Mandelbrot ^3", Mandelbrot3.class),
 		get("Julia", Julia.class),
+		get("Julia ^3", Julia3.class),
 	};
 
 	/**
