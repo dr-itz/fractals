@@ -354,6 +354,7 @@ public class MainFrame
 			{
 				scaler.resetZoom();
 				drawFractal();
+				fractal.clearOrbits();
 			}
 		});
 
@@ -362,7 +363,7 @@ public class MainFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				displayArea.clearLayer(1);
+				fractal.clearOrbits();
 			}
 		});
 
@@ -441,6 +442,7 @@ public class MainFrame
 				if (rbtnZoom.isSelected() && e.getButton() == 3) {
 					scaler.zoomOut(e.getX(), e.getY(), 3);
 					drawFractal();
+					fractal.redrawAllOrbits();
 
 				} else if (rbtnPath.isSelected() && e.getButton() == 1) {
 					drawOrbit(e.getX(), e.getY());
@@ -575,6 +577,7 @@ public class MainFrame
 	{
 		scaler.zoomIn(rect);
 		drawFractal();
+		fractal.redrawAllOrbits();
 	}
 
 	@Override

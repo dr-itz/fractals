@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import ch.sfdr.fractals.gui.component.ColorMap;
 import ch.sfdr.fractals.gui.component.ImageDisplay;
@@ -31,6 +32,8 @@ public class ComplexEscapeFractal
 	private StatisticsObserver statObserver;
 	private long stepCount;
 	private long drawTime;
+
+	private ArrayList<Orbit> orbitList = new ArrayList<Orbit>();
 
 	/**
 	 * Creates the ComplexEscapeFractal
@@ -163,6 +166,8 @@ public class ComplexEscapeFractal
 	public void drawOrbit(final ComplexNumber start, final int maxIterations,
 			final Color color, final long stepDelay)
 	{
+		orbitList.add(new Orbit(start, color, maxIterations));
+
 		Thread thread = new Thread() {
 			@Override
 			public void run()
@@ -317,5 +322,38 @@ public class ComplexEscapeFractal
 	public long getDrawTime()
 	{
 		return drawTime;
+	}
+
+	private static class Orbit
+	{
+		private ComplexNumber start;
+		private Color color;
+		private int itarations;
+
+		public Orbit(ComplexNumber start, Color color, int iterations)
+		{
+			this.start = start;
+			this.color = color;
+			this.itarations = iterations;
+		}
+	}
+
+	/**
+	 * Used to draw the saved orbits again, after a zoom
+	 */
+	public void redrawAllOrbits()
+	{
+		for (Orbit o : orbitList) {
+			doDrawOrbit(o.start, o.itarations, o.color, 0);
+		}
+	}
+
+	/**
+	 * Removes all saved orbits from the list
+	 */
+	public void clearOrbits()
+	{
+		orbitList.clear();
+		display.clearLayer(1);
 	}
 }
