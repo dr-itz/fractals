@@ -172,7 +172,10 @@ public class ComplexEscapeFractal
 			@Override
 			public void run()
 			{
-				doDrawOrbit(start, maxIterations, color, stepDelay);
+				BufferedImage img = display.createImage();
+				Graphics2D g = img.createGraphics();
+
+				doDrawOrbit(img, g, start, maxIterations, color, stepDelay, true);
 			}
 		};
 		thread.start();
@@ -246,14 +249,12 @@ public class ComplexEscapeFractal
 		}
 	}
 
-	private void doDrawOrbit(ComplexNumber orbitStart, int maxIterations,
-			Color orbitColor, long orbitDelay)
+	private void doDrawOrbit(BufferedImage img, Graphics2D g,
+			ComplexNumber orbitStart, int maxIterations,
+			Color orbitColor, long orbitDelay, boolean updateImage)
 	{
 		ComplexNumber z0 = orbitStart;
 		ComplexNumber z = z0.clone();
-
-		BufferedImage img = display.createImage();
-		Graphics2D g = img.createGraphics();
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
@@ -288,7 +289,8 @@ public class ComplexEscapeFractal
 				sleep(orbitDelay);
 			}
 		}
-		display.updateImage(img, 1);
+		if (updateImage)
+			display.updateImage(img, 1);
 	}
 
 	private static void sleep(long delay)
@@ -343,9 +345,13 @@ public class ComplexEscapeFractal
 	 */
 	public void redrawAllOrbits()
 	{
+		BufferedImage img = display.createImage();
+		Graphics2D g = img.createGraphics();
+
 		for (Orbit o : orbitList) {
-			doDrawOrbit(o.start, o.itarations, o.color, 0);
+			doDrawOrbit(img, g, o.start, o.itarations, o.color, 0, false);
 		}
+		display.updateImage(img, 1);
 	}
 
 	/**
