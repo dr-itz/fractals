@@ -188,8 +188,6 @@ public class ComplexEscapeFractal
 		int width = display.getImageWidth();
 		int height = display.getImageHeight();
 
-		scaler.setDimension(width, height);
-
 		BufferedImage img = display.createImage();
 		Graphics2D g = img.createGraphics();
 

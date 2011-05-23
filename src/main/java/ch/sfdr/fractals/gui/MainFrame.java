@@ -541,6 +541,8 @@ public class MainFrame
 		cycleFinder.stop();
 		displayArea.createImages();
 		setFractalFunctionConstant();
+		scaler.setDimension(displayArea.getImageWidth(),
+			displayArea.getImageHeight());
 		fractal.drawFractal(snmIterations.getNumber().intValue());
 		fractal.redrawAllOrbits();
 	}
