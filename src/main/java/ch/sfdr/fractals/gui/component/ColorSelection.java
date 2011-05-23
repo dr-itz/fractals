@@ -14,9 +14,9 @@ public class ColorSelection
 		"Blue",		Color.BLUE,
 		"Yellow",	Color.YELLOW,
 		"Cyan",		Color.CYAN,
-		"Magenta",	Color.MAGENTA,
-		"Orange",	Color.ORANGE,
-		"Pink",		Color.PINK,
+		"Magenta",	new Color(240, 0, 255),
+		"Orange",	new Color(255, 130, 0),
+		"Pink",		new Color(255, 68, 187),
 		"Black",	Color.BLACK,
 	};
 
