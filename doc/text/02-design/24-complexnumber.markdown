@@ -28,7 +28,7 @@ Operationen können nach Bedarf implementiert werden:
 	$\displaystyle \frac{a + bi}{c + di} = \left({ac + bd \over c^2 + d^2}\right) +
 	\left( {bc - ad \over c^2 + d^2} \right) \cdot i$
 
-  * Potenzieren mit integer Zahl, als folge von Multiplikationen
+  * Potenzieren mit integer Zahl, als Folge von Multiplikationen
 
 	$\displaystyle (a + bi)^n = \prod_{k=1}^n (a + bi)$
 

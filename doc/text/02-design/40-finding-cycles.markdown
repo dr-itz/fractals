@@ -1,4 +1,4 @@
-## Erweiterung: Finden von Zkylen ##
+## Erweiterung: Finden von Zyklen ##
 
 Eine der möglichen Erweiterungen die umgesetzt wurden, ist das Finden von
 zyklischen Orbits, implementert in der Klasse `ComplexOrbitCycleFinder`.  Dabei
@@ -25,8 +25,8 @@ Iterationsvorschrift hierzu lautet:
 $$z_{n+1} = z_n - J(z_n)^{-1} \cdot F(z)$$
 
 
-$J(z{n_n})$ ist dabei die Jacobi-Matrix an der Stelle $z_n$. Die komplexen
-Zahlen setzten sich aus zwei Teilen zusammen, dem rellen und dem imaginären.
+$J(z_n)$ ist dabei die Jacobi-Matrix an der Stelle $z_n$. Die komplexen
+Zahlen setzen sich aus zwei Teilen zusammen, dem rellen und dem imaginären.
 Somit sind zwei Variabeln wie auch zwei Funktionen vorhanden. Die komplexen
 Zahlen werden als Vektor betrachtet, die Funktion $F(z)$ als zwei Funktionen von
 zwei Variabeln:
@@ -63,7 +63,7 @@ $$A = \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix}
 
 Im Java-Code wurde dazu eine innere Klasse zu `ComplexOrbitCycleFinder`
 implementiert. Diese Klasse trägt den Namen `Jacobian2x2` und stellt eine 2x2
-Jacobi-Matrix dar die sich selbst invertierten kann:
+Jacobi-Matrix dar, die sich selbst invertierten kann:
 
 ~~~~~~~~ {.Java}
 public void invert()
@@ -76,7 +76,7 @@ public void invert()
 }
 ~~~~~~~~
 
-Die Funktion $F(z)$ bzw. $F(x,y)$ wird gebildet durch n-Faches Aufrufen der
+Die Funktion $F(z)$ bzw. $F(x,y)$ wird gebildet durch n-faches Aufrufen der
 Schrittfunktion, wobei "n" die gesuchte Zykluslänge darstellt. Um das Resultat
 in die richige Form zu bringen wird noch $z_0$ subtrahiert. Der Anfangswert
 $z_0$ ist dabei ein "geeigneter" Startwert.
@@ -188,8 +188,8 @@ Da das Newton-Verfahren jeweils nur eine Lösung, gegeben durch den Startwert,
 finden kann, müssen geeignete Startwerte gefunden werden, die zu allen Lösungen
 führen. Die gewählte Methode funktioniert wie folgt:
 
-* Der begrenzende Kreise wird in x- und y-Richtung in $5 \cdot Zykluslänge$
-  Schritte aufgeteilt. Dies ergibt ein Gitter dass über den Kreis gelegt wird.
+* Der begrenzende Kreise wird in x- und y-Richtung in $5 \cdot Zykluslaenge$
+  Schritte aufgeteilt. Dies ergibt ein Gitter, das über den Kreis gelegt wird.
 * Die linke untere Ecke dieser Rechtecke bzw. Quadrate dient als Startwert für
   das Newton-Verfahren.
 * Wird eine Lösung gefunden, wird diese mit allen vorher gefundenen Lösungen
