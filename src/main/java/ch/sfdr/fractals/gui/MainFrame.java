@@ -353,8 +353,8 @@ public class MainFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				scaler.resetZoom();
-				drawFractal();
 				fractal.clearOrbits();
+				drawFractal();
 			}
 		});
 
@@ -442,8 +442,6 @@ public class MainFrame
 				if (rbtnZoom.isSelected() && e.getButton() == 3) {
 					scaler.zoomOut(e.getX(), e.getY(), 3);
 					drawFractal();
-					fractal.redrawAllOrbits();
-
 				} else if (rbtnPath.isSelected() && e.getButton() == 1) {
 					drawOrbit(e.getX(), e.getY());
 				}
@@ -544,6 +542,7 @@ public class MainFrame
 		displayArea.createImages();
 		setFractalFunctionConstant();
 		fractal.drawFractal(snmIterations.getNumber().intValue());
+		fractal.redrawAllOrbits();
 	}
 
 	private void drawOrbit(int x, int y)
@@ -577,7 +576,6 @@ public class MainFrame
 	{
 		scaler.zoomIn(rect);
 		drawFractal();
-		fractal.redrawAllOrbits();
 	}
 
 	@Override
