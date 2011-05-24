@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import ch.sfdr.fractals.gui.component.ColorMap;
 import ch.sfdr.fractals.gui.component.ImageDisplay;
 import ch.sfdr.fractals.math.ComplexNumber;
+import ch.sfdr.fractals.math.LineClipping;
 import ch.sfdr.fractals.math.Scaler;
 
 /**
@@ -254,17 +255,25 @@ public class ComplexEscapeFractal
 		ComplexNumber z0 = orbitStart;
 		ComplexNumber z = z0.clone();
 
+		LineClipping lc = new LineClipping();
+
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
 
 		g.setColor(orbitColor);
 
-		int lastX = scaler.unscaleX(z0.getReal());
-		int lastY = scaler.unscaleY(z0.getImaginary());
+		int width = display.getImageWidth();
+		int height = display.getImageHeight();
+
+		double lastX = scaler.unscaleX(z0.getReal());
+		double lastY = scaler.unscaleY(z0.getImaginary());
 
 		// draw a little circle indicating the starting point
-		g.setStroke(new BasicStroke(1.5f));
-		g.drawOval(lastX - 5, lastY - 5, 10, 10);
+		if (LineClipping.isPointInside(lastX, lastY, 0, 0, width, height)) {
+			g.setStroke(new BasicStroke(1.5f));
+			g.drawOval((int) Math.round(lastX) - 5, (int) Math.round(lastY) - 5,
+				10, 10);
+		}
 
 		// a thinner stroke for the lines
 		g.setStroke(new BasicStroke(0.4f));
@@ -273,19 +282,23 @@ public class ComplexEscapeFractal
 		while (z.absSqr() < boundarySqr && count++ < maxIterations) {
 			function.step(z0, z);
 
-			int x = scaler.unscaleX(z.getReal());
-			int y = scaler.unscaleY(z.getImaginary());
+			double x = scaler.unscaleX(z.getReal());
+			double y = scaler.unscaleY(z.getImaginary());
 
-			g.drawLine(lastX, lastY, x, y);
+			if (lc.clipLineToRectangle(lastX, lastY, x, y, 0, 0, width, height)) {
+				g.drawLine(lc.getClipX1(), lc.getClipY1(),
+					lc.getClipX2(), lc.getClipY2());
+
+				// only show the first 30 steps "animated", the rest in one go
+				if (count < 30 && orbitDelay > 0) {
+					display.updateImage(img, 1);
+					sleep(orbitDelay);
+				}
+			}
 
 			lastX = x;
 			lastY = y;
 
-			// only show the first 30 steps "animated", the rest in one go
-			if (count < 30 && orbitDelay > 0) {
-				display.updateImage(img, 1);
-				sleep(orbitDelay);
-			}
 		}
 		if (updateImage)
 			display.updateImage(img, 1);

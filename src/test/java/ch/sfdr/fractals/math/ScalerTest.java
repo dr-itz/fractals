@@ -112,11 +112,11 @@ public class ScalerTest
 	{
 		initWidthGtHeight();
 		double scaledX = me.scaleX(20);
-		assertEquals(20, me.unscaleX(scaledX));
+		assertEquals(20, me.unscaleX(scaledX), TOL);
 
 		initHeightGtWidth();
 		scaledX = me.scaleX(20);
-		assertEquals(20, me.unscaleX(scaledX));
+		assertEquals(20, me.unscaleX(scaledX), TOL);
 	}
 
 	@Test
@@ -124,10 +124,10 @@ public class ScalerTest
 	{
 		initWidthGtHeight();
 		double scaledY = me.scaleY(20);
-		assertEquals(20, me.unscaleY(scaledY));
+		assertEquals(20, me.unscaleY(scaledY), TOL);
 
 		initHeightGtWidth();
 		scaledY = me.scaleY(20);
-		assertEquals(20, me.unscaleY(scaledY));
+		assertEquals(20, me.unscaleY(scaledY), TOL);
 	}
 }
