@@ -185,10 +185,9 @@ public class Scaler
 	 * @param scaledX the scaled number
 	 * @return the screen coordinate
 	 */
-	public int unscaleX(double scaledX)
+	public double unscaleX(double scaledX)
 	{
-		double t = ((scaledX + offsetX - xmin) / xrange - viewX) / r;
-		return (int) Math.round(t);
+		return ((scaledX + offsetX - xmin) / xrange - viewX) / r;
 	}
 
 	/**
@@ -196,9 +195,8 @@ public class Scaler
 	 * @param scaledX the scaled number
 	 * @return the screen coordinate
 	 */
-	public int unscaleY(double scaledY)
+	public double unscaleY(double scaledY)
 	{
-		double t = ((scaledY - offsetY + ymin) / yrange - viewY) / r;
-		return (int) Math.round(t);
+		return ((scaledY - offsetY + ymin) / yrange - viewY) / r;
 	}
 }
