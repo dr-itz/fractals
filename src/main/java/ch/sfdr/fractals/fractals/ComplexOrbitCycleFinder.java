@@ -12,7 +12,7 @@ import ch.sfdr.fractals.math.ComplexNumber;
  *   z = z - jacobian(z)^{-1} * f(z)
  * @author D.Ritz
  */
-public class ComplexOrbitCycleFinder
+public strictfp class ComplexOrbitCycleFinder
 {
 	// the tolerance in the newton finding
 	private static final double TOL = 1e-13;
@@ -22,6 +22,8 @@ public class ComplexOrbitCycleFinder
 
 	// the "h" used in diff. Smaller values would cause NaN problems
 	private static final double DIFF_H = 1e-8;
+
+	private static final double DIVIDE = 5.0;
 
 	private StepFractalFunction function;
 	private int cycleLength;
@@ -169,7 +171,7 @@ public class ComplexOrbitCycleFinder
 			t = thread;
 		}
 		if (t != null)
-			thread.join();
+			t.join();
 	}
 
 	/**
@@ -184,8 +186,8 @@ public class ComplexOrbitCycleFinder
 		double ymax = function.getUpperBounds().getImaginary();
 		double boundary = function.getBoundarySqr();
 
-		double stepSizeX = Math.abs(xmax - xmin) / (5 * cycleLength);
-		double stepSizeY = Math.abs(ymax - ymin) / (5 * cycleLength);
+		double stepSizeX = Math.abs(xmax - xmin) / (DIVIDE * cycleLength);
+		double stepSizeY = Math.abs(ymax - ymin) / (DIVIDE * cycleLength);
 
 		ComplexNumber start = new ComplexNumber(0, 0);
 
@@ -296,8 +298,7 @@ public class ComplexOrbitCycleFinder
 		 */
 		public Jacobian2x2 invert()
 		{
-			double det = elem[0][0] * elem[1][1] -
-				elem[0][1] * elem[1][0];
+			double det = elem[0][0] * elem[1][1] - elem[0][1] * elem[1][0];
 
 			inv[0][0] =  elem[1][1] / det;
 			inv[0][1] = -elem[0][1] / det;
