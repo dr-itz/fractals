@@ -76,7 +76,6 @@ public class MainFrame
 	private JPanel pnlFractalsTab;
 	private JComboBox cbFractals;
 	private SpinnerNumberModel snmIterations;
-	private SpinnerNumberModel snmThreads;
 	private JPanel pnlColor;
 	private JPanel pnlPathDraw;
 	private JComboBox cbColor;
@@ -231,6 +230,7 @@ public class MainFrame
 		ftfConstReal = createDoubleTextField();
 		JLabel lblConstImag = new JLabel("Const Imag:");
 		ftfConstImag = createDoubleTextField();
+
 		pnlConst.add(lblConstReal,	GBC.get(0, 1, 1, 1, 0.5, 0.0, 'v', "nw"));
 		pnlConst.add(ftfConstReal,	GBC.get(1, 1, 1, 1, 0.5, 0.0, 'h', "ne"));
 		pnlConst.add(lblConstImag,	GBC.get(0, 2, 1, 1));
@@ -239,25 +239,20 @@ public class MainFrame
 		JLabel lblIterations = new JLabel("Max. # of Iterations");
 		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
 		JSpinner spinIterations = new JSpinner(snmIterations);
-		JLabel lblThreads = new JLabel("# Concurrent Threads");
-		snmThreads = new SpinnerNumberModel(2, 1, 10, 1);
-		JSpinner spinThreads = new JSpinner(snmThreads);
+		pnlColor = new JPanel(new GridBagLayout());
+		pnlColor.setBorder(BorderFactory.createTitledBorder("Colorization"));
 
 		pnlFractals.add(cbFractals,		GBC.get(0, 0, 2, 1, 0.5, 0.0, 'h', "nw"));
 		pnlFractals.add(pnlConst,		GBC.get(0, 1, 2, 1, 'h', "nw"));
 		pnlFractals.add(lblIterations,	GBC.get(0, 2, 1, 1));
 		pnlFractals.add(spinIterations,	GBC.get(1, 2, 1, 1, "ne"));
-		pnlFractals.add(lblThreads,		GBC.get(0, 3, 1, 1));
-		pnlFractals.add(spinThreads,	GBC.get(1, 3, 1, 1, "ne"));
+		pnlFractals.add(pnlColor,		GBC.get(0, 3, 2, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Settings
-		pnlColor = new JPanel(new GridBagLayout());
-		pnlColor.setBorder(BorderFactory.createTitledBorder("Colorization"));
 		pnlPathDraw = new JPanel(new GridBagLayout());
 		pnlPathDraw.setBorder(BorderFactory.createTitledBorder("Path drawing"));
 
-		pnlSettings.add(pnlColor,		GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
-		pnlSettings.add(pnlPathDraw,	GBC.get(0, 1, 1, 1, 1.0, 0.0, 'h', "nw"));
+		pnlSettings.add(pnlPathDraw,	GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Colorization
 		cbColor = new JComboBox(ColorMapFactory.getNames());
