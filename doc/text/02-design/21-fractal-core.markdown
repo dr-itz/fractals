@@ -123,34 +123,63 @@ display.updateImage(img, 0);
 
 #### Zeichnen der Orbits ####
 
-Ist im GUI der Radio-Button Draw Path angewählt, so wird die Zoom-Funktion 
-deaktiviert und das Zeichnen der Orbits (Pfad) aktiviert. Nach jedem Schritt 
+Ist im GUI der Radio-Button "Draw Path" angewählt, so wird die Zoom-Funktion 
+deaktiviert und das Zeichnen der Orbits aktiviert. Nach jedem Schritt 
 wird in Bildschirmkoordinaten zurückgerechnet und eine dünne Linie gezeichnet. 
 Die ersten 30 Schritte sind animiert, danach wird aufgrund der langen Wartezeiten 
-der Rest des Pfades auf einmal gezeichnet.
+der Rest des Orbits auf einmal gezeichnet.
 
 ~~~~~~~~ {.Java}
-int lastX = orbitX;
-int lastY = orbitY;
+LineClipping lc = new LineClipping();
+double lastX = orbitX;
+double lastY = orbitY;
 
 int count = 0;
 while (z.absSqr() < boundarySqr && count++ < maxIterations) {
 	function.step(z0, z);
 
-	int x = scaler.unscaleX(z.getReal());
-	int y = scaler.unscaleY(z.getImaginary());
+	double x = scaler.unscaleX(z.getReal());
+	double y = scaler.unscaleY(z.getImaginary());
 
-	g.drawLine(lastX, lastY, x, y);
+	if (lc.clipLineToRectangle(lastX, lastY, x, y, 0, 0, width, height)) {
+		g.drawLine(lc.getClipX1(), lc.getClipY1(),
+			lc.getClipX2(), lc.getClipY2());
+
+		if (count < 30 && orbitDelay > 0) {
+			display.updateImage(img, 1);
+			sleep(orbitDelay);
+		}
+	}
 
 	lastX = x;
 	lastY = y;
-
-	// only show the first 30 steps "animated", the rest in one go
-	if (count < 30 && orbitDelay > 0) {
-		display.updateImage(img, 1);
-		sleep(orbitDelay);
-	}
 }
-display.updateImage(img, 1);
 ~~~~~~~~
+
+Die X- und Y-Koordinaten werden zuerst als double-Werte errechnet.  Der
+Hintergrund hierfür ist, dass bei sehr starkem Zoom ein 32-bit Integer nicht
+ausreicht um die Koordinaten darzustellen. Zwar gibt die Auflösung des
+Bildschirms die möglichen Koordinaten vor, jedoch liegen bei hohem Zoom die
+meisten Endpunkte der Linien ausserhalb dises Bereiches. Die Java 2D API kann
+mit Punkten im nicht sichtbaren Bereich umgehen und die korrekten Linien
+zeichnen, jedoch ist die API auf 32-bit Integer beschränkt. Wird einfach auf
+Integer gecastet, führt dies zu falschen Werten, Linien ändern plötzlich die
+Richtung. Um dieses Problem zu lösen, wurde ein Line-Clipping eingeführt.
+Line-Clipping errechnet anhand von zwei Endpunkten und einem Clipping-Bereich
+(sichtbarer Bereich) den sichtbaren Bereich einer Linie und dessen entsprechende
+Endpunkte im sichtbaren Bereich. Der Algorithmus der hier verwendet wird, ist
+"Cohen-Sutherland line clipping".  Weitere mögliche und zum Teil auch schnellere
+Algorithmen hierfür sind:
+
+* Nicholl–Lee–Nicholl
+* Liang–Barsky
+* Cyrus–Beck
+
+Cohen-Sutherland bietet den Vorteil sehr effizient entscheiden zu können, ob
+eine Linie überhaupt im Sichtbaren Bereich liegt und umgerechnet werden muss.
+Ein weiterer Vorteil ist, dass er bekannt und gut dokumentiert ist. Der hier
+verwendete Code ist von dem C++ Beispiel von Wikipedia nach Java übersetzt und
+leicht angepasst worden. Die Effizienz ist für diese Anwendung hier mehr als
+ausreichend, weshalb andere Algorihmen nicht mehr näher betrachtet wurden.
+
 
