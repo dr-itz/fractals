@@ -242,10 +242,6 @@ public class ComplexEscapeFractal
 			}
 			display.updateImage(img, 0);
 		}
-
-		synchronized (this) {
-			thread = null;
-		}
 	}
 
 	private void doDrawOrbit(BufferedImage img, Graphics2D g,
