@@ -45,8 +45,14 @@
 	<property name="doc.pdf.dir"      value="${doc.dist.dir}/pdf"/>
 
 	<!-- app properties -->
-	<property name="jar.name"         value="${app.name}.jar"/>
+	<property name="jar.name"         value="${app.name}-${app.version}.jar"/>
+	<property name="src.zip.name"     value="${app.name}-${app.version}.src.zip"/>
 	<property name="app.dir"          value="src/main/java/"/>
+
+	<!-- how to invoke git -->
+	<condition property="git.cmd" value="git.cmd" else="git">
+		<os family="windows"/>
+	</condition>
 
 	<!-- The classpaths to be used to compile, test, etc -->
 	<path id="compile.classpath">
@@ -223,5 +229,12 @@
 				<include name="**/*.java"/>
 			</fileset>
 		</javadoc>
+	</target>
+
+	<target name="source-zip">
+		<!-- let git do the job -->
+		<exec executable="${git.cmd}" output="${dist.dir}/${src.zip.name}">
+			<arg line="archive --format=zip --prefix=${app.name}/ HEAD"/>
+		</exec>
 	</target>
 </project>
