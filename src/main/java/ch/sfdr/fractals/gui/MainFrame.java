@@ -77,16 +77,16 @@ public class MainFrame
 	private JComboBox cbFractals;
 	private SpinnerNumberModel snmIterations;
 	private JPanel pnlColor;
-	private JPanel pnlPathDraw;
+	private JPanel pnlOrbitDraw;
 	private JComboBox cbColor;
 	private JComboBox cbSetColor;
-	private JComboBox cbPathColor;
+	private JComboBox cbOrbitColor;
 	private JCheckBox chkAuto;
 	private SpinnerNumberModel snmDelay;
 	private JButton btnDraw;
 	private JButton btnReset;
 	private JRadioButton rbtnZoom;
-	private JRadioButton rbtnPath;
+	private JRadioButton rbtnOrbit;
 	private JLabel lblStepCount;
 	private JButton btnClearOrbits;
 	private JFormattedTextField ftfStartReal;
@@ -199,15 +199,15 @@ public class MainFrame
 
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
-		rbtnPath = new JRadioButton("Draw path");
+		rbtnOrbit = new JRadioButton("Draw orbit");
 
 		ButtonGroup clickGroup = new ButtonGroup();
 		clickGroup.add(rbtnZoom);
-		clickGroup.add(rbtnPath);
+		clickGroup.add(rbtnOrbit);
 		rbtnZoom.setSelected(true);
 
 		pnlClick.add(rbtnZoom,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
-		pnlClick.add(rbtnPath,			GBC.get(0, 1, 1, 1, "nw"));
+		pnlClick.add(rbtnOrbit,			GBC.get(0, 1, 1, 1, "nw"));
 
 		// Panel Bottom
 		paneType = new JTabbedPane();
@@ -251,10 +251,10 @@ public class MainFrame
 		pnlFractals.add(pnlColor,		GBC.get(0, 3, 2, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Settings
-		pnlPathDraw = new JPanel(new GridBagLayout());
-		pnlPathDraw.setBorder(BorderFactory.createTitledBorder("Path drawing"));
+		pnlOrbitDraw = new JPanel(new GridBagLayout());
+		pnlOrbitDraw.setBorder(BorderFactory.createTitledBorder("Orbit drawing"));
 
-		pnlSettings.add(pnlPathDraw,	GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
+		pnlSettings.add(pnlOrbitDraw,	GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Colorization
 		cbColor = new JComboBox(ColorMapFactory.getNames());
@@ -267,7 +267,7 @@ public class MainFrame
 		pnlColor.add(cbSetColor,		GBC.get(2, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
 		// Panel Path Drawing
-		cbPathColor = new JComboBox(ColorSelection.getNames());
+		cbOrbitColor = new JComboBox(ColorSelection.getNames());
 		chkAuto = new JCheckBox("Auto-cycle");
 		chkAuto.setSelected(true);
 		JLabel lblDelay = new JLabel("Step delay (ms)");
@@ -284,17 +284,17 @@ public class MainFrame
 
 		JPanel pnlCycle = new JPanel(new GridBagLayout());
 
-		pnlPathDraw.add(cbPathColor,	GBC.get(0, 0, 1, 1, 0.25, 0.0, 'h'));
-		pnlPathDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
-		pnlPathDraw.add(lblStartReal,	GBC.get(2, 0, 1, 1, "e"));
-		pnlPathDraw.add(ftfStartReal,	GBC.get(3, 0, 2, 1, 1.0, 0.0, 'h'));
-		pnlPathDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
-		pnlPathDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
-		pnlPathDraw.add(lblStartImag,	GBC.get(2, 1, 1, 1, "e"));
-		pnlPathDraw.add(ftfStartImag,	GBC.get(3, 1, 2, 1, 1.0, 0.0, 'h'));
-		pnlPathDraw.add(pnlCycle,		GBC.get(0, 2, 3, 1, "nw"));
-		pnlPathDraw.add(btnClearOrbits,	GBC.get(3, 2, 1, 1));
-		pnlPathDraw.add(btnDrawOrbit,	GBC.get(4, 2, 1, 1, "e"));
+		pnlOrbitDraw.add(cbOrbitColor,	GBC.get(0, 0, 1, 1, 0.25, 0.0, 'h'));
+		pnlOrbitDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
+		pnlOrbitDraw.add(lblStartReal,	GBC.get(2, 0, 1, 1, "e"));
+		pnlOrbitDraw.add(ftfStartReal,	GBC.get(3, 0, 2, 1, 1.0, 0.0, 'h'));
+		pnlOrbitDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
+		pnlOrbitDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
+		pnlOrbitDraw.add(lblStartImag,	GBC.get(2, 1, 1, 1, "e"));
+		pnlOrbitDraw.add(ftfStartImag,	GBC.get(3, 1, 2, 1, 1.0, 0.0, 'h'));
+		pnlOrbitDraw.add(pnlCycle,		GBC.get(0, 2, 3, 1, "nw"));
+		pnlOrbitDraw.add(btnClearOrbits,	GBC.get(3, 2, 1, 1));
+		pnlOrbitDraw.add(btnDrawOrbit,	GBC.get(4, 2, 1, 1, "e"));
 
 		btnFindCycles = new JButton("Find cycles");
 		JLabel lblCycle = new JLabel("of length");
@@ -384,8 +384,8 @@ public class MainFrame
 				fractal.setColorMap(ColorMapFactory.getMap(
 					cbColor.getSelectedIndex()));
 
-				// ensure path and set color are not the same
-				if (cbSetColor.getSelectedIndex() == cbPathColor.getSelectedIndex())
+				// ensure orbit and set color are not the same
+				if (cbSetColor.getSelectedIndex() == cbOrbitColor.getSelectedIndex())
 					cyclePathColor();
 				fractal.setSetColor(ColorSelection.getColor(
 					cbSetColor.getSelectedIndex()));
@@ -396,12 +396,12 @@ public class MainFrame
 		cbColor.addActionListener(colorActionListener);
 		cbSetColor.addActionListener(colorActionListener);
 
-		cbPathColor.addActionListener(new ActionListener() {
+		cbOrbitColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				int idx = cbSetColor.getSelectedIndex();
-				if (cbPathColor.getSelectedIndex() == idx) {
+				if (cbOrbitColor.getSelectedIndex() == idx) {
 					cbSetColor.setSelectedIndex(
 						(idx + 1) % cbSetColor.getItemCount());
 				}
@@ -418,7 +418,7 @@ public class MainFrame
 		};
 
 		rbtnZoom.addActionListener(clickActionListener);
-		rbtnPath.addActionListener(clickActionListener);
+		rbtnOrbit.addActionListener(clickActionListener);
 
 		// cycle finder
 		btnFindCycles.addActionListener(new ActionListener() {
@@ -439,7 +439,7 @@ public class MainFrame
 				if (rbtnZoom.isSelected() && e.getButton() == 3) {
 					scaler.zoomOut(e.getX(), e.getY(), 3);
 					drawFractal();
-				} else if (rbtnPath.isSelected() && e.getButton() == 1) {
+				} else if (rbtnOrbit.isSelected() && e.getButton() == 1) {
 					drawOrbit(e.getX(), e.getY());
 				}
 			}
@@ -496,11 +496,11 @@ public class MainFrame
 
 	private void cyclePathColor()
 	{
-		int idx = cbPathColor.getSelectedIndex();
+		int idx = cbOrbitColor.getSelectedIndex();
 		do {
-			idx = (idx + 1) % cbPathColor.getItemCount();
+			idx = (idx + 1) % cbOrbitColor.getItemCount();
 		} while (idx == cbSetColor.getSelectedIndex());
-		cbPathColor.setSelectedIndex(idx);
+		cbOrbitColor.setSelectedIndex(idx);
 	}
 
 	private void setFractalFunctionConstant()
@@ -562,7 +562,7 @@ public class MainFrame
 	private void drawOrbit(ComplexNumber c, int iterations, long delay)
 	{
 		fractal.drawOrbit(c, iterations,
-			ColorSelection.getColor(cbPathColor.getSelectedIndex()), delay);
+			ColorSelection.getColor(cbOrbitColor.getSelectedIndex()), delay);
 
 		// auto-cycle color
 		if (chkAuto.isSelected()) {
