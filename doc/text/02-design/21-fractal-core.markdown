@@ -123,7 +123,7 @@ display.updateImage(img, 0);
 
 #### Zeichnen der Orbits ####
 
-Ist im GUI der Radio-Button "Draw Path" angewählt, so wird die Zoom-Funktion 
+Ist im GUI der Radio-Button "Orbit drawing" angewählt, so wird die Zoom-Funktion 
 deaktiviert und das Zeichnen der Orbits aktiviert. Nach jedem Schritt 
 wird in Bildschirmkoordinaten zurückgerechnet und eine dünne Linie gezeichnet. 
 Die ersten 30 Schritte sind animiert, danach wird aufgrund der langen Wartezeiten 
