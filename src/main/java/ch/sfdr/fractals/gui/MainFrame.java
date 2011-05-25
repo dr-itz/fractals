@@ -154,7 +154,7 @@ public class MainFrame
 		JPanel pnlInfo = new JPanel(new GridBagLayout());
 		pnlInfo.setBorder(BorderFactory.createTitledBorder("Info"));
 		JPanel pnlClick = new JPanel(new GridBagLayout());
-		pnlClick.setBorder(BorderFactory.createTitledBorder("Click Action"));
+		pnlClick.setBorder(BorderFactory.createTitledBorder("Click action"));
 		btnDraw = new JButton("Draw");
 		btnReset = new JButton("Reset");
 		Dimension btnDim = new Dimension(80, btnDraw.getMinimumSize().height);
@@ -199,7 +199,7 @@ public class MainFrame
 
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
-		rbtnOrbit = new JRadioButton("Draw orbit");
+		rbtnOrbit = new JRadioButton("Orbit drawing");
 
 		ButtonGroup clickGroup = new ButtonGroup();
 		clickGroup.add(rbtnZoom);
@@ -238,7 +238,7 @@ public class MainFrame
 		pnlConst.add(ftfConstImag,	GBC.get(2, 1, 1, 1, 0.5, 0.0, 'h', "ne"));
 		pnlConst.add(lblConstImag,	GBC.get(3, 1, 1, 1));
 
-		JLabel lblIterations = new JLabel(" Max. # of Iterations");
+		JLabel lblIterations = new JLabel(" Max. # of iterations");
 		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
 		JSpinner spinIterations = new JSpinner(snmIterations);
 		pnlColor = new JPanel(new GridBagLayout());
@@ -273,14 +273,14 @@ public class MainFrame
 		JLabel lblDelay = new JLabel("Step delay (ms)");
 		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
 		JSpinner spinDelay = new JSpinner(snmDelay);
-		btnClearOrbits = new JButton("Clear Orbits");
+		btnClearOrbits = new JButton("Clear orbits");
 		JLabel lblStartReal = new JLabel("Start Real:");
 		ftfStartReal = createDoubleTextField();
 		ftfStartReal.setValue(0.0D);
 		JLabel lblStartImag = new JLabel("Start Imag:");
 		ftfStartImag = createDoubleTextField();
 		ftfStartImag.setValue(0.0D);
-		btnDrawOrbit = new JButton("Draw Orbit");
+		btnDrawOrbit = new JButton("Draw orbit");
 
 		JPanel pnlCycle = new JPanel(new GridBagLayout());
 
