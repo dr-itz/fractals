@@ -147,7 +147,8 @@ public class MainFrame
 		// Panel Top
 		displayArea = new DisplayArea(2);
 		displayArea.setBackground(Color.BLACK);
-		displayArea.setPreferredSize(new Dimension(600, 400));
+		displayArea.setPreferredSize(new Dimension(500, 420));
+		displayArea.setMinimumSize(displayArea.getPreferredSize());
 		displayArea.setSelectionListner(this);
 
 		JPanel pnlInfo = new JPanel(new GridBagLayout());
@@ -174,6 +175,7 @@ public class MainFrame
 		// avoid resizing later
 		lblY = new JLabel("0.099999999999999999i");
 		lblVisible.setPreferredSize(lblY.getMinimumSize());
+		lblVisible.setMinimumSize(lblVisible.getPreferredSize());
 		lblY.setText("(none)i");
 		JLabel lblZoom = new JLabel("Zoom");
 		lblZoom.setFont(bold);
@@ -226,17 +228,17 @@ public class MainFrame
 
 		pnlConst = new JPanel(new GridBagLayout());
 		pnlConst.setVisible(false);
-		JLabel lblConstReal = new JLabel("Const Real:");
+		JLabel lblConstReal = new JLabel("Const Real/Imag:");
 		ftfConstReal = createDoubleTextField();
-		JLabel lblConstImag = new JLabel("Const Imag:");
+		JLabel lblConstImag = new JLabel("i");
 		ftfConstImag = createDoubleTextField();
 
 		pnlConst.add(lblConstReal,	GBC.get(0, 1, 1, 1, 0.5, 0.0, 'v', "nw"));
 		pnlConst.add(ftfConstReal,	GBC.get(1, 1, 1, 1, 0.5, 0.0, 'h', "ne"));
-		pnlConst.add(lblConstImag,	GBC.get(0, 2, 1, 1));
-		pnlConst.add(ftfConstImag,	GBC.get(1, 2, 1, 1, 0.5, 0.0, 'h', "ne"));
+		pnlConst.add(ftfConstImag,	GBC.get(2, 1, 1, 1, 0.5, 0.0, 'h', "ne"));
+		pnlConst.add(lblConstImag,	GBC.get(3, 1, 1, 1));
 
-		JLabel lblIterations = new JLabel("Max. # of Iterations");
+		JLabel lblIterations = new JLabel(" Max. # of Iterations");
 		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
 		JSpinner spinIterations = new JSpinner(snmIterations);
 		pnlColor = new JPanel(new GridBagLayout());
@@ -473,7 +475,7 @@ public class MainFrame
 	{
 		JFormattedTextField ret = new JFormattedTextField(fmtFactory);;
 		ret.setHorizontalAlignment(JFormattedTextField.RIGHT);
-		ret.setColumns(25);
+		ret.setColumns(15);
 		return ret;
 	}
 
@@ -528,7 +530,7 @@ public class MainFrame
 			}
 		};
 		// schedule with 50ms delay
-		delayedDrawTimer.schedule(delayedDrawTask, 50);
+		delayedDrawTimer.schedule(delayedDrawTask, 100);
 	}
 
 	private void drawFractal()
