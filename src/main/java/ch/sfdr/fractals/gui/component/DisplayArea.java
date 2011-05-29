@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -75,6 +78,23 @@ public class DisplayArea
 		};
 		addMouseListener(ma);
 		addMouseMotionListener(ma);
+
+		// make ESC cancel a selection in progress
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+			new KeyEventDispatcher()
+		{
+			@Override
+			public boolean dispatchKeyEvent(KeyEvent e)
+			{
+				if (selectionRect.inSelection &&
+					e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				{
+					selectionRect.cancel();
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 	/**
@@ -319,12 +339,17 @@ public class DisplayArea
 		{
 			if (!inSelection)
 				return;
-			inSelection = false;
-			setVisible(false);
+			cancel();
 
 			Rectangle sel = getSelection();
 			if (sel.width > 0 && sel.height > 0 && selectionListener != null)
 				selectionListener.areaSelected(sel);
+		}
+
+		public void cancel()
+		{
+			inSelection = false;
+			setVisible(false);
 		}
 
 		public Rectangle getSelection()
