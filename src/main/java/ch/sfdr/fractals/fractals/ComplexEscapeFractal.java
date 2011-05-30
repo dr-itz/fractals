@@ -31,7 +31,7 @@ public class ComplexEscapeFractal
 	private double boundarySqr;
 
 	private StatisticsObserver statObserver;
-	private long stepCount;
+	private volatile long stepCount;
 	private long drawTime;
 
 	private ArrayList<Orbit> orbitList = new ArrayList<Orbit>();
@@ -182,66 +182,96 @@ public class ComplexEscapeFractal
 		thread.start();
 	}
 
-	private void doDrawFractal(int maxIterations)
+	private void doDrawFractal(final int maxIterations)
 	{
 		stepCount = 0;
 
-		int width = display.getImageWidth();
-		int height = display.getImageHeight();
+		final int width = display.getImageWidth();
+		final int height = display.getImageHeight();
 
+		final BufferedImage imgFine = display.createImage();
+		final Graphics2D gFine = imgFine.createGraphics();
+
+		// start the last (fine) drawing step first
+		Thread fineThread = new Thread("Fractal fine drawing") {
+			@Override
+			public void run()
+			{
+				drawFractalStep(gFine, maxIterations, width, height, 1, 2);
+			}
+		};
+		fineThread.start();
+
+		// draw all but the last step: 16, 8, 4, 2 squares
 		BufferedImage img = display.createImage();
 		Graphics2D g = img.createGraphics();
 
+		boolean cont = true;
+		for (int step = 16, oldStep = 32; step > 1 && cont; oldStep = step, step /= 2) {
+			cont = drawFractalStep(g, maxIterations, width, height, step, oldStep);
+			if (cont)
+				display.updateImage(img, 0);
+		}
+
+		if (!cont)
+			fineThread.interrupt();
+
+		// wait for the fine thread, draw it's image
+		try {
+			fineThread.join();
+		} catch (InterruptedException e) {
+		}
+		if (cont)
+			display.updateImage(imgFine, 0);
+	}
+
+	private boolean drawFractalStep(Graphics2D g, int maxIterations,
+			int width, int height, int step, int oldStep)
+	{
 		// the only two, reusable complex numbers
 		ComplexNumber z0 = new ComplexNumber(0, 0);
 		ComplexNumber z = new ComplexNumber(0, 0);
 
-		/*
-		 * main loop for all pixels
-		 *
-		 * loop hierarchy:
-		 * - from coarse to fine
-		 * -- rows
-		 * --- pixels
-		 */
-		for (int step = 16, oldStep = 32; step > 0; oldStep = step, step /= 2) {
-			for (int y = 0; y < height; y += step) {
-				int start = 0;
-				int inc = step;
-				// skip pixel already drawn in last iteration
-				if (step < 16 && y % oldStep == 0) {
-					start = step;
-					inc = oldStep;
-				}
+		long threadStepCount = 0;
 
-				if (Thread.interrupted())
-					return;
-
-				double fractalY = scaler.scaleY(y);
-
-				// inner loop: pixels
-				for (int x = start; x < width; x += inc) {
-					double fractalX = scaler.scaleX(x);
-
-					// set the z0 and the variable z to the current values
-					z0.set(fractalX, fractalY);
-					z.set(fractalX, fractalY);
-
-					// get iteration count using the step() function
-					int count = 0;
-					while (z.absSqr() < boundarySqr && count++ < maxIterations)
-						function.step(z0, z);
-
-					stepCount += count;
-
-					// map to color and draw pixel
-					Color color = getColor(count, maxIterations);
-					g.setColor(color);
-			        g.fillRect(x, y, step, step);
-				}
+		// outer loop: rows
+		for (int y = 0; y < height; y += step) {
+			int start = 0;
+			int inc = step;
+			// skip pixel already drawn in last iteration
+			if (step < 16 && y % oldStep == 0) {
+				start = step;
+				inc = oldStep;
 			}
-			display.updateImage(img, 0);
+
+			if (Thread.interrupted())
+				return false;
+
+			double fractalY = scaler.scaleY(y);
+
+			// inner loop: pixels
+			for (int x = start; x < width; x += inc) {
+				double fractalX = scaler.scaleX(x);
+
+				// set the z0 and the variable z to the current values
+				z0.set(fractalX, fractalY);
+				z.set(fractalX, fractalY);
+
+				// get iteration count using the step() function
+				int count = 0;
+				while (z.absSqr() < boundarySqr && count++ < maxIterations)
+					function.step(z0, z);
+
+				threadStepCount += count;
+
+				// map to color and draw pixel
+				Color color = getColor(count, maxIterations);
+				g.setColor(color);
+		        g.fillRect(x, y, step, step);
+			}
 		}
+		stepCount += threadStepCount;
+		return true;
 	}
 
 	private void doDrawOrbit(BufferedImage img, Graphics2D g,
@@ -352,6 +382,9 @@ public class ComplexEscapeFractal
 	 */
 	public void redrawAllOrbits()
 	{
+		if (orbitList.isEmpty())
+			return;
+
 		BufferedImage img = display.createImage();
 		Graphics2D g = img.createGraphics();
 

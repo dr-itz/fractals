@@ -178,7 +178,7 @@ public class DisplayArea
 	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#createImage()
 	 */
 	@Override
-	public synchronized BufferedImage createImage()
+	public BufferedImage createImage()
 	{
 		return new BufferedImage(getImageWidth(), getImageHeight(),
 			BufferedImage.TYPE_INT_ARGB);
