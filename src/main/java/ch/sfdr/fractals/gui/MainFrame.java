@@ -25,6 +25,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
@@ -68,6 +69,17 @@ public class MainFrame
 	private JLabel lblY;
 	private JLabel lblZoomValue;
 	private JLabel lblMilliSec;
+
+	// progress bar
+	private JProgressBar prgBar;
+	private volatile int progress;
+	private Runnable prgRun = new Runnable() {
+		@Override
+		public void run()
+		{
+			prgBar.setValue(progress);
+		}
+	};
 
 	// bottom pane
 	private JTabbedPane paneType;
@@ -186,6 +198,8 @@ public class MainFrame
 		JLabel lblSteps = new JLabel("Steps calculated");
 		lblSteps.setFont(bold);
 		lblStepCount = new JLabel("0");
+		prgBar = new JProgressBar(0, 100);
+		prgBar.setStringPainted(true);
 
 		pnlInfo.add(lblVisible,			GBC.get(0, 0, 1, 1));
 		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
@@ -196,6 +210,7 @@ public class MainFrame
 		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
 		pnlInfo.add(lblSteps,			GBC.get(0, 7, 1, 1));
 		pnlInfo.add(lblStepCount,		GBC.get(0, 8, 1, 1));
+		pnlInfo.add(prgBar,				GBC.get(0, 9, 1, 1));
 
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
@@ -592,6 +607,13 @@ public class MainFrame
 					fractal.getDrawTime()) + "ms");
 			}
 		});
+	}
+
+	@Override
+	public void updateProgess(Object source, int percent)
+	{
+		progress = percent;
+		EventQueue.invokeLater(prgRun);
 	}
 
 	@Override

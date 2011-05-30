@@ -31,8 +31,12 @@ public class ComplexEscapeFractal
 	private double boundarySqr;
 
 	private StatisticsObserver statObserver;
-	private volatile long stepCount;
+	private Object statLock = new Object();
+	private long stepCount;
 	private long drawTime;
+	private long pixelsCalculated;
+	private long pixelsToCalculate;
+	private int lastPercentage;
 
 	private ArrayList<Orbit> orbitList = new ArrayList<Orbit>();
 
@@ -185,9 +189,12 @@ public class ComplexEscapeFractal
 	private void doDrawFractal(final int maxIterations)
 	{
 		stepCount = 0;
+		pixelsCalculated = 0;
+		lastPercentage = 0;
 
 		final int width = display.getImageWidth();
 		final int height = display.getImageHeight();
+		pixelsToCalculate = width * height;
 
 		final BufferedImage imgFine = display.createImage();
 		final Graphics2D gFine = imgFine.createGraphics();
@@ -247,6 +254,7 @@ public class ComplexEscapeFractal
 			if (Thread.interrupted())
 				return false;
 
+			int pixels = 0;
 			double fractalY = scaler.scaleY(y);
 
 			// inner loop: pixels
@@ -263,14 +271,28 @@ public class ComplexEscapeFractal
 					function.step(z0, z);
 
 				threadStepCount += count;
+				pixels++;
 
 				// map to color and draw pixel
 				Color color = getColor(count, maxIterations);
 				g.setColor(color);
 		        g.fillRect(x, y, step, step);
 			}
+
+			synchronized (statLock) {
+				pixelsCalculated += pixels;
+				int p = (int) (100 * pixelsCalculated / pixelsToCalculate);
+				if (p != lastPercentage) {
+					lastPercentage = p;
+					if (statObserver != null)
+						statObserver.updateProgess(ComplexEscapeFractal.this, p);
+				}
+			}
 		}
-		stepCount += threadStepCount;
+
+		synchronized (statLock) {
+			stepCount += threadStepCount;
+		}
 		return true;
 	}
 

@@ -11,4 +11,11 @@ public interface StatisticsObserver
 	 * Method is called when new statistic data is available
 	 */
 	void statisticsDataAvailable();
+
+	/**
+	 * indicates an update in the progress for the specified component
+	 * @param source
+	 * @param percent
+	 */
+	void updateProgess(Object source, int percent);
 }
