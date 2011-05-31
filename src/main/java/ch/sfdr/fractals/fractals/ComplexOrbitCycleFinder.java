@@ -36,6 +36,8 @@ public strictfp class ComplexOrbitCycleFinder
 	private Thread thread;
 	private List<ComplexNumber> cycleStartPoints;
 
+	private StatisticsObserver statObserver;
+
 	/**
 	 * constructs a cycle finder for the given fractal function
 	 * @param listener the listener
@@ -64,6 +66,32 @@ public strictfp class ComplexOrbitCycleFinder
 		this.maxIter = maxIter;
 	}
 
+	/**
+	 * Gets the number of cycles found
+	 * @return the number of cycles
+	 */
+	public int getCyclesFound()
+	{
+		return cycleStartPoints.size();
+	}
+
+	/**
+	 * Sets the StatisticsObserver
+	 * @param statObserver the statObserver to set
+	 */
+	public void setStatObserver(StatisticsObserver statObserver)
+	{
+		this.statObserver = statObserver;
+	}
+
+	/**
+	 * Gets the StatisticsObserver
+	 * @return the statObserver
+	 */
+	public StatisticsObserver getStatObserver()
+	{
+		return statObserver;
+	}
 
 	/**
 	 * finds a cycle of given length, starting the Newton iteration with the
@@ -139,6 +167,9 @@ public strictfp class ComplexOrbitCycleFinder
 			public void run()
 			{
 				doFindAllCycles();
+
+				if (statObserver != null)
+					statObserver.statisticsDataAvailable(ComplexOrbitCycleFinder.this);
 			};
 		};
 		thread.start();

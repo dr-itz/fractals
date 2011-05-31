@@ -69,6 +69,7 @@ public class MainFrame
 	private JLabel lblY;
 	private JLabel lblZoomValue;
 	private JLabel lblMilliSec;
+	private JLabel lblCyclesCount;
 
 	// progress bar
 	private JProgressBar prgBar;
@@ -200,6 +201,9 @@ public class MainFrame
 		lblStepCount = new JLabel("0");
 		prgBar = new JProgressBar(0, 100);
 		prgBar.setStringPainted(true);
+		JLabel lblCyclesFound = new JLabel("Cycles found");
+		lblCyclesFound.setFont(bold);
+		lblCyclesCount = new JLabel("0");
 
 		pnlInfo.add(lblVisible,			GBC.get(0, 0, 1, 1));
 		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
@@ -210,7 +214,9 @@ public class MainFrame
 		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
 		pnlInfo.add(lblSteps,			GBC.get(0, 7, 1, 1));
 		pnlInfo.add(lblStepCount,		GBC.get(0, 8, 1, 1));
-		pnlInfo.add(prgBar,				GBC.get(0, 9, 1, 1));
+		pnlInfo.add(prgBar,				GBC.get(0, 9, 1, 1, 1.0, 0.0, 'h'));
+		pnlInfo.add(lblCyclesFound,		GBC.get(0, 10, 1, 1));
+		pnlInfo.add(lblCyclesCount,		GBC.get(0, 11, 1, 1));
 
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
@@ -376,6 +382,7 @@ public class MainFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				fractal.clearOrbits();
+				lblCyclesCount.setText("0");
 			}
 		});
 
@@ -505,6 +512,8 @@ public class MainFrame
 
 		cycleFinder = new ComplexOrbitCycleFinder(this);
 
+		cycleFinder.setStatObserver(this);
+
 		// draw the fractal immediately
 		drawFractal();
 	}
@@ -606,6 +615,17 @@ public class MainFrame
 						Math.round(scaler.getZoom())) + "x");
 					lblMilliSec.setText(decimalFmt.format(
 						fractal.getDrawTime()) + "ms");
+				}
+			});
+		}
+
+		if (source == cycleFinder) {
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run()
+				{
+					lblCyclesCount.setText(decimalFmt.format(
+						cycleFinder.getCyclesFound()));
 				}
 			});
 		}
