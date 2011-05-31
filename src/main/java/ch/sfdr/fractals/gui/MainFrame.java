@@ -203,7 +203,7 @@ public class MainFrame
 		prgBar.setStringPainted(true);
 		JLabel lblCyclesFound = new JLabel("Cycles found");
 		lblCyclesFound.setFont(bold);
-		lblCyclesCount = new JLabel("0");
+		lblCyclesCount = new JLabel("-");
 
 		pnlInfo.add(lblVisible,			GBC.get(0, 0, 1, 1));
 		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
@@ -382,7 +382,7 @@ public class MainFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				fractal.clearOrbits();
-				lblCyclesCount.setText("0");
+				lblCyclesCount.setText("-");
 			}
 		});
 
