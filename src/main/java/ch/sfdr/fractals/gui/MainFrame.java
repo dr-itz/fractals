@@ -624,8 +624,9 @@ public class MainFrame
 				@Override
 				public void run()
 				{
-					lblCyclesCount.setText(decimalFmt.format(
-						cycleFinder.getCyclesFound()));
+					lblCyclesCount.setText(
+						cycleFinder.getCyclesFound() + " cycles of length " +
+						cycleFinder.getCycleLength());
 				}
 			});
 		}

@@ -76,6 +76,15 @@ public strictfp class ComplexOrbitCycleFinder
 	}
 
 	/**
+	 * Gets the length of a cycle
+	 * @return the cycleLength the length of a cycle
+	 */
+	public int getCycleLength()
+	{
+		return cycleLength;
+	}
+
+	/**
 	 * Sets the StatisticsObserver
 	 * @param statObserver the statObserver to set
 	 */
