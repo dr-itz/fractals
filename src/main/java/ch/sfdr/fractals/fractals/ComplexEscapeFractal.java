@@ -143,7 +143,7 @@ public class ComplexEscapeFractal
 				drawTime = System.currentTimeMillis() - start;
 
 				if (statObserver != null)
-					statObserver.statisticsDataAvailable();
+					statObserver.statisticsDataAvailable(ComplexEscapeFractal.this);
 			}
 		};
 		thread.start();

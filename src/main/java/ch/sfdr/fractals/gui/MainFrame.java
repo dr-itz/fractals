@@ -593,20 +593,22 @@ public class MainFrame
 	}
 
 	@Override
-	public void statisticsDataAvailable()
+	public void statisticsDataAvailable(Object source)
 	{
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run()
-			{
-				lblStepCount.setText(decimalFmt.format(
-					fractal.getStepCount()));
-				lblZoomValue.setText(decimalFmt.format(
-					Math.round(scaler.getZoom())) + "x");
-				lblMilliSec.setText(decimalFmt.format(
-					fractal.getDrawTime()) + "ms");
-			}
-		});
+		if (source == fractal) {
+			EventQueue.invokeLater(new Runnable() {
+				@Override
+				public void run()
+				{
+					lblStepCount.setText(decimalFmt.format(
+						fractal.getStepCount()));
+					lblZoomValue.setText(decimalFmt.format(
+						Math.round(scaler.getZoom())) + "x");
+					lblMilliSec.setText(decimalFmt.format(
+						fractal.getDrawTime()) + "ms");
+				}
+			});
+		}
 	}
 
 	@Override

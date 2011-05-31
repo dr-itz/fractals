@@ -10,7 +10,7 @@ public interface StatisticsObserver
 	/**
 	 * Method is called when new statistic data is available
 	 */
-	void statisticsDataAvailable();
+	void statisticsDataAvailable(Object source);
 
 	/**
 	 * indicates an update in the progress for the specified component
