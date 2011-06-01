@@ -372,6 +372,7 @@ public class MainFrame
 			{
 				scaler.resetZoom();
 				fractal.clearOrbits();
+				lblCyclesCount.setText("-");
 				drawFractal();
 			}
 		});
