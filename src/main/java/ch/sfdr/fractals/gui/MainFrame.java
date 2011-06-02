@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
-import javax.swing.JTabbedPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.text.DefaultFormatter;
 import javax.swing.text.DefaultFormatterFactory;
@@ -82,15 +81,9 @@ public class MainFrame
 		}
 	};
 
-	// bottom pane
-	private JTabbedPane paneType;
-
 	// fractals tab
-	private JPanel pnlFractalsTab;
 	private JComboBox cbFractals;
 	private SpinnerNumberModel snmIterations;
-	private JPanel pnlColor;
-	private JPanel pnlOrbitDraw;
 	private JComboBox cbColor;
 	private JComboBox cbSetColor;
 	private JComboBox cbOrbitColor;
@@ -108,6 +101,7 @@ public class MainFrame
 	private SpinnerNumberModel snmCycleLength;
 	private JButton btnFindCycles;
 	private SpinnerNumberModel snmCycleDelay;
+	private JCheckBox chkCycleFull;
 	// constant panel
 	private JPanel pnlConst;
 	private JFormattedTextField ftfConstReal;
@@ -170,7 +164,7 @@ public class MainFrame
 		pnlClick.setBorder(BorderFactory.createTitledBorder("Click action"));
 		btnDraw = new JButton("Draw");
 		btnReset = new JButton("Reset");
-		Dimension btnDim = new Dimension(80, btnDraw.getMinimumSize().height);
+		Dimension btnDim = new Dimension(100, btnDraw.getMinimumSize().height);
 		btnDraw.setPreferredSize(btnDim);
 		btnReset.setPreferredSize(btnDim);
 
@@ -178,8 +172,7 @@ public class MainFrame
 		pnlTop.add(pnlInfo,				GBC.get(1, 0, 1, 1));
 		pnlTop.add(pnlClick,			GBC.get(1, 1, 1, 1, 'h'));
 		pnlTop.add(new JPanel(), 		GBC.get(1, 2, 1, 1, 0.0, 1.0, 'v', "nw"));
-		pnlTop.add(btnDraw,				GBC.get(1, 3, 1, 1, 'n', "sw"));
-		pnlTop.add(btnReset,			GBC.get(1, 4, 1, 1, 'n', "sw"));
+
 
 		// Panel Info
 		JLabel lblVisible = new JLabel("Coordinate");
@@ -201,6 +194,7 @@ public class MainFrame
 		lblStepCount = new JLabel("0");
 		prgBar = new JProgressBar(0, 100);
 		prgBar.setStringPainted(true);
+		prgBar.setPreferredSize(prgBar.getMinimumSize());
 		JLabel lblCyclesFound = new JLabel("Cycles found");
 		lblCyclesFound.setFont(bold);
 		lblCyclesCount = new JLabel("-");
@@ -231,24 +225,16 @@ public class MainFrame
 		pnlClick.add(rbtnOrbit,			GBC.get(0, 1, 1, 1, "nw"));
 
 		// Panel Bottom
-		paneType = new JTabbedPane();
-		pnlFractalsTab = new JPanel(new GridBagLayout());
-		paneType.add("Fractals", pnlFractalsTab);
-
-		pnlBottom.add(paneType,			GBC.get(0, 0, 1, 1, 1.0, 0.0, 'b', "nw"));
-
-		// Panel FractalsTab
 		JPanel pnlFractals = new JPanel(new GridBagLayout());
-		JPanel pnlSettings = new JPanel(new GridBagLayout());
+		JPanel pnlOrbitDraw = new JPanel(new GridBagLayout());
 
-		pnlFractalsTab.add(pnlFractals,	GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
-		pnlFractalsTab.add(pnlSettings,	GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlBottom.add(pnlFractals,	GBC.get(0, 0, 1, 1, 0.5, 0.0, 0,0,0,2, 'h', "nw"));
+		pnlBottom.add(pnlOrbitDraw,	GBC.get(1, 0, 1, 1, 0.5, 1.0, 0,2,0,0, 'b', "nw"));
 
 		// Panel Fractals
 		cbFractals = new JComboBox(FractalFactory.getFractalFunctionsNames());
 
 		pnlConst = new JPanel(new GridBagLayout());
-		pnlConst.setVisible(false);
 		JLabel lblConstReal = new JLabel("Const Real/Imag:");
 		ftfConstReal = createDoubleTextField();
 		JLabel lblConstImag = new JLabel("i");
@@ -259,23 +245,19 @@ public class MainFrame
 		pnlConst.add(ftfConstImag,	GBC.get(2, 1, 1, 1, 0.5, 0.0, 'h', "ne"));
 		pnlConst.add(lblConstImag,	GBC.get(3, 1, 1, 1));
 
-		JLabel lblIterations = new JLabel(" Max. # of iterations");
+		JLabel lblIterations = new JLabel("Max. iterations");
 		snmIterations = new SpinnerNumberModel(200, 50, 500, 10);
 		JSpinner spinIterations = new JSpinner(snmIterations);
-		pnlColor = new JPanel(new GridBagLayout());
+		JPanel pnlColor = new JPanel(new GridBagLayout());
 		pnlColor.setBorder(BorderFactory.createTitledBorder("Colorization"));
 
-		pnlFractals.add(cbFractals,		GBC.get(0, 0, 2, 1, 0.5, 0.0, 'h', "nw"));
-		pnlFractals.add(pnlConst,		GBC.get(0, 1, 2, 1, 'h', "nw"));
-		pnlFractals.add(lblIterations,	GBC.get(0, 2, 1, 1));
-		pnlFractals.add(spinIterations,	GBC.get(1, 2, 1, 1, "ne"));
-		pnlFractals.add(pnlColor,		GBC.get(0, 3, 2, 1, 1.0, 0.0, 'h', "nw"));
-
-		// Panel Settings
-		pnlOrbitDraw = new JPanel(new GridBagLayout());
-		pnlOrbitDraw.setBorder(BorderFactory.createTitledBorder("Orbit drawing"));
-
-		pnlSettings.add(pnlOrbitDraw,	GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
+		pnlFractals.add(cbFractals,		GBC.get(0, 0, 1, 1, 0.5, 0.0, 'h', "nw"));
+		pnlFractals.add(lblIterations,	GBC.get(1, 0, 1, 1));
+		pnlFractals.add(spinIterations,	GBC.get(2, 0, 1, 1, "ne"));
+		pnlFractals.add(pnlConst,		GBC.get(0, 1, 3, 1, 'h', "nw"));
+		pnlFractals.add(pnlColor,		GBC.get(0, 2, 3, 1, 1.0, 0.0, 0,0,0,0, 'h', "nw"));
+		pnlFractals.add(btnReset,		GBC.get(0, 3, 1, 1, 'n', "nw"));
+		pnlFractals.add(btnDraw,		GBC.get(1, 3, 2, 1, 'n', "ne"));
 
 		// Panel Colorization
 		cbColor = new JComboBox(ColorMapFactory.getNames());
@@ -287,7 +269,17 @@ public class MainFrame
 		pnlColor.add(lblSetColor,		GBC.get(1, 0, 1, 1, 'v', "nw"));
 		pnlColor.add(cbSetColor,		GBC.get(2, 0, 1, 1, 1.0, 0.0, 'h', "nw"));
 
-		// Panel Path Drawing
+		// Panel Orbit Drawing
+		pnlOrbitDraw.setBorder(BorderFactory.createTitledBorder("Orbit drawing"));
+		JPanel pnlOrbSet = new JPanel(new GridBagLayout());
+		JPanel pnlOrbManual = new JPanel(new GridBagLayout());
+		JPanel pnlOrbCycle = new JPanel(new GridBagLayout());
+
+		pnlOrbitDraw.add(pnlOrbSet,		GBC.get(0, 0, 1, 1, 1.0, 0.0, 'h'));
+		pnlOrbitDraw.add(pnlOrbManual,	GBC.get(0, 1, 1, 1, 1.0, 0.0, 'h'));
+		pnlOrbitDraw.add(pnlOrbCycle,	GBC.get(0, 2, 1, 1, 1.0, 0.0, 'h'));
+
+		// orbit settings
 		cbOrbitColor = new JComboBox(ColorSelection.getNames());
 		chkAuto = new JCheckBox("Auto-cycle");
 		chkAuto.setSelected(true);
@@ -295,44 +287,59 @@ public class MainFrame
 		snmDelay = new SpinnerNumberModel(20, 0, 250, 10);
 		JSpinner spinDelay = new JSpinner(snmDelay);
 		btnClearOrbits = new JButton("Clear orbits");
-		JLabel lblStartReal = new JLabel("Start Real:");
+		btnClearOrbits.setPreferredSize(btnDim);
+		btnClearOrbits.setMinimumSize(btnDim);
+
+		pnlOrbSet.add(cbOrbitColor,		GBC.get(0, 0, 1, 1, 0.25, 0.0, 'h'));
+		pnlOrbSet.add(chkAuto,			GBC.get(1, 0, 1, 1));
+		pnlOrbSet.add(lblDelay,			GBC.get(2, 0, 1, 1));
+		pnlOrbSet.add(spinDelay,		GBC.get(3, 0, 1, 1));
+		pnlOrbSet.add(btnClearOrbits,	GBC.get(4, 0, 1, 1, "e"));
+
+		// manual orbit drawing
+		JLabel lblStart = new JLabel("Manual Real/Imag:");
 		ftfStartReal = createDoubleTextField();
 		ftfStartReal.setValue(0.0D);
-		JLabel lblStartImag = new JLabel("Start Imag:");
+		JLabel lblStartImag = new JLabel("i");
 		ftfStartImag = createDoubleTextField();
 		ftfStartImag.setValue(0.0D);
 		btnDrawOrbit = new JButton("Draw orbit");
+		btnDrawOrbit.setPreferredSize(btnDim);
+		btnDrawOrbit.setMinimumSize(btnDim);
 
-		JPanel pnlCycle = new JPanel(new GridBagLayout());
+		pnlOrbManual.add(lblStart,		GBC.get(0, 0, 1, 1));
+		pnlOrbManual.add(ftfStartReal,	GBC.get(1, 0, 1, 1, 0.5, 0.0, 'h'));
+		pnlOrbManual.add(ftfStartImag,	GBC.get(2, 0, 1, 1, 0.5, 0.0, 'h'));
+		pnlOrbManual.add(lblStartImag,	GBC.get(3, 0, 1, 1));
+		pnlOrbManual.add(btnDrawOrbit,	GBC.get(4, 0, 1, 1));
 
-		pnlOrbitDraw.add(cbOrbitColor,	GBC.get(0, 0, 1, 1, 0.25, 0.0, 'h'));
-		pnlOrbitDraw.add(chkAuto,		GBC.get(1, 0, 1, 1));
-		pnlOrbitDraw.add(lblStartReal,	GBC.get(2, 0, 1, 1, "e"));
-		pnlOrbitDraw.add(ftfStartReal,	GBC.get(3, 0, 2, 1, 1.0, 0.0, 'h'));
-		pnlOrbitDraw.add(lblDelay,		GBC.get(0, 1, 1, 1));
-		pnlOrbitDraw.add(spinDelay,		GBC.get(1, 1, 1, 1));
-		pnlOrbitDraw.add(lblStartImag,	GBC.get(2, 1, 1, 1, "e"));
-		pnlOrbitDraw.add(ftfStartImag,	GBC.get(3, 1, 2, 1, 1.0, 0.0, 'h'));
-		pnlOrbitDraw.add(pnlCycle,		GBC.get(0, 2, 3, 1, "nw"));
-		pnlOrbitDraw.add(btnClearOrbits,	GBC.get(3, 2, 1, 1));
-		pnlOrbitDraw.add(btnDrawOrbit,	GBC.get(4, 2, 1, 1, "e"));
-
-		btnFindCycles = new JButton("Find cycles");
-		JLabel lblCycle = new JLabel("of length");
+		// Orbit cycles
+		JLabel lblCycle = new JLabel("Find cycles of length");
 		snmCycleLength = new SpinnerNumberModel(3, 2, 10, 1);
 		JSpinner spinCycleLength = new JSpinner(snmCycleLength);
 		JLabel lblCycleDelay = new JLabel("Delay (ms)");
-		snmCycleDelay = new SpinnerNumberModel(750, 100, 1500, 10);
+		snmCycleDelay = new SpinnerNumberModel(500, 100, 1500, 10);
 		JSpinner spinCycleDelay = new JSpinner(snmCycleDelay);
+		chkCycleFull = new JCheckBox("Full orbit");
+		chkCycleFull.setSelected(true);
+		btnFindCycles = new JButton("Find");
+		btnFindCycles.setPreferredSize(btnDim);
+		btnFindCycles.setMinimumSize(btnDim);
 
-		pnlCycle.add(btnFindCycles,		GBC.get(0, 0, 1, 1, "w"));
-		pnlCycle.add(lblCycle,			GBC.get(1, 0, 1, 1, 'v', "w"));
-		pnlCycle.add(spinCycleLength,	GBC.get(2, 0, 1, 1, "c"));
-		pnlCycle.add(lblCycleDelay,		GBC.get(3, 0, 1, 1, 'v', "w"));
-		pnlCycle.add(spinCycleDelay,	GBC.get(4, 0, 1, 1, "c"));
+		pnlOrbCycle.add(lblCycle,		GBC.get(0, 0, 1, 1, 'v', "w"));
+		pnlOrbCycle.add(spinCycleLength,GBC.get(1, 0, 1, 1, "c"));
+		pnlOrbCycle.add(lblCycleDelay,	GBC.get(2, 0, 1, 1, 'v', "w"));
+		pnlOrbCycle.add(spinCycleDelay,	GBC.get(3, 0, 1, 1, "c"));
+		pnlOrbCycle.add(chkCycleFull,	GBC.get(4, 0, 1, 1, 1.0, 0.0, 'h'));
+		pnlOrbCycle.add(btnFindCycles,	GBC.get(5, 0, 1, 1, "e"));
 
 		pack();
+
+		// set minimum size of the whole window, bottom area
 		setMinimumSize(getPreferredSize());
+		pnlBottom.setMinimumSize(pnlBottom.getSize());
+		pnlBottom.setPreferredSize(pnlBottom.getSize());
+		pnlConst.setVisible(false);
 
 		cbFractals.addActionListener(new ActionListener() {
 			@Override
@@ -498,7 +505,6 @@ public class MainFrame
 	{
 		JFormattedTextField ret = new JFormattedTextField(fmtFactory);;
 		ret.setHorizontalAlignment(JFormattedTextField.RIGHT);
-		ret.setColumns(15);
 		return ret;
 	}
 
@@ -647,7 +653,7 @@ public class MainFrame
 			@Override
 			public void run()
 			{
-				drawOrbit(start, 2 * length, 0);
+				drawOrbit(start, chkCycleFull.isSelected() ? 2 * length : 0, 0);
 			}
 		});
 		return true;
