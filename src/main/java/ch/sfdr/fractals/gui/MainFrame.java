@@ -77,7 +77,23 @@ public class MainFrame
 		@Override
 		public void run()
 		{
+			boolean vis = progress < 100;
+			prgBar.setVisible(vis);
+			lblStepCount.setVisible(!vis);
 			prgBar.setValue(progress);
+		}
+	};
+	// cycle finder progress bar
+	private JProgressBar prgCycles;
+	private volatile int cycleProgress;
+	private Runnable cycleProgressRun = new Runnable() {
+		@Override
+		public void run()
+		{
+			boolean vis = cycleProgress < 100;
+			prgCycles.setVisible(vis);
+			lblCyclesCount.setVisible(!vis);
+			prgCycles.setValue(cycleProgress);
 		}
 	};
 
@@ -195,9 +211,15 @@ public class MainFrame
 		prgBar = new JProgressBar(0, 100);
 		prgBar.setStringPainted(true);
 		prgBar.setPreferredSize(prgBar.getMinimumSize());
+		lblStepCount.setPreferredSize(prgBar.getMinimumSize());
 		JLabel lblCyclesFound = new JLabel("Cycles found");
 		lblCyclesFound.setFont(bold);
 		lblCyclesCount = new JLabel("-");
+		prgCycles = new JProgressBar(0, 100);
+		prgCycles.setStringPainted(true);
+		prgCycles.setPreferredSize(prgCycles.getMinimumSize());
+		lblCyclesCount.setPreferredSize(prgCycles.getMinimumSize());
+		prgCycles.setVisible(false);
 
 		pnlInfo.add(lblVisible,			GBC.get(0, 0, 1, 1));
 		pnlInfo.add(lblX,				GBC.get(0, 1, 1, 1));
@@ -207,10 +229,11 @@ public class MainFrame
 		pnlInfo.add(lblTime,			GBC.get(0, 5, 1, 1));
 		pnlInfo.add(lblMilliSec,		GBC.get(0, 6, 1, 1));
 		pnlInfo.add(lblSteps,			GBC.get(0, 7, 1, 1));
-		pnlInfo.add(lblStepCount,		GBC.get(0, 8, 1, 1));
+		pnlInfo.add(lblStepCount,		GBC.get(0, 8, 1, 1, 1.0, 0.0, 'h'));
 		pnlInfo.add(prgBar,				GBC.get(0, 9, 1, 1, 1.0, 0.0, 'h'));
 		pnlInfo.add(lblCyclesFound,		GBC.get(0, 10, 1, 1));
-		pnlInfo.add(lblCyclesCount,		GBC.get(0, 11, 1, 1));
+		pnlInfo.add(lblCyclesCount,		GBC.get(0, 11, 1, 1, 1.0, 0.0, 'h'));
+		pnlInfo.add(prgCycles,			GBC.get(0, 12, 1, 1, 1.0, 0.0, 'h'));
 
 		// Panel Click Action
 		rbtnZoom = new JRadioButton("Zoom");
@@ -359,7 +382,7 @@ public class MainFrame
 					pnlConst.setVisible(false);
 				}
 
-				btnReset.doClick();
+				reset();
 			}
 		});
 
@@ -377,10 +400,7 @@ public class MainFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				scaler.resetZoom();
-				fractal.clearOrbits();
-				lblCyclesCount.setText("-");
-				drawFractal();
+				reset();
 			}
 		});
 
@@ -389,8 +409,7 @@ public class MainFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fractal.clearOrbits();
-				lblCyclesCount.setText("-");
+				clearOrbits();
 			}
 		});
 
@@ -566,7 +585,6 @@ public class MainFrame
 
 	private void drawFractal()
 	{
-		cycleFinder.stop();
 		displayArea.createImages();
 		setFractalFunctionConstant();
 		scaler.setDimension(displayArea.getImageWidth(),
@@ -599,6 +617,22 @@ public class MainFrame
 		if (chkAuto.isSelected()) {
 			cyclePathColor();
 		}
+	}
+
+	private void clearOrbits()
+	{
+		cycleFinder.stop();
+		fractal.clearOrbits();
+		lblCyclesCount.setText("-");
+		lblCyclesCount.setVisible(true);
+		prgCycles.setVisible(false);
+	}
+
+	private void reset()
+	{
+		clearOrbits();
+		scaler.resetZoom();
+		drawFractal();
 	}
 
 	@Override
@@ -642,8 +676,14 @@ public class MainFrame
 	@Override
 	public void updateProgess(Object source, int percent)
 	{
-		progress = percent;
-		EventQueue.invokeLater(prgRun);
+		if (source == fractal) {
+			progress = percent;
+			EventQueue.invokeLater(prgRun);
+		}
+		if (source == cycleFinder) {
+			cycleProgress = percent;
+			EventQueue.invokeLater(cycleProgressRun);
+		}
 	}
 
 	@Override

@@ -23,8 +23,6 @@ public strictfp class ComplexOrbitCycleFinder
 	// the "h" used in diff. Smaller values would cause NaN problems
 	private static final double DIFF_H = 1e-8;
 
-	private static final double DIVIDE = 5.0;
-
 	private StepFractalFunction function;
 	private int cycleLength;
 	private long delay;
@@ -175,10 +173,12 @@ public strictfp class ComplexOrbitCycleFinder
 			@Override
 			public void run()
 			{
-				doFindAllCycles();
+				boolean completed = doFindAllCycles();
 
-				if (statObserver != null)
-					statObserver.statisticsDataAvailable(ComplexOrbitCycleFinder.this);
+				if (completed && statObserver != null) {
+					statObserver.statisticsDataAvailable(
+						ComplexOrbitCycleFinder.this);
+				}
 			};
 		};
 		thread.start();
@@ -217,8 +217,9 @@ public strictfp class ComplexOrbitCycleFinder
 	/**
 	 * Scans over the whole boundary area. The area is divided into
 	 * (5 * cycleLength) pieces in both directions.
+	 * @return true if completed, false if interrupted
 	 */
-	private void doFindAllCycles()
+	private boolean doFindAllCycles()
 	{
 		double xmin = function.getLowerBounds().getReal();
 		double ymin = function.getLowerBounds().getImaginary();
@@ -226,15 +227,29 @@ public strictfp class ComplexOrbitCycleFinder
 		double ymax = function.getUpperBounds().getImaginary();
 		double boundary = function.getBoundarySqr();
 
-		double stepSizeX = Math.abs(xmax - xmin) / (DIVIDE * cycleLength);
-		double stepSizeY = Math.abs(ymax - ymin) / (DIVIDE * cycleLength);
+		int divide = cycleLength * cycleLength;
+		double stepSizeX = Math.abs(xmax - xmin) / divide;
+		double stepSizeY = Math.abs(ymax - ymin) / divide;
 
 		ComplexNumber start = new ComplexNumber(0, 0);
 
 		long lastCycleTs = System.currentTimeMillis();
 
+		long stepsToTry = divide * divide;
+		long stepsDone = 0;
+		int lastPercentage = 0;
+
 		for (double x = xmin; x < xmax; x += stepSizeX) {
 			for (double y = ymin; y < ymax; y += stepSizeY) {
+				// progress update
+				stepsDone++;
+				int p = (int) (100D * stepsDone / stepsToTry);
+				if (p != lastPercentage) {
+					lastPercentage = p;
+					if (statObserver != null)
+						statObserver.updateProgess(ComplexOrbitCycleFinder.this, p);
+				}
+
 				// skip points outside the boundary circle
 				if (x * x + y * y > boundary)
 					continue;
@@ -243,14 +258,14 @@ public strictfp class ComplexOrbitCycleFinder
 				ComplexNumber z = findCycle(cycleLength, start);
 
 				if (Thread.interrupted())
-					return;
+					return false;
 
 				// check list if this (very similar) point has already been found
 				boolean newCycle = addNewCycle(z);
 				if (newCycle) {
 					boolean cont = listener.cycleFound(z, cycleLength);
 					if (!cont)
-						return;
+						return true;
 
 					// delay the next cycle
 					long dur = System.currentTimeMillis() - lastCycleTs;
@@ -259,13 +274,14 @@ public strictfp class ComplexOrbitCycleFinder
 						try {
 							Thread.sleep(sleepDelay);
 						} catch (InterruptedException e) {
-							return;
+							return false;
 						}
 					}
 					lastCycleTs = System.currentTimeMillis();
 				}
 			}
 		}
+		return true;
 	}
 
 	/**

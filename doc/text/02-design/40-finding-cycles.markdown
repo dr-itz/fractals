@@ -188,7 +188,7 @@ Da das Newton-Verfahren jeweils nur eine Lösung, gegeben durch den Startwert,
 finden kann, müssen geeignete Startwerte gefunden werden, die zu allen Lösungen
 führen. Die gewählte Methode funktioniert wie folgt:
 
-* Der begrenzende Kreise wird in x- und y-Richtung in $5 \cdot Zykluslaenge$
+* Der begrenzende Kreise wird in x- und y-Richtung in Zykluslaenge^2$
   Schritte aufgeteilt. Dies ergibt ein Gitter, das über den Kreis gelegt wird.
 * Die linke untere Ecke dieser Rechtecke bzw. Quadrate dient als Startwert für
   das Newton-Verfahren.
@@ -197,9 +197,9 @@ führen. Die gewählte Methode funktioniert wie folgt:
   werden die Real- und Imaginärteile verglichen. Liegen beide innerhalb einer
   gewissen Toleranz, gilt die Lösung als bereits bekannt und wird verworfen.
 
-Für Mandelbrot und eine Zykluslänge von 4 ergibt sich also ein 20x20-Raster das
-über den begrenzenden Kreis gelegt wird. Dies ergibt ca. 315 Punkte, die als
-Startwerte durchgerechnet werden. Die restlichen 85 liegen ausserhalb des
+Für Mandelbrot und eine Zykluslänge von 4 ergibt sich also ein 16x16-Raster das
+über den begrenzenden Kreis gelegt wird. Dies ergibt ca. 195 Punkte, die als
+Startwerte durchgerechnet werden. Die restlichen 61 liegen ausserhalb des
 Kreises und werden somit nicht berücksichtigt.
 
 
