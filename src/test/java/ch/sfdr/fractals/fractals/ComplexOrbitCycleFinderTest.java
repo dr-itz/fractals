@@ -2,6 +2,7 @@ package ch.sfdr.fractals.fractals;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import ch.sfdr.fractals.math.ComplexNumber;
@@ -11,7 +12,7 @@ import ch.sfdr.fractals.math.ComplexNumber;
  * @author D.Ritz
  */
 public class ComplexOrbitCycleFinderTest
-	implements ComplexOrbitCycleListener
+	implements ComplexOrbitCycleListener, StatisticsObserver
 {
 	private static final double TOL = 1e-4;
 
@@ -22,18 +23,51 @@ public class ComplexOrbitCycleFinderTest
 		new ComplexNumber(-0.1225611,    -0.74486170),
 	};
 
+	private ComplexOrbitCycleFinder finder;
+	private Mandelbrot mandelbrot;
+
 	private int solutions = 0;
+	private boolean statDataAvail = false;
+
+	@Before
+	public void setUp()
+	{
+		mandelbrot = new Mandelbrot();
+		finder = new ComplexOrbitCycleFinder(this);
+		finder.setStatObserver(this);
+		assertEquals(this, finder.getStatObserver());
+	}
+
+	@Test
+	public void testGetSetIterations()
+	{
+		assertEquals(400, finder.getMaxIter());
+		finder.setMaxIter(500);
+		assertEquals(500, finder.getMaxIter());
+	}
 
 	@Test
 	public void testFindAllCycles()
 		throws InterruptedException
 	{
-		Mandelbrot mb = new Mandelbrot();
-		ComplexOrbitCycleFinder finder = new ComplexOrbitCycleFinder(this);
-		finder.findAllCycles(mb, 3, 0);
+		finder.findAllCycles(mandelbrot, 3, 250);
 		finder.waitForCompletion();
 
 		assertEquals(4, solutions);
+		assertEquals(4, finder.getCyclesFound());
+		assertEquals(3, finder.getCycleLength());
+
+		assertTrue(statDataAvail);
+	}
+
+	@Test
+	public void testStop()
+	{
+		long start = System.currentTimeMillis();
+		finder.findAllCycles(mandelbrot, 3, 1000);
+		finder.stop();
+		long dur = System.currentTimeMillis() - start;
+		assertTrue(dur < 200);
 	}
 
 	@Override
@@ -53,5 +87,18 @@ public class ComplexOrbitCycleFinderTest
 
 		solutions++;
 		return true;
+	}
+
+	@Override
+	public void statisticsDataAvailable(Object source)
+	{
+		assertEquals(finder, source);
+		statDataAvail = true;
+	}
+
+	@Override
+	public void updateProgess(Object source, int percent)
+	{
+		assertEquals(finder, source);
 	}
 }

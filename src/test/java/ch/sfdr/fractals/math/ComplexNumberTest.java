@@ -103,4 +103,27 @@ public class ComplexNumberTest
 		double z = x.abs();
 		assertEquals(5.0, z, TOL);
 	}
+
+	@Test
+	public void testToString()
+	{
+		ComplexNumber c1 = new ComplexNumber(0.5, 0.7);
+		assertEquals("0.5+0.7i", c1.toString());
+
+		ComplexNumber c2 = new ComplexNumber(0.5, -0.7);
+		assertEquals("0.5-0.7i", c2.toString());
+	}
+
+	@Test
+	public void testIsNaN()
+	{
+		ComplexNumber c1 = new ComplexNumber(0.5, 0.7);
+		assertFalse(c1.isNaN());
+
+		ComplexNumber c2 = new ComplexNumber(Double.NaN, 0);
+		assertTrue(c2.isNaN());
+
+		ComplexNumber c3 = new ComplexNumber(0.5, Double.NaN);
+		assertTrue(c3.isNaN());
+	}
 }
