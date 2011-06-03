@@ -19,8 +19,8 @@ public class LineClipping
 
 	private double clipX1, clipX2, clipY1, clipY2;
 
-	private static byte calculateCode(double x, double y, long xmin, long ymin,
-			long xmax, long ymax)
+	private static byte calculateCode(double x, double y, int xmin, int ymin,
+			int xmax, int ymax)
 	{
 		byte code = INSIDE;
 		if (x < xmin)
@@ -44,8 +44,8 @@ public class LineClipping
 	 * @param ymax
 	 * @return
 	 */
-	public static boolean isPointInside(double x, double y, long xmin, long ymin,
-			long xmax, long ymax)
+	public static boolean isPointInside(double x, double y, int xmin, int ymin,
+			int xmax, int ymax)
 	{
 		return calculateCode(x, y, xmin, ymin, xmax, ymax) == INSIDE;
 	}
@@ -64,7 +64,7 @@ public class LineClipping
 	 * @return
 	 */
 	public boolean clipLineToRectangle(double x1, double y1, double x2,
-			double y2, long xmin, long ymin, long xmax, long ymax)
+			double y2, int xmin, int ymin, int xmax, int ymax)
 	{
 		clipX1 = x1;
 		clipY1 = y1;
