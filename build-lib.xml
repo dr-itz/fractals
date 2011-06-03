@@ -47,7 +47,6 @@
 	<!-- app properties -->
 	<property name="jar.name"         value="${app.name}-${app.version}.jar"/>
 	<property name="src.zip.name"     value="${app.name}-${app.version}.src.zip"/>
-	<property name="app.dir"          value="src/main/java/"/>
 
 	<!-- how to invoke git -->
 	<condition property="git.cmd" value="git.cmd" else="git">
@@ -146,9 +145,6 @@
 
 	<target name="app" depends="compile">
 		<jar destfile="${dist.dir}/${jar.name}">
-			<fileset dir="${app.dir}">
-				<include name="**/*"/>
-			</fileset>
 			<zipfileset dir="${lib.dir}"/>
 			<zipfileset dir="${classes.dir}" includes="**/*.class"/>
 			<zipfileset dir="${src.dir}">
