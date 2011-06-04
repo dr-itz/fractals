@@ -56,8 +56,8 @@ einem eigenen Thread vollzogen.
 
 #### Schrittfunktion ####
 
-In der oben genannten Methode `doDrawFractal()` werden in mehreren Loops die Brechnungen 
-der einzelnen Pixel vorgenommen. Die eigentliche Iterationsvorschrift Z.B. wie bei 
+In der oben genannten Methode `doDrawFractal()` werden in mehreren Loops die Berechnungen 
+der einzelnen Pixel vorgenommen. Die eigentliche Iterationsvorschrift z.B. wie bei 
 Mandelbrot $z_{n+1} = z_n^2 + z_0$ wird mit der Methode `step()` durchgeführt und berechnet.
 
 
@@ -94,6 +94,9 @@ Die effektive Farbzuweisungen aus dem gewählten Farbschema wird in einem versch
 vorgenommen.
 
 ~~~~~~~~ {.Java}
+ComplexNumber z0 = new ComplexNumber(0, 0);
+ComplexNumber z = new ComplexNumber(0, 0);
+
 for (int y = 0; y < height; y++) {
 	int start = 0;
 	double fractalY = scaler.scaleY(y);

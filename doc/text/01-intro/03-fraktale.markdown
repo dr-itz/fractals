@@ -1,4 +1,6 @@
-## Mandelbrot Fraktale ##
+## Die Fraktale ##
+
+### Mandelbrot Fraktale ###
 
 Das Mandelbrot-Fraktal ist ein Fraktal in der komplexen Zahlenebene. Auf die
 genaue Definition wird hier nicht weiter eingegangen. Um die Mandelbrot-Menge zu
@@ -19,7 +21,7 @@ maximale obere Grenze definiert, ab der abgebrochen wird.
 * Die Farbe eines Bildpunktes wird aus der Anzahl Iterationen abgeleitet
 
 
-## Julia-Fraktale ##
+### Julia-Fraktale ###
 
 Die Julia-Fraktale sind sehr ähnlich zu dem Mandelbrot-Fraktal.
 

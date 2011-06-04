@@ -1,6 +1,6 @@
 ### Die Implementation der komplexen Zahl ###
 
-Die Klasse `ComplexNumber` implementiert die Repräsentation der komplexen Zahl die,
+Die Klasse `ComplexNumber` implementiert die Repräsentation der komplexen Zahl, die
 für die Fraktal-Berechnung verwendet wird. Die Klasse basiert auf zwei
 double-Werten, die den reellen und den imaginären Teil der komplexen Zahl
 darstellen. Die folgenden Operationen sind implementiert, zusäzliche

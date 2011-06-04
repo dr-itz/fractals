@@ -21,7 +21,7 @@ Als Entwicklungsumgebung kommen die folgenden Tools zum Einsatz:
 * **Java 6** als Programmiersprache
 * **Git** als Versionsverwaltungssystem
 * **Eclipse 3.6** als Entwicklungs-IDE
-* **Redmine** als Issue-Tracking-System
+* **Redmine** als Issue-Tracking- und Projektplanungs-System
 * **Pandoc, LaTeX und XeTeX** für die Dokumentation
 
 
@@ -32,8 +32,9 @@ neue Features implementiert oder erweitert. Das Ziel davon ist, konkreten
 Fortschritt zeigen zu können und jederzeit Anforderungen zu ändern und so die
 ganze Entwicklung viel dynamischer zu gestalten.
 
-Zur Verwaltung der Features und Bugs kommt Redmine als webbasiertes
-Issue-Tacking-Tool zum Einsatz. Neben dem Issue-Tracking bietet Redmine auch
+Zur Verwaltung der Features und Bugs, zur Planung der Meilensteine und allen
+anderen planungs-relevanten Schritten kommt Redmine als webbasiertes
+Projekt-Management-Tool zum Einsatz. Neben dem Issue-Tracking bietet Redmine auch
 ein integriertes Wiki, Zeitmanagement und eine Roadmap zur Release-Planung.
 
 
