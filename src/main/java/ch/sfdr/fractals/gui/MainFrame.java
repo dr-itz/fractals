@@ -12,6 +12,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,9 +23,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
@@ -41,6 +45,7 @@ import ch.sfdr.fractals.fractals.FractalFactory;
 import ch.sfdr.fractals.fractals.StatisticsObserver;
 import ch.sfdr.fractals.fractals.StepFractalFunction;
 import ch.sfdr.fractals.fractals.StepFractalFunctionWithConst;
+import ch.sfdr.fractals.gui.component.AdvFileChooser;
 import ch.sfdr.fractals.gui.component.AreaSelectionListener;
 import ch.sfdr.fractals.gui.component.ColorMapFactory;
 import ch.sfdr.fractals.gui.component.ColorSelection;
@@ -96,6 +101,8 @@ public class MainFrame
 			prgCycles.setValue(cycleProgress);
 		}
 	};
+
+	private AdvFileChooser chooser;
 
 	// fractals tab
 	private JComboBox cbFractals;
@@ -183,12 +190,14 @@ public class MainFrame
 		Dimension btnDim = new Dimension(100, btnDraw.getMinimumSize().height);
 		btnDraw.setPreferredSize(btnDim);
 		btnReset.setPreferredSize(btnDim);
+		JButton btnSave = new JButton("Save as...");
+		btnSave.setPreferredSize(btnDim);
 
 		pnlTop.add(displayArea,			GBC.get(0, 0, 1, 5, 1.0, 1.0, 'b', "nw"));
 		pnlTop.add(pnlInfo,				GBC.get(1, 0, 1, 1));
 		pnlTop.add(pnlClick,			GBC.get(1, 1, 1, 1, 'h'));
 		pnlTop.add(new JPanel(), 		GBC.get(1, 2, 1, 1, 0.0, 1.0, 'v', "nw"));
-
+		pnlTop.add(btnSave,				GBC.get(1, 3, 1, 1, "nw"));
 
 		// Panel Info
 		JLabel lblVisible = new JLabel("Coordinate");
@@ -480,6 +489,15 @@ public class MainFrame
 			}
 		});
 
+		// save button
+		btnSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				saveImage();
+			}
+		});
+
 		// mouse actions in display area
 		MouseAdapter ma = new MouseAdapter() {
 			@Override
@@ -633,6 +651,29 @@ public class MainFrame
 		clearOrbits();
 		scaler.resetZoom();
 		drawFractal();
+	}
+
+	private void saveImage()
+	{
+		// lazy-initialize chooser
+		if (chooser == null) {
+			chooser = new AdvFileChooser();
+			chooser.addFileType("JPEG Images", "jpg", "jpeg");
+			chooser.addFileType("PNG Images", "png");
+		}
+
+		int status = chooser.showSaveDialog(this);
+		if (status == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			String ext = chooser.getType();
+
+			try {
+				displayArea.saveImage(file, ext);
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(this, "Cannot save image: " +
+					e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 	}
 
 	@Override

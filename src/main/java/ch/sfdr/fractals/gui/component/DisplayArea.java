@@ -11,9 +11,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -264,6 +267,26 @@ public class DisplayArea
 	{
 		layers.get(layer).createImage();
 		repaintAllLayers();
+	}
+
+	/**
+	 * save the current display to a file
+	 * @param file the file to save to
+	 * @param format the format
+	 * @throws IOException
+	 */
+	public synchronized void saveImage(File file, String format)
+		throws IOException
+	{
+		/*
+		 * bufferImage is of type RGBA (with alpha), but JPEG does not support
+		 * it. So it needs to be translated to RGB (without alpha) first.
+		 */
+		BufferedImage saveImg = new BufferedImage(bufferImage.getWidth(),
+			bufferImage.getHeight(), BufferedImage.TYPE_INT_RGB);
+		saveImg.createGraphics().drawImage(bufferImage, 0, 0, null);
+
+		ImageIO.write(saveImg, format, file);
 	}
 
 	/**
