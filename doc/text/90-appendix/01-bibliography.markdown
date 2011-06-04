@@ -1,4 +1,4 @@
-# Bibliographie #
+# Referenzen und Bibliographie #
 
 ## Fraktale ##
 
@@ -18,7 +18,7 @@
 #. http://mathforum.org/advanced/robertd/magneticpendulum.html
 
 
-## Mathematik und numerisches Rechnen Allgemein ##
+## Mathematik und numerisches Rechnen allgemein ##
 
 #. **DoubleDouble**: http://tsusiatsoftware.net/dd/main.html
 
@@ -46,6 +46,14 @@
 #. **Cyrus-Beck**: http://en.wikipedia.org/wiki/Cyrus%E2%80%93Beck
 
 
-### Java ###
+## Verwendete Tools ##
 
-#. **API Documentation**: http://download.oracle.com/javase/6/docs/api/index.html
+#. **Java 6**: http://www.oracle.com/technetwork/java/index.html
+#. **JUnit 4**:http://junit.org/ 
+#. **Git**: http://www.git-scm.com/
+#. **Redmine**: http://www.redmine.org/
+#. **Eclipse**: http://www.eclipse.org/
+#. **FindBugs**: http://findbugs.sourceforge.net/
+#. **Cobertura**: http://cobertura.sourceforge.net/
+#. **Pandoc**: http://johnmacfarlane.net/pandoc/
+#. **MikTeX**: http://miktex.org/
