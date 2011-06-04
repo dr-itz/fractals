@@ -32,6 +32,15 @@ public class ColorMap
 	}
 
 	/**
+	 * returns the number of colors in this map
+	 * @return number of colors
+	 */
+	public int getNumColors()
+	{
+		return colors.length;
+	}
+
+	/**
 	 * Maps the iteration count to a color
 	 * @param iterations
 	 * @return the mapped color
