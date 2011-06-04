@@ -149,23 +149,12 @@ public class ComplexEscapeFractal
 		thread.start();
 	}
 
-	/**
-	 * Draws the orbit for the given coordinates and step delay
-	 * @param x the display coordinate in x direction
-	 * @param y the display coordinate in y direction
-	 * @param maxIter the max number of iterations
-	 * @param stepDelay the delay in milliseconds
-	 */
-	public void drawOrbit(int x, int y, int maxIterations, Color color, long stepDelay)
-	{
-		drawOrbit(new ComplexNumber(scaler.scaleX(x), scaler.scaleY(y)),
-			maxIterations, color, stepDelay);
-	}
 
 	/**
 	 * Draws the orbit for the given coordinates and step delay
 	 * @param start the start coordinate as complex number
-	 * @param maxIter the max number of iterations
+	 * @param maxIterations the max number of iterations
+	 * @param color the color used to draw the orbit
 	 * @param stepDelay the delay in milliseconds
 	 */
 	public void drawOrbit(final ComplexNumber start, final int maxIterations,

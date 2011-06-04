@@ -36,13 +36,13 @@ public class LineClipping
 
 	/**
 	 * simple check if a single point is within the clipping rect
-	 * @param x
-	 * @param y
-	 * @param xmin
-	 * @param ymin
-	 * @param xmax
-	 * @param ymax
-	 * @return
+	 * @param x x coordinate of the point
+	 * @param y y coordinate of the point
+	 * @param xmin clipping rect
+	 * @param ymin clipping rect
+	 * @param xmax clipping rect
+	 * @param ymax clipping rect
+	 * @return true if point is inside the clipping area
 	 */
 	public static boolean isPointInside(double x, double y, int xmin, int ymin,
 			int xmax, int ymax)
@@ -57,11 +57,11 @@ public class LineClipping
 	 * @param y1 point1 y
 	 * @param x2 point2 x
 	 * @param y2 point2 y
-	 * @param xmin clipping rect left
-	 * @param ymin clipping rect left
-	 * @param xmax clipping rect left
-	 * @param ymax clipping rect left
-	 * @return
+	 * @param xmin clipping rect
+	 * @param ymin clipping rect
+	 * @param xmax clipping rect
+	 * @param ymax clipping rect
+	 * @return true if line is at least partially visible
 	 */
 	public boolean clipLineToRectangle(double x1, double y1, double x2,
 			double y2, int xmin, int ymin, int xmax, int ymax)

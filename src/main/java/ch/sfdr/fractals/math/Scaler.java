@@ -192,7 +192,7 @@ public class Scaler
 
 	/**
 	 * calculates the screen coordinate for a scaled number
-	 * @param scaledX the scaled number
+	 * @param scaledY the scaled number
 	 * @return the screen coordinate
 	 */
 	public double unscaleY(double scaledY)

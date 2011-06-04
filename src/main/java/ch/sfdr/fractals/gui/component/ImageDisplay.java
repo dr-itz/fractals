@@ -27,7 +27,7 @@ public interface ImageDisplay
 
 	/**
 	 * returns the number of layers
-	 * @return
+	 * @return number of layers
 	 */
 	int getLayers();
 
