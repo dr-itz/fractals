@@ -49,10 +49,10 @@ Dieser Meilenstein trägt den Namen "v1.0-pre3" und wurde vor der Präsentation
 zur Verfügung gestellt.
 
 
-### 4. Meilensteing ###
+### 4. Meilenstein ###
 
 Der vierte Meilenstein ist die finale Version mit dem Namen "v1.0". Diese wird
 sich im Idealfall nicht von der Version "v1.0-pre3" unterscheiden. Die kurze
-Zeit zwischen dem dritten und viertem Meilenstein, erlaubt es, letzte kleine
+Zeit zwischen dem dritten und viertem Meilenstein erlaubt es, letzte kleine
 Bugs zu beheben und ggf. die Dokumentation noch einmal zu überarbeiten
 (Korrektur von Schreibfehler, etc).

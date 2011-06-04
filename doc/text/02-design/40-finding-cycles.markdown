@@ -188,7 +188,7 @@ Da das Newton-Verfahren jeweils nur eine Lösung, gegeben durch den Startwert,
 finden kann, müssen geeignete Startwerte gefunden werden, die zu allen Lösungen
 führen. Die gewählte Methode funktioniert wie folgt:
 
-* Der begrenzende Kreise wird in x- und y-Richtung in Zykluslaenge^2$
+* Der begrenzende Kreise wird in x- und y-Richtung in $Zykluslaenge^2$
   Schritte aufgeteilt. Dies ergibt ein Gitter, das über den Kreis gelegt wird.
 * Die linke untere Ecke dieser Rechtecke bzw. Quadrate dient als Startwert für
   das Newton-Verfahren.
