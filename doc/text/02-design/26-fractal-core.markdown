@@ -163,7 +163,7 @@ Die X- und Y-Koordinaten werden zuerst als double-Werte errechnet.  Der
 Hintergrund hierfür ist, dass bei sehr starkem Zoom ein 32-bit Integer nicht
 ausreicht um die Koordinaten darzustellen. Zwar gibt die Auflösung des
 Bildschirms die möglichen Koordinaten vor, jedoch liegen bei hohem Zoom die
-meisten Endpunkte der Linien ausserhalb dises Bereiches. Die Java 2D API kann
+meisten Endpunkte der Linien ausserhalb dieses Bereiches. Die Java 2D API kann
 mit Punkten im nicht sichtbaren Bereich umgehen und die korrekten Linien
 zeichnen, jedoch ist die API auf 32-bit Integer beschränkt. Wird einfach auf
 Integer gecastet, führt dies zu falschen Werten, Linien ändern plötzlich die
@@ -183,6 +183,6 @@ eine Linie überhaupt im Sichtbaren Bereich liegt und umgerechnet werden muss.
 Ein weiterer Vorteil ist, dass er bekannt und gut dokumentiert ist. Der hier
 verwendete Code ist von dem C++ Beispiel von Wikipedia nach Java übersetzt und
 leicht angepasst worden. Die Effizienz ist für diese Anwendung hier mehr als
-ausreichend, weshalb andere Algorihmen nicht mehr näher betrachtet wurden.
+ausreichend, weshalb andere Algorithmen nicht mehr näher betrachtet wurden.
 
 

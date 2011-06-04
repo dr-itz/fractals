@@ -58,7 +58,7 @@ GUI. Folgende Tests werden manuell durchgeführt:
 
   * **Auswahl der Fraktal-Funktion**
 
-	Als Fraktalfunktio wird "Julia" ausgewählt. Es wird ein Julia-Fraktal
+	Als Fraktalfunktion wird "Julia" ausgewählt. Es wird ein Julia-Fraktal
 	gezeichnet. Neu eingeblendet werden die Felder "Const Real/Imag" die es
 	erlauben die Konstante der Julia-Funktion zu definieren. Diese wird
 	verändert, durch klicken auf "Draw" zeichnet sich das Fraktal neu. Zum
@@ -116,7 +116,7 @@ GUI. Folgende Tests werden manuell durchgeführt:
 	auf 500, "Full orbits" ist ausgewählt. Die Schaltfläche "Find" wird
 	angeklickt. Während des Suchvorgang erscheint unterhalb von "Cycles found"
 	eine Progress-Bar. Die einzelnen Orbits werden im Abstand von ca. einer
-	halben Sekunde gezeichnet, beinflussbar durch den "Delay". Nachdem die Suche
+	halben Sekunde gezeichnet, beeinflussbar durch den "Delay". Nachdem die Suche
 	abgeschlossen ist, wird dort "8 cycles of length 4" angezeigt. Im Fraktal
 	finden sich 8 Startpunkte mit den entsprechenden Orbits. Zoom und "Clear
 	orbits" funktionieren ebenfalls. Nach einem "Clear orbits" wird "Full

@@ -1,7 +1,7 @@
 ## Erweiterung: Finden von Zyklen ##
 
 Eine der möglichen Erweiterungen die umgesetzt wurden, ist das Finden von
-zyklischen Orbits, implementert in der Klasse `ComplexOrbitCycleFinder`.  Dabei
+zyklischen Orbits, implementiert in der Klasse `ComplexOrbitCycleFinder`.  Dabei
 geht es darum, Orbits zu finden welche sich zyklisch verhalten, d.h. nach einer
 bestimmten Anzahl Schritten wieder am Ausgangspunkt sind. Für Mandelbrot z.B.
 finden sich alle Zyklen der Länge drei durch das Lösen der folgenden Gleichung:
@@ -78,7 +78,7 @@ public void invert()
 
 Die Funktion $F(z)$ bzw. $F(x,y)$ wird gebildet durch n-faches Aufrufen der
 Schrittfunktion, wobei "n" die gesuchte Zykluslänge darstellt. Um das Resultat
-in die richige Form zu bringen wird noch $z_0$ subtrahiert. Der Anfangswert
+in die richtige Form zu bringen wird noch $z_0$ subtrahiert. Der Anfangswert
 $z_0$ ist dabei ein "geeigneter" Startwert.
 
 ~~~~~~~~ {.Java}

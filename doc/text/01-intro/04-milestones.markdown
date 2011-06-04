@@ -27,7 +27,7 @@ Der Fokus des zweiten Meilensteins sind folgende Funktionen:
 * Zeichnen von Orbits mit dem Startpunkt als Benutzereingabe
 * Zoom-Out
 * Anpassen des Fraktals bei Änderung der Fenstergrösse
-* Zusäzliche Fraktalfunktionen (Mandelbrot mit $z^3 + z_0$ und Julia mit $z^3 + c$)
+* Zusätzliche Fraktalfunktionen (Mandelbrot mit $z^3 + z_0$ und Julia mit $z^3 + c$)
 * Bugfixes
 * Dokumentation
 

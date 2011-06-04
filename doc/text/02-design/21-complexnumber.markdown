@@ -3,7 +3,7 @@
 Die Klasse `ComplexNumber` implementiert die Repräsentation der komplexen Zahl, die
 für die Fraktal-Berechnung verwendet wird. Die Klasse basiert auf zwei
 double-Werten, die den reellen und den imaginären Teil der komplexen Zahl
-darstellen. Die folgenden Operationen sind implementiert, zusäzliche
+darstellen. Die folgenden Operationen sind implementiert, zusätzliche
 Operationen können nach Bedarf implementiert werden:
 
   * Addition
@@ -57,14 +57,14 @@ Operationen die als Resultat wieder eine komplexe Zahl haben, geben eine
 ComplexNumber zurück. Diese ist jedoch einfach wieder die gleiche Instanz.
 Dieses Pattern erlaubt die einfache Verkettung von Operationen.
 
-Der Grund für das direkte Modifizieren des Wertes ist die Peformance. Je nach
+Der Grund für das direkte Modifizieren des Wertes ist die Performance. Je nach
 Einstellung der maximalen Anzahl Schritte, des Zooms und der Auflösung wird die
 Schrittfunktion `step()` der Fraktalfunktion ohne Probleme mehr als 200
 Millionen Mal aufgerufen.
 
 Anfänglich wurde bei jeder Operation der ComplexNumber das Resultat als ein
 neues Objekt zurück gegeben. Dies erlaubt einen sehr einfachen Umgang mit den
-Berechnungen, da nicht auf ungewollte Veränderungen rücksicht genommen werden
+Berechnungen, da nicht auf ungewollte Veränderungen Rücksicht genommen werden
 muss. Die Auswertung der CPU-Auslastung bei einem Dual-Core-System und Resultate
 von Profilen haben gezeigt, dass das Erstellen von neuen Objekten einen
 Flaschenhals darstellt. 200 Millionen Aufrufe bedeuteten auch 200 Millionen

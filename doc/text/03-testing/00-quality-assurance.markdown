@@ -1,7 +1,7 @@
 # Qualitätssicherung #
 
-Zu jeder Softwareentwicklung gehört auch Qualitässicherung dazu. Die
-Qualitätsicherung in diesem Projekt setzt sich aus den folgenden Teilen
+Zu jeder Softwareentwicklung gehört auch Qualitätssicherung dazu. Die
+Qualitätssicherung in diesem Projekt setzt sich aus den folgenden Teilen
 zusammen:
 
   * **Tracking**
@@ -12,7 +12,7 @@ zusammen:
 
   * **Code-Review**
 
-	Bevor Code der Git-Repository hinzugefügt wird, wird jweils noch ein Review
+	Bevor Code der Git-Repository hinzugefügt wird, wird jeweils noch ein Review
 	durchgeführt. Dazu eignet sich die Diff-Ansicht des Git-GUI. Nachdem Code in
 	der Git-Repository geändert wurde, wird dieser jeweils nochmals von anderen
 	Entwickler(innen) angeschaut und kurz getestet.

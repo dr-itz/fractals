@@ -1,7 +1,7 @@
 ## Erweiterung: Zeichnen in Threads ##
 
 Eine mögliche Erweiterung ist das Zeichnen der Fraktale in mehreren Threads.
-Hier wurde ein Komporomiss zwischen Einfachheit und Geschwindigkeit gemacht.
+Hier wurde ein Kompromiss zwischen Einfachheit und Geschwindigkeit gemacht.
 Anstelle einer konfigurierbaren Anzahl von Threads sind genau zwei Threads mit
 dem Zeichnen des Fraktals beschäftigt. Beim Zeichnen von grob zu fein wurde ein
 zweiter Thread eingeführt. Der letzte Schritt braucht am meisten Zeit, da hier
@@ -10,7 +10,7 @@ sich ein separater Thread um das Errechnen dieses letzten Schrittes, der
 gestartet wird bevor von grob nach fein aufgelöst wird. Dieser läuft dann also
 parallel zur Auflösung von grob nach fein.
 
-Diese Methode des Multithreading brings zwar nicht eine optimale CPU-Auslastung,
+Diese Methode des Multithreading bringt zwar nicht eine optimale CPU-Auslastung,
 ist aber sehr einfach implementierbar, ohne dass die Lesbarkeit und die
 Wartbarkeit des Codes darunter leidet. Der Geschwindigkeitsgewinn ist immerhin
 ca. 25%.

@@ -5,11 +5,11 @@ BufferedImage bzw. Graphics2D Objekte der Java 2D API zu erhalten und um diese
 danach auf dem GUI anzeigen zu können. Es wurde entschieden, dies als Interface
 zu Implementierten, da die Anzeige auf dem GUI nicht die einzige Möglichkeit
 darstellt. Eine weitere Mögliche Anwendung ist das Speichern des gezeichneten
-Fraktals als Bild. Dabei wird natürlich die Bildschirmdarstellung irrelavant und
+Fraktals als Bild. Dabei wird natürlich die Bildschirmdarstellung irrelevant und
 somit macht es Sinn nur die Schnittstelle zu definieren.
 
 Das Interface ist ausgelegt für das Zeichnen von Bildern in mehreren Layern. Dies
-wird zum Besispiel beim Anzeigen der Orbits (Pfad) verwendet.
+wird zum Beispiel beim Anzeigen der Orbits (Pfad) verwendet.
 
 Das Interace:
 
