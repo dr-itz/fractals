@@ -42,6 +42,14 @@ public class DisplayArea
 	private boolean selectionMode = true;
 	private AreaSelectionListener selectionListener;
 
+	private Runnable repaintRun = new Runnable() {
+		@Override
+		public void run()
+		{
+			repaint();
+		};
+	};
+
 	/**
 	 * creates the DisplayArea
 	 */
@@ -210,13 +218,12 @@ public class DisplayArea
 	{
 		for (Layer l : layers)
 			bufferGraphics.drawImage(l.image, 0, 0, null);
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run()
-			{
-				repaint();
-			}
-		});
+
+		if (EventQueue.isDispatchThread()) {
+			repaint();
+			return;
+		}
+		EventQueue.invokeLater(repaintRun);
 	}
 
 	@Override
