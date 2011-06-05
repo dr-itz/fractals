@@ -64,6 +64,39 @@ public interface ImageDisplay
 	 * @param img
 	 */
 	void updateImage(BufferedImage img, int layer);
+
+	/**
+	 * Returns the BufferedImage of the layer itself. Use for direct
+	 * manipulation of the image.
+	 * @param layer index of the layer
+	 * @return BufferedImage
+	 */
+	BufferedImage getLayerImage(int layer);
+
+	/**
+	 * Returns the Graphics2D of the layer itself. Use for direct
+	 * manipulation of the image/graphics.
+	 * @param layer index of the layer
+	 * @return Graphics2D
+	 */
+	Graphics2D getLayerGraphics(int layer);
+
+	/**
+	 * updates a directly manipulated layer, ie. forces a redraw of the layers.
+	 * @param layer index of the layer
+	 */
+	void updateLayer(int layer);
+
+
+	/**
+	 * save the current display to a file
+	 * @param file the file to save to
+	 * @param format the format
+	 * @throws IOException
+	 */
+	void saveImage(File file, String format)
+		throws IOException;
+
 }
 ~~~~~~~~
 
@@ -88,6 +121,16 @@ Die wichtigsten Funktionen:
 	Löscht den Inhalt des angegebenen Layers und macht ihn wieder komplett
 	transparent.
 
+  * **`getLayerGraphics()`**
 
-Die Implementation dieses Interfaces ist in der Klasse `DisplayArea` im Kapitel zum GUI näher
+	Erlaubt direkten Zugriff auf das Graphics2D-Objekt des Layers, benutzt für
+	schnelles Zeichnen bei dem nur ein einzelner Thread auf den Layer zeichnen
+	kann.
+
+  * **`saveImage()`**
+
+	Speichert die aktuelle Anzeige als Bild ab.
+
+
+Die Implementation dieses Interfaces ist in der Klasse `LayeredImage` im Kapitel zum GUI näher
 beschrieben.
