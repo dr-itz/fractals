@@ -34,7 +34,7 @@
   </class>  
   <interface id="5" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.ImageDisplay" 
     project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/ImageDisplay.java" binary="false">    
-    <position x="74" y="178" width="-1" height="-1"/>    
+    <position x="73" y="129" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false"/>      
       <operations public="true" package="true" protected="true" private="false"/>    
@@ -42,7 +42,7 @@
   </interface>  
   <class id="6" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.math.Scaler" project="Fractals" 
     file="/Fractals/src/main/java/ch/sfdr/fractals/math/Scaler.java" binary="false">    
-    <position x="233" y="505" width="-1" height="-1"/>    
+    <position x="231" y="515" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false"/>      
       <operations public="true" package="true" protected="true" private="false"/>    
@@ -50,7 +50,7 @@
   </class>  
   <class id="7" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.math.ComplexNumber" project="Fractals" 
     file="/Fractals/src/main/java/ch/sfdr/fractals/math/ComplexNumber.java" binary="false">    
-    <position x="401" y="500" width="-1" height="-1"/>    
+    <position x="401" y="526" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false"/>      
       <operations public="true" package="true" protected="true" private="false"/>    
@@ -64,22 +64,14 @@
       <operations public="true" package="true" protected="true" private="false"/>    
     </display>  
   </class>  
-  <dependency>    
-    <end type="SOURCE" nodeId="1"/>    
-    <end type="TARGET" nodeId="7"/>  
-  </dependency>  
   <association>    
     <end type="SOURCE" nodeId="1" navigable="false">      
-      <attribute name="display"/>      
+      <attribute name="statObserver"/>      
       <multiplicity minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" nodeId="5" navigable="true"/>    
+    <end type="TARGET" nodeId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency>    
-    <end type="SOURCE" nodeId="2"/>    
-    <end type="TARGET" nodeId="7"/>  
-  </dependency>  
   <association>    
     <end type="SOURCE" nodeId="1" navigable="false">      
       <attribute name="colorMap"/>      
@@ -88,12 +80,36 @@
     <end type="TARGET" nodeId="8" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="2"/>  
+  </realization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="2"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="4"/>    
+    <end type="TARGET" nodeId="7"/>  
+  </dependency>  
   <association>    
     <end type="SOURCE" nodeId="1" navigable="false">      
-      <attribute name="function"/>      
+      <attribute name="liveOrbitStart"/>      
       <multiplicity minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <end type="TARGET" nodeId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="1" navigable="false">      
+      <attribute name="display"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association>    
@@ -106,20 +122,12 @@
   </association>  
   <association>    
     <end type="SOURCE" nodeId="1" navigable="false">      
-      <attribute name="statObserver"/>      
+      <attribute name="function"/>      
       <multiplicity minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" nodeId="3" navigable="true"/>    
+    <end type="TARGET" nodeId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="7"/>  
-  </dependency>  
-  <realization>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="2"/>  
-  </realization>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="false" visibility="true">    
     <attributes public="true" package="true" protected="true" private="false"/>    
     <operations public="true" package="true" protected="true" private="false"/>  
