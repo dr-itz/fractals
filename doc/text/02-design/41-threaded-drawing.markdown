@@ -10,7 +10,7 @@ sich ein separater Thread um das Errechnen dieses letzten Schrittes, der
 gestartet wird bevor von grob nach fein aufgelöst wird. Dieser läuft dann also
 parallel zur Auflösung von grob nach fein.
 
-Diese Methode des Multithreading bringt zwar nicht eine optimale CPU-Auslastung,
+Diese Methode des Multithreadings bringt zwar keine optimale CPU-Auslastung,
 ist aber sehr einfach implementierbar, ohne dass die Lesbarkeit und die
 Wartbarkeit des Codes darunter leidet. Der Geschwindigkeitsgewinn ist immerhin
 ca. 25%.

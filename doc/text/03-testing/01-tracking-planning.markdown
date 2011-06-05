@@ -1,4 +1,4 @@
-## Tracking und Plannung ##
+## Tracking und Planung ##
 
 Für alle Features und Bugs wird im Redmine je ein Ticket erstellt. Dies
 beschreibt das zu implementierende Feature oder den Bug. Dabei stellt das
@@ -8,12 +8,12 @@ Beschreibung eingegeben.
 
 ### Features ###
 
-Ein Feature beschreibt gewünschtes Verhalten. Features werden mittels einfachen
+Ein Feature beschreibt ein gewünschtes Verhalten. Features werden mittels einfachen
 Sätzen und Stichworten beschrieben. Bei der Implementation werden Features immer
 in kleinen Schritten implementiert und getestet. Kleine Schritte erlauben eine
-viel bessere Nachvollziehbarkeit und erleichtern das Review. Zu einem Feature
+viel bessere Nachvollziehbarkeit und erleichtern den Review. Zu einem Feature
 gibt es deshalb meistens mehrere Commits in der Git-Repository. Ein weiterer
-Vorteil dieses Vorgehen ist es, das Verhalten der Software zu demonstrieren
+Vorteil dieses Vorgehens ist es, das Verhalten der Software zu demonstrieren
 bevor zu viel Zeit aufgewendet wurde. Ebenfalls hilft es dabei, das Design
 bereits in einem frühen Stadium zu besprechen und gegebenenfalls zu ändern.
 

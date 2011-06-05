@@ -23,7 +23,7 @@ maximale obere Grenze definiert, ab der abgebrochen wird.
 
 ### Julia-Fraktale ###
 
-Die Julia-Fraktale sind sehr ähnlich zu dem Mandelbrot-Fraktal.
+Das Julia-Fraktal ist sehr ähnlich zu dem Mandelbrot-Fraktal.
 
 * Die Iterationsvorschrift ist dabei:
 

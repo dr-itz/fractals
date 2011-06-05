@@ -1,7 +1,7 @@
 ## Meilensteine ##
 
 Die detailierte Planung erfolgt, wie bereits erwähnt im Redmine. Ein Account für
-das Tool wurde A.Heuberger zur Verfügung gestellt. Dieses Abschnitt beschreibt
+das Tool wurde A.Heuberger zur Verfügung gestellt. Dieser Abschnitt beschreibt
 die groben Ziele der Meilensteine.
 
 
@@ -53,6 +53,6 @@ zur Verfügung gestellt.
 
 Der vierte Meilenstein ist die finale Version mit dem Namen "v1.0". Diese wird
 sich im Idealfall nicht von der Version "v1.0-pre3" unterscheiden. Die kurze
-Zeit zwischen dem dritten und viertem Meilenstein erlaubt es, letzte kleine
+Zeit zwischen dem dritten und vierten Meilenstein erlaubt es, letzte kleine
 Bugs zu beheben und ggf. die Dokumentation noch einmal zu überarbeiten
 (Korrektur von Schreibfehler, etc).

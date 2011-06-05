@@ -2,7 +2,7 @@
 
 Dieser Abschnitt beschreibt das Kernstück der Fraktalberechnung, die Klasse
 `ComplexEscapeFractal`. Diese Klasse übernimmt die Hauptaufgaben wie 
-das Ausführen der Schrittfunktion und das Zeichnen der Fraktale oder der Orbits.
+das Ausführen der Schrittfunktionen und das Zeichnen der Fraktale oder der Orbits.
 
 
 #### Initialisierung ####
@@ -56,7 +56,7 @@ einem eigenen Thread vollzogen.
 
 #### Schrittfunktion ####
 
-In der oben genannten Methode `doDrawFractal()` werden in mehreren Loops die Berechnungen 
+In der Methode `doDrawFractal()` werden in mehreren Loops die Berechnungen 
 der einzelnen Pixel vorgenommen. Die eigentliche Iterationsvorschrift z.B. wie bei 
 Mandelbrot $z_{n+1} = z_n^2 + z_0$ wird mit der Methode `step()` durchgeführt und berechnet.
 
@@ -72,7 +72,8 @@ entsprechend die Pixel farbig gemalt.
 Das Interface `StatisticsObserver` wird verwendet um dem GUI über Vorhandensein neuer 
 Statistik-Daten zu informieren und um diese dann anzeigen zu können. Hier handelt es 
 sich um Statistik-Daten wie x-facher Zoom, Anzahl Aufrufe der Schrittfunktion resp. 
-der Methode `step()` und die Zeit die benötigt wurde um das Fraktal zu zeichnen.
+der Methode `step()`, die Zeit die benötigt wurde um das Fraktal zu zeichnen oder die 
+Anzahl gefundener Zyklen.
 
 ~~~~~~~~ {.Java}
 public interface StatisticsObserver
@@ -87,7 +88,7 @@ public interface StatisticsObserver
 
 #### Zeichnen des Fraktals ####
 
-Für jeden Bildpunkt werden die Anzahl Schritte gezählt bis max. Iterationen erreicht sind, 
+Für jeden Bildpunkt werden die Anzahl Schritte gezählt bis max. Iterationen erreicht sind  
 oder die Begrenzung überschritten wird. Mit der `step()` Methode des zu berechnenden 
 Fraktals wird die Berechnung für die Farbzuweisung der einzelnen Bildpunkte vorgenommen. 
 Die effektive Farbzuweisungen aus dem gewählten Farbschema wird in einem verschachtelten Loop 

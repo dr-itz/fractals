@@ -1,6 +1,6 @@
 # Qualitätssicherung #
 
-Zu jeder Softwareentwicklung gehört auch Qualitätssicherung dazu. Die
+Zu jeder Softwareentwicklung gehört auch die Qualitätssicherung dazu. Die
 Qualitätssicherung in diesem Projekt setzt sich aus den folgenden Teilen
 zusammen:
 

@@ -57,7 +57,7 @@ Die Funktion `absSqr()` berechnet dabei das Quadrat des Betrag, also
 $real^2 + imaginary^2$. Die Wurzel zu ziehen würde nur unnötige Rechenzeit in
 Anspruch nehmen.
 
-Die Berechnung des Fraktal wird durch den folgenden Code durchgeführt:
+Die Berechnung des Fraktals wird durch den folgenden Code durchgeführt:
 
 ~~~~~~~~ {.Java}
 double r = 1.0D / Math.min(width, height);

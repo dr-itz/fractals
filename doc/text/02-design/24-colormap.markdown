@@ -1,7 +1,7 @@
 ### ColorMap ###
 
 Die Klasse `ColorMap` gibt dem Kern der Fraktalberechnung die Möglichkeit, die
-Iterationszahl eines Pixels einer Farbe zuzuweisen. Dabei Stellt eine ColorMap
+Iterationszahl eines Pixels einer Farbe zuzuweisen. Dabei stellt eine ColorMap
 eine Anzahl Farben zur Verfügung, die Iterationszahl wird mittels einem einfachen
 Modulo in die Farbe umgesetzt.
 

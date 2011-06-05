@@ -65,7 +65,7 @@ Die folgenden Funktionen müssen implementiert sein:
   * **`step()`**
 
 	Diese Funktion führt den eigentlichen Rechenschritt für
-	$z_{n+1} = f(z_n, z_0)$ aus. Der übergebene Startwert $z_0 darf nicht verändert
+	$z_{n+1} = f(z_n, z_0)$ aus. Der übergebene Startwert $z_0$ darf nicht verändert
 	werden, die variable ComplexNumber hingegen muss verändert werden.
 
 `getLowerBounds()` und `getUpperBounds()` liessen sich auch aus dem Rückgabewert

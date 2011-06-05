@@ -23,7 +23,7 @@ Für die folgenden Klassen sind Tests mittels JUnit implementiert:
 
 ### Manuelle Tests des GUI ###
 
-Klassen die nicht automatisch getestet werden können, oder die Implementierung
+Klassen die nicht automatisch getestet werden können oder die Implementierung
 der Tests viel zu aufwändig wäre, werden von Hand getestet. Dies betrifft das
 GUI. Folgende Tests werden manuell durchgeführt:
 
@@ -62,7 +62,7 @@ GUI. Folgende Tests werden manuell durchgeführt:
 	gezeichnet. Neu eingeblendet werden die Felder "Const Real/Imag" die es
 	erlauben die Konstante der Julia-Funktion zu definieren. Diese wird
 	verändert, durch klicken auf "Draw" zeichnet sich das Fraktal neu. Zum
-	Vergleich können Beispiele von Wikipedia zu Hilfe genommen werden.
+	Vergleich können Beispiele von Wikipedia zur Hilfe genommen werden.
 
   * **Farbauswahl**
 
@@ -88,8 +88,8 @@ GUI. Folgende Tests werden manuell durchgeführt:
 	animiert dargestellt. Die Geschwindigkeit lässt sich über die Einstellung
 	"Step delay(ms)" verändern. Die Orbits werden in der ausgewählten Farbe
 	gezeichnet. Ist die Checkbox "Auto-cycle" angewählt, wird automatisch nach
-	jedem Orbit die Farbe umgestellt. Ist die Checkbox nicht ausgewählt, werden
-	alle Orbits mit der selben Farbe gezeichnet.
+	jedem Orbit die Farbe umgestellt. Ist die Checkbox nicht angewählt, werden
+	alle Orbits mit derselben Farbe gezeichnet.
 
   * **Löschen von Orbits**
 
@@ -114,7 +114,7 @@ GUI. Folgende Tests werden manuell durchgeführt:
 
 	Im Mandelbrot-Fraktal wird die "cycle length" auf 4 eingestellt, der "Delay"
 	auf 500, "Full orbits" ist ausgewählt. Die Schaltfläche "Find" wird
-	angeklickt. Während des Suchvorgang erscheint unterhalb von "Cycles found"
+	angeklickt. Während des Suchvorgangs erscheint unterhalb von "Cycles found"
 	eine Progress-Bar. Die einzelnen Orbits werden im Abstand von ca. einer
 	halben Sekunde gezeichnet, beeinflussbar durch den "Delay". Nachdem die Suche
 	abgeschlossen ist, wird dort "8 cycles of length 4" angezeigt. Im Fraktal
