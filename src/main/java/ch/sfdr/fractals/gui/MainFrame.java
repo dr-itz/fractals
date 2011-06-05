@@ -563,7 +563,7 @@ public class MainFrame
 	private void initialize()
 	{
 		scaler = new Scaler();
-		fractal = new ComplexEscapeFractal(displayArea, scaler,
+		fractal = new ComplexEscapeFractal(displayArea.getLayeredImage(), scaler,
 			FractalFactory.getFractalFunction(cbFractals.getSelectedIndex()),
 			ColorMapFactory.getMap(cbColor.getSelectedIndex()));
 
@@ -620,8 +620,8 @@ public class MainFrame
 	{
 		displayArea.createImages();
 		setFractalFunctionConstant();
-		scaler.setDimension(displayArea.getImageWidth(),
-			displayArea.getImageHeight());
+		scaler.setDimension(displayArea.getLayeredImage().getImageWidth(),
+			displayArea.getLayeredImage().getImageHeight());
 		fractal.drawFractal(snmIterations.getNumber().intValue());
 		fractal.redrawAllOrbits();
 	}
@@ -683,7 +683,7 @@ public class MainFrame
 			String ext = chooser.getType();
 
 			try {
-				displayArea.saveImage(file, ext);
+				displayArea.getLayeredImage().saveImage(file, ext);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(this, "Cannot save image: " +
 					e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);

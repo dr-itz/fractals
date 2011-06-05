@@ -2,6 +2,8 @@ package ch.sfdr.fractals.gui.component;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Display image interaction, the link between the core and the GUI.
@@ -78,4 +80,14 @@ public interface ImageDisplay
 	 * @param layer index of the layer
 	 */
 	void updateLayer(int layer);
+
+
+	/**
+	 * save the current display to a file
+	 * @param file the file to save to
+	 * @param format the format
+	 * @throws IOException
+	 */
+	void saveImage(File file, String format)
+		throws IOException;
 }

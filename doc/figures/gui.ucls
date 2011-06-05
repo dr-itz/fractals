@@ -8,33 +8,9 @@
       <operations public="true" package="true" protected="true" private="false"/>    
     </display>  
   </class>  
-  <class id="2" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.DisplayArea.SelectionRect" 
-    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/DisplayArea.java" binary="false">    
-    <position x="602" y="579" width="-1" height="-1"/>    
-    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false"/>      
-      <operations public="true" package="true" protected="true" private="false"/>    
-    </display>  
-  </class>  
-  <class id="3" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.DisplayArea.Layer" 
-    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/DisplayArea.java" binary="false">    
-    <position x="778" y="555" width="-1" height="-1"/>    
-    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false"/>      
-      <operations public="true" package="true" protected="true" private="false"/>    
-    </display>  
-  </class>  
-  <class id="4" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.DisplayArea" 
-    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/DisplayArea.java" binary="false">    
-    <position x="643" y="304" width="-1" height="-1"/>    
-    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="false"/>      
-      <operations public="true" package="true" protected="true" private="false"/>    
-    </display>  
-  </class>  
   <class id="5" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.fractals.ComplexEscapeFractal" 
     project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/fractals/ComplexEscapeFractal.java" binary="false">    
-    <position x="259" y="248" width="-1" height="-1"/>    
+    <position x="240" y="216" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false"/>      
       <operations public="true" package="true" protected="true" private="false"/>    
@@ -66,7 +42,7 @@
   </class>  
   <interface id="10" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.fractals.StepFractalFunction" 
     project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/fractals/StepFractalFunction.java" binary="false">    
-    <position x="250" y="563" width="-1" height="-1"/>    
+    <position x="239" y="554" width="-1" height="-1"/>    
     <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false"/>      
       <operations public="true" package="true" protected="true" private="false"/>    
@@ -80,18 +56,82 @@
       <operations public="true" package="true" protected="true" private="false"/>    
     </display>  
   </class>  
+  <class id="13" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.LayeredImage.Layer" 
+    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/LayeredImage.java" binary="false">    
+    <position x="800" y="657" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </class>  
+  <class id="14" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.LayeredImage" 
+    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/LayeredImage.java" binary="false">    
+    <position x="635" y="548" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </class>  
+  <class id="15" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.DisplayArea.SelectionRect" 
+    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/DisplayArea.java" binary="false">    
+    <position x="812" y="363" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </class>  
+  <class id="16" corner="BOTTOM_RIGHT" language="java" name="ch.sfdr.fractals.gui.component.DisplayArea" 
+    project="Fractals" file="/Fractals/src/main/java/ch/sfdr/fractals/gui/component/DisplayArea.java" binary="false">    
+    <position x="652" y="189" width="-1" height="-1"/>    
+    <display autosize="true" package="true" initial-value="false" signature="false" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false"/>      
+      <operations public="true" package="true" protected="true" private="false"/>    
+    </display>  
+  </class>  
+  <realization>    
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </realization>  
+  <dependency>    
+    <end type="SOURCE" nodeId="12"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </dependency>  
+  <dependency>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="6"/>  
+  </dependency>  
+  <nesting>    
+    <end type="SOURCE" nodeId="16"/>    
+    <end type="TARGET" nodeId="15"/>  
+  </nesting>  
   <association>    
-    <end type="SOURCE" nodeId="4" navigable="false">      
-      <attribute name="selectionRect"/>      
+    <end type="SOURCE" nodeId="5" navigable="false">      
+      <attribute name="function"/>      
       <multiplicity minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" nodeId="2" navigable="true"/>    
+    <end type="TARGET" nodeId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="14" navigable="false">      
+      <attribute name="layers"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" nodeId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association>    
     <end type="SOURCE" nodeId="5" navigable="false">      
       <attribute name="colorMap"/>      
       <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association>    
+    <end type="SOURCE" nodeId="7" navigable="false">      
+      <attribute name="maps"/>      
+      <multiplicity minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" nodeId="9" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
@@ -105,6 +145,18 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association>    
+    <end type="SOURCE" nodeId="16" navigable="false">      
+      <attribute name="layeredImage"/>      
+      <multiplicity minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" nodeId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency>    
+    <end type="SOURCE" nodeId="1"/>    
+    <end type="TARGET" nodeId="10"/>  
+  </dependency>  
+  <association>    
     <end type="SOURCE" nodeId="1" navigable="false">      
       <attribute name="fractal"/>      
       <multiplicity minimum="0" maximum="1"/>    
@@ -112,54 +164,26 @@
     <end type="TARGET" nodeId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="3"/>  
-  </nesting>  
   <association>    
-    <end type="SOURCE" nodeId="7" navigable="false">      
-      <attribute name="maps"/>      
-      <multiplicity minimum="0" maximum="2147483647"/>    
+    <end type="SOURCE" nodeId="16" navigable="false">      
+      <attribute name="selectionRect"/>      
+      <multiplicity minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" nodeId="9" navigable="true"/>    
+    <end type="TARGET" nodeId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="6"/>  
-  </realization>  
   <association>    
     <end type="SOURCE" nodeId="1" navigable="false">      
       <attribute name="displayArea"/>      
       <multiplicity minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" nodeId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency>    
-    <end type="SOURCE" nodeId="12"/>    
-    <end type="TARGET" nodeId="10"/>  
-  </dependency>  
-  <association>    
-    <end type="SOURCE" nodeId="4" navigable="false">      
-      <attribute name="layers"/>      
-      <multiplicity minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" nodeId="3" navigable="true"/>    
+    <end type="TARGET" nodeId="16" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <nesting>    
-    <end type="SOURCE" nodeId="4"/>    
-    <end type="TARGET" nodeId="2"/>  
+    <end type="SOURCE" nodeId="14"/>    
+    <end type="TARGET" nodeId="13"/>  
   </nesting>  
-  <association>    
-    <end type="SOURCE" nodeId="5" navigable="false">      
-      <attribute name="function"/>      
-      <multiplicity minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" nodeId="10" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <classifier-display autosize="true" package="true" initial-value="false" signature="false" visibility="true">    
     <attributes public="true" package="true" protected="true" private="false"/>    
     <operations public="true" package="true" protected="true" private="false"/>  

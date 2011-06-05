@@ -3,20 +3,13 @@ package ch.sfdr.fractals.gui.component;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -25,18 +18,13 @@ import javax.swing.JPanel;
  */
 public class DisplayArea
 	extends JPanel
-	implements ImageDisplay
 {
 	private static final long serialVersionUID = 1L;
 
 	private static final Color SEL_COLOR = new Color(192, 192, 192, 128);
 	private static final Color SEL_BORDER_COLOR = new Color(255, 255, 255, 255);
-	private static final Color TRANSPARENT_BACK = new Color(255, 255, 255, 0);
 
-	private BufferedImage bufferImage;
-	private Graphics2D bufferGraphics;
-
-	private List<Layer> layers = new ArrayList<Layer>();
+	private LayeredImage layeredImage;
 
 	private SelectionRect selectionRect;
 	private boolean selectionMode = true;
@@ -56,8 +44,17 @@ public class DisplayArea
 	public DisplayArea(int numLayers)
 	{
 		super(null, true);
-		for (int i = 0; i < numLayers; i++)
-			layers.add(new Layer());
+		layeredImage = new LayeredImage(numLayers) {
+			@Override
+			protected void newImageAvailable()
+			{
+				if (EventQueue.isDispatchThread()) {
+					repaint();
+					return;
+				}
+				EventQueue.invokeLater(repaintRun);
+			}
+		};
 
 		selectionRect = new SelectionRect();
 		selectionRect.setVisible(false);
@@ -114,16 +111,7 @@ public class DisplayArea
 	 */
 	public synchronized void createImages()
 	{
-		if (bufferGraphics != null)
-			bufferGraphics.dispose();
-		if (bufferImage != null)
-			bufferImage.flush();
-
-		bufferImage = createImage();
-		bufferGraphics = bufferImage.createGraphics();
-
-		for (Layer l : layers)
-			l.createImage();
+		layeredImage.createImages(getWidth(), getHeight());
 	}
 
 	/**
@@ -178,119 +166,21 @@ public class DisplayArea
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		if (bufferImage == null) {
+		if (layeredImage == null) {
 			super.paintComponent(g);
 			return;
 		}
 
-		g.drawImage(bufferImage, 0, 0, null);
-	}
-
-	@Override
-	public BufferedImage createImage()
-	{
-		return new BufferedImage(getImageWidth(), getImageHeight(),
-			BufferedImage.TYPE_INT_ARGB);
-	}
-
-	@Override
-	public int getImageHeight()
-	{
-		return getSize().height;
-	}
-
-	@Override
-	public int getImageWidth()
-	{
-		return getSize().width;
-	}
-
-	@Override
-	public synchronized void updateImage(BufferedImage img, int layer)
-	{
-		if (img == null)
-			return;
-		layers.get(layer).updateImage(img);
-		repaintAllLayers();
-	}
-
-	private void repaintAllLayers()
-	{
-		for (Layer l : layers)
-			bufferGraphics.drawImage(l.image, 0, 0, null);
-
-		if (EventQueue.isDispatchThread()) {
-			repaint();
-			return;
-		}
-		EventQueue.invokeLater(repaintRun);
-	}
-
-	@Override
-	public int getLayers()
-	{
-		return layers.size();
-	}
-
-	@Override
-	public int addLayer()
-	{
-		Layer l = new Layer();
-		l.createImage();
-		layers.add(l);
-		return layers.size() - 1;
-	}
-
-	@Override
-	public synchronized void removeLayer(int layer)
-	{
-		layers.remove(layer);
-		repaintAllLayers();
-	}
-
-	@Override
-	public synchronized void clearLayer(int layer)
-	{
-		layers.get(layer).clear();
-		repaintAllLayers();
-	}
-
-	@Override
-	public synchronized BufferedImage getLayerImage(int layer)
-	{
-		return layers.get(layer).image;
-	}
-
-	@Override
-	public Graphics2D getLayerGraphics(int layer)
-	{
-		return layers.get(layer).graphics;
-	}
-
-	@Override
-	public synchronized void updateLayer(int layer)
-	{
-		repaintAllLayers();
+		g.drawImage(layeredImage.getBackingImage(), 0, 0, null);
 	}
 
 	/**
-	 * save the current display to a file
-	 * @param file the file to save to
-	 * @param format the format
-	 * @throws IOException
+	 * Returns the backing layered image.
+	 * @return the layeredImage
 	 */
-	public synchronized void saveImage(File file, String format)
-		throws IOException
+	public ImageDisplay getLayeredImage()
 	{
-		/*
-		 * bufferImage is of type RGBA (with alpha), but JPEG does not support
-		 * it. So it needs to be translated to RGB (without alpha) first.
-		 */
-		BufferedImage saveImg = new BufferedImage(bufferImage.getWidth(),
-			bufferImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-		saveImg.createGraphics().drawImage(bufferImage, 0, 0, null);
-
-		ImageIO.write(saveImg, format, file);
+		return layeredImage;
 	}
 
 	/**
@@ -340,8 +230,8 @@ public class DisplayArea
 			int cheight = y - selection.y;
 
 			if (keepAspectRatio) {
-				int w = getImageWidth();
-				int h = getImageHeight();
+				int w = layeredImage.getImageWidth();
+				int h = layeredImage.getImageHeight();
 				double r = Math.max((double) Math.abs(cwidth) / w,
 					(double) Math.abs(cheight) / h);
 				cwidth = (int) (w * r * Math.signum(cwidth));
@@ -394,38 +284,6 @@ public class DisplayArea
 				cheight = -cheight;
 			}
 			return new Rectangle(cx, cy, cwidth, cheight);
-		}
-	}
-
-	/**
-	 * a single layer
-	 */
-	private class Layer
-	{
-		private BufferedImage image;
-		private Graphics2D graphics;
-
-		public void updateImage(BufferedImage img)
-		{
-			graphics.drawImage(img, 0, 0, null);
-		}
-
-		public void createImage()
-		{
-			if (graphics != null)
-				graphics.dispose();
-			if (image != null)
-				image.flush();
-
-			image = new BufferedImage(getImageWidth(), getImageHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-			graphics = image.createGraphics();
-		}
-
-		public void clear()
-		{
-			graphics.setBackground(TRANSPARENT_BACK);
-			graphics.clearRect(0, 0, image.getWidth(), image.getHeight());
 		}
 	}
 }
