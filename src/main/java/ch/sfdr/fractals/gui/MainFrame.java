@@ -656,6 +656,8 @@ public class MainFrame
 	{
 		cycleFinder.stop();
 		fractal.clearOrbits();
+		ftfStartReal.setValue(0.0D);
+		ftfStartImag.setValue(0.0D);
 		lblCyclesCount.setText("-");
 		lblCyclesCount.setVisible(true);
 		prgCycles.setVisible(false);
