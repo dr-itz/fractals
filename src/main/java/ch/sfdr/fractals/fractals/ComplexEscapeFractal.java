@@ -39,6 +39,8 @@ public class ComplexEscapeFractal
 	private int lastPercentage;
 
 	private ArrayList<Orbit> orbitList = new ArrayList<Orbit>();
+	private boolean hasLiveOrbit = false;
+	private ComplexNumber liveOrbitStart = new ComplexNumber(0, 0);
 
 	/**
 	 * Creates the ComplexEscapeFractal
@@ -50,6 +52,9 @@ public class ComplexEscapeFractal
 			StepFractalFunction function, ColorMap colorMap)
 	{
 		this.display = display;
+		int layers = display.getLayers();
+		for (int i = 0; i < 3 - layers; i++)
+			display.addLayer();
 		this.scaler = scaler;
 		this.colorMap = colorMap;
 		setFractalFunction(function);
@@ -160,6 +165,11 @@ public class ComplexEscapeFractal
 	public void drawOrbit(final ComplexNumber start, final int maxIterations,
 			final Color color, final long stepDelay)
 	{
+		if (hasLiveOrbit) {
+			display.clearLayer(2);
+			hasLiveOrbit = false;
+		}
+
 		orbitList.add(new Orbit(start, color, maxIterations));
 
 		Thread thread = new Thread() {
@@ -173,6 +183,23 @@ public class ComplexEscapeFractal
 			}
 		};
 		thread.start();
+	}
+
+	/**
+	 * Draws a live orbit, e.g. during mouse drag
+	 * @param x start point x coordinate
+	 * @param y start point y coordinate
+	 * @param maxIterations maximum number of iterations
+	 */
+	public void drawLiveOrbit(int x, int y, int maxIterations)
+	{
+		liveOrbitStart.set(scaler.scaleX(x), scaler.scaleY(y));
+		hasLiveOrbit = true;
+
+		display.clearLayer(2);
+		doDrawOrbit(null, display.getLayerGraphics(2), liveOrbitStart,
+			maxIterations, Color.WHITE, 0, false);
+		display.updateLayer(2);
 	}
 
 	private void doDrawFractal(final int maxIterations)

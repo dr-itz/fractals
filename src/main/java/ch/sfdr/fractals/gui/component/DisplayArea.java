@@ -31,6 +31,7 @@ public class DisplayArea
 
 	private static final Color SEL_COLOR = new Color(192, 192, 192, 128);
 	private static final Color SEL_BORDER_COLOR = new Color(255, 255, 255, 255);
+	private static final Color TRANSPARENT_BACK = new Color(255, 255, 255, 0);
 
 	private BufferedImage bufferImage;
 	private Graphics2D bufferGraphics;
@@ -177,9 +178,6 @@ public class DisplayArea
 		g.drawImage(bufferImage, 0, 0, null);
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#createImage()
-	 */
 	@Override
 	public BufferedImage createImage()
 	{
@@ -187,30 +185,23 @@ public class DisplayArea
 			BufferedImage.TYPE_INT_ARGB);
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#getImageHeight()
-	 */
 	@Override
 	public int getImageHeight()
 	{
 		return getSize().height;
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#getImageWidth()
-	 */
 	@Override
 	public int getImageWidth()
 	{
 		return getSize().width;
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#updateImage(java.awt.Image)
-	 */
 	@Override
 	public synchronized void updateImage(BufferedImage img, int layer)
 	{
+		if (img == null)
+			return;
 		layers.get(layer).updateImage(img);
 		repaintAllLayers();
 	}
@@ -218,7 +209,7 @@ public class DisplayArea
 	private void repaintAllLayers()
 	{
 		for (Layer l : layers)
-			bufferGraphics.drawImage(l.getImage(), 0, 0, null);
+			bufferGraphics.drawImage(l.image, 0, 0, null);
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run()
@@ -228,18 +219,12 @@ public class DisplayArea
 		});
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#getLayers()
-	 */
 	@Override
 	public int getLayers()
 	{
 		return layers.size();
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#addLayer()
-	 */
 	@Override
 	public int addLayer()
 	{
@@ -249,9 +234,6 @@ public class DisplayArea
 		return layers.size() - 1;
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#removeLayer(int)
-	 */
 	@Override
 	public synchronized void removeLayer(int layer)
 	{
@@ -259,13 +241,28 @@ public class DisplayArea
 		repaintAllLayers();
 	}
 
-	/*
-	 * @see ch.sfdr.fractals.gui.component.ImageDisplay#clearLayer(int)
-	 */
 	@Override
 	public synchronized void clearLayer(int layer)
 	{
-		layers.get(layer).createImage();
+		layers.get(layer).clear();
+		repaintAllLayers();
+	}
+
+	@Override
+	public synchronized BufferedImage getLayerImage(int layer)
+	{
+		return layers.get(layer).image;
+	}
+
+	@Override
+	public Graphics2D getLayerGraphics(int layer)
+	{
+		return layers.get(layer).graphics;
+	}
+
+	@Override
+	public synchronized void updateLayer(int layer)
+	{
 		repaintAllLayers();
 	}
 
@@ -418,9 +415,10 @@ public class DisplayArea
 			graphics = image.createGraphics();
 		}
 
-		public BufferedImage getImage()
+		public void clear()
 		{
-			return image;
+			graphics.setBackground(TRANSPARENT_BACK);
+			graphics.clearRect(0, 0, image.getWidth(), image.getHeight());
 		}
 	}
 }

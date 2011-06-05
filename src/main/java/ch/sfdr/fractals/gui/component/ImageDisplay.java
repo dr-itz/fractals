@@ -1,5 +1,6 @@
 package ch.sfdr.fractals.gui.component;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -55,4 +56,26 @@ public interface ImageDisplay
 	 * @param img
 	 */
 	void updateImage(BufferedImage img, int layer);
+
+	/**
+	 * Returns the BufferedImage of the layer itself. Use for direct
+	 * manipulation of the image.
+	 * @param layer index of the layer
+	 * @return BufferedImage
+	 */
+	BufferedImage getLayerImage(int layer);
+
+	/**
+	 * Returns the Graphics2D of the layer itself. Use for direct
+	 * manipulation of the image/graphics.
+	 * @param layer index of the layer
+	 * @return Graphics2D
+	 */
+	Graphics2D getLayerGraphics(int layer);
+
+	/**
+	 * updates a directly manipulated layer, ie. forces a redraw of the layers.
+	 * @param layer index of the layer
+	 */
+	void updateLayer(int layer);
 }

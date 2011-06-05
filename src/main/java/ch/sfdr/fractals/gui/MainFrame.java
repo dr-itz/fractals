@@ -506,8 +506,23 @@ public class MainFrame
 				if (rbtnZoom.isSelected() && e.getButton() == 3) {
 					scaler.zoomOut(e.getX(), e.getY(), 3);
 					drawFractal();
-				} else if (rbtnOrbit.isSelected() && e.getButton() == 1) {
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e)
+			{
+				if (rbtnOrbit.isSelected() && e.getButton() == 1) {
 					drawOrbit(e.getX(), e.getY());
+				}
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e)
+			{
+				if (rbtnOrbit.isSelected()) {
+					fractal.drawLiveOrbit(e.getX(), e.getY(),
+						snmIterations.getNumber().intValue());
 				}
 			}
 
