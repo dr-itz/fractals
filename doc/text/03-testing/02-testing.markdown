@@ -18,8 +18,11 @@ Für die folgenden Klassen sind Tests mittels JUnit implementiert:
 * ColorMapFactory
 * ColorSelection
 * LineClipping
+* ComplexEscapeFractal
 * ComplexOrbitCycleFinder
 
+Die Tests für ComplexEscapeFracal basierend dabei auf dem Vergleich des
+berechneten Fraktals mit einem Referenzbild, Pixel für Pixel.
 
 ### Manuelle Tests des GUI ###
 

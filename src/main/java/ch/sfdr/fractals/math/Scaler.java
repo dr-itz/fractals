@@ -29,7 +29,7 @@ public class Scaler
 	private double offsetY;
 
 	// zoom
-	private double zoom;
+	private double zoom = 1.0D;
 
 	// internal scaling factor
 	private double r;

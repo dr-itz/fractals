@@ -39,6 +39,7 @@ public class ComplexEscapeFractal
 	private int lastPercentage;
 
 	private ArrayList<Orbit> orbitList = new ArrayList<Orbit>();
+	private Thread orbitThread;
 	private boolean hasLiveOrbit = false;
 	private ComplexNumber liveOrbitStart = new ComplexNumber(0, 0);
 
@@ -154,6 +155,21 @@ public class ComplexEscapeFractal
 		thread.start();
 	}
 
+	/**
+	 * waits for the fractal drawing to complete
+	 */
+	public synchronized void waitForFractalCompleted()
+	{
+		if (thread != null) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+			}
+			thread = null;
+		}
+	}
+
+
 
 	/**
 	 * Draws the orbit for the given coordinates and step delay
@@ -170,9 +186,11 @@ public class ComplexEscapeFractal
 			hasLiveOrbit = false;
 		}
 
+		waitForOrbitCompleted(true);
+
 		orbitList.add(new Orbit(start, color, maxIterations));
 
-		Thread thread = new Thread() {
+		orbitThread = new Thread() {
 			@Override
 			public void run()
 			{
@@ -182,7 +200,24 @@ public class ComplexEscapeFractal
 				doDrawOrbit(img, g, start, maxIterations, color, stepDelay, true);
 			}
 		};
-		thread.start();
+		orbitThread.start();
+	}
+
+	/**
+	 * waits for the fractal drawing to complete.
+	 * @param interrupt if true, thread is told to complete drawing w/o delays
+	 */
+	public synchronized void waitForOrbitCompleted(boolean interrupt)
+	{
+		if (orbitThread != null) {
+			if (interrupt)
+				orbitThread.interrupt();
+			try {
+				orbitThread.join();
+			} catch (InterruptedException e) {
+			}
+			orbitThread = null;
+		}
 	}
 
 	/**
@@ -354,9 +389,17 @@ public class ComplexEscapeFractal
 					lc.getClipX2(), lc.getClipY2());
 
 				// only show the first 30 steps "animated", the rest in one go
+				if (Thread.interrupted())
+					orbitDelay = 0;
+
 				if (count < 30 && orbitDelay > 0) {
 					display.updateImage(img, 1);
-					sleep(orbitDelay);
+
+					try {
+						Thread.sleep(orbitDelay);
+					} catch (InterruptedException e) {
+						orbitDelay = 0;
+					}
 				}
 			}
 
@@ -366,14 +409,6 @@ public class ComplexEscapeFractal
 		}
 		if (updateImage)
 			display.updateImage(img, 1);
-	}
-
-	private static void sleep(long delay)
-	{
-		try {
-			Thread.sleep(delay);
-		} catch (InterruptedException e) {
-		}
 	}
 
 	private Color getColor(int count, int maxIterations)
