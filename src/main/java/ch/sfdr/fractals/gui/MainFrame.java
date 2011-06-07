@@ -350,7 +350,7 @@ public class MainFrame
 		snmCycleLength = new SpinnerNumberModel(3, 2, 10, 1);
 		JSpinner spinCycleLength = new JSpinner(snmCycleLength);
 		JLabel lblCycleDelay = new JLabel("Delay (ms)");
-		snmCycleDelay = new SpinnerNumberModel(500, 100, 1500, 10);
+		snmCycleDelay = new SpinnerNumberModel(500, 50, 1500, 10);
 		JSpinner spinCycleDelay = new JSpinner(snmCycleDelay);
 		chkCycleFull = new JCheckBox("Full orbit");
 		chkCycleFull.setSelected(true);

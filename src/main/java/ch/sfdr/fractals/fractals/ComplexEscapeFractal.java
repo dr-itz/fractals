@@ -194,10 +194,7 @@ public class ComplexEscapeFractal
 			@Override
 			public void run()
 			{
-				BufferedImage img = display.createImage();
-				Graphics2D g = img.createGraphics();
-
-				doDrawOrbit(img, g, start, maxIterations, color, stepDelay, true);
+				doDrawOrbit(1, start, maxIterations, color, stepDelay, true);
 			}
 		};
 		orbitThread.start();
@@ -232,9 +229,7 @@ public class ComplexEscapeFractal
 		hasLiveOrbit = true;
 
 		display.clearLayer(2);
-		doDrawOrbit(null, display.getLayerGraphics(2), liveOrbitStart,
-			maxIterations, Color.WHITE, 0, false);
-		display.updateLayer(2);
+		doDrawOrbit(2, liveOrbitStart, maxIterations, Color.WHITE, 0, true);
 	}
 
 	private void doDrawFractal(final int maxIterations)
@@ -347,14 +342,16 @@ public class ComplexEscapeFractal
 		return true;
 	}
 
-	private void doDrawOrbit(BufferedImage img, Graphics2D g,
-			ComplexNumber orbitStart, int maxIterations,
-			Color orbitColor, long orbitDelay, boolean updateImage)
+	private void doDrawOrbit(int layer, ComplexNumber orbitStart,
+			int maxIterations, Color orbitColor, long orbitDelay,
+			boolean updateImage)
 	{
 		ComplexNumber z0 = orbitStart;
 		ComplexNumber z = z0.clone();
 
 		LineClipping lc = new LineClipping();
+
+		Graphics2D g = display.getLayerGraphics(layer);
 
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
@@ -375,7 +372,7 @@ public class ComplexEscapeFractal
 		}
 
 		// a thinner stroke for the lines
-		g.setStroke(new BasicStroke(0.4f));
+		g.setStroke(new BasicStroke(0.7f));
 
 		int count = 0;
 		while (z.absSqr() < boundarySqr && count++ < maxIterations) {
@@ -393,7 +390,7 @@ public class ComplexEscapeFractal
 					orbitDelay = 0;
 
 				if (count < 30 && orbitDelay > 0) {
-					display.updateImage(img, 1);
+					display.updateLayer(layer);
 
 					try {
 						Thread.sleep(orbitDelay);
@@ -405,10 +402,9 @@ public class ComplexEscapeFractal
 
 			lastX = x;
 			lastY = y;
-
 		}
 		if (updateImage)
-			display.updateImage(img, 1);
+			display.updateLayer(layer);
 	}
 
 	private Color getColor(int count, int maxIterations)
@@ -458,13 +454,10 @@ public class ComplexEscapeFractal
 		if (orbitList.isEmpty())
 			return;
 
-		BufferedImage img = display.createImage();
-		Graphics2D g = img.createGraphics();
-
 		for (Orbit o : orbitList) {
-			doDrawOrbit(img, g, o.start, o.itarations, o.color, 0, false);
+			doDrawOrbit(1, o.start, o.itarations, o.color, 0, false);
 		}
-		display.updateImage(img, 1);
+		display.updateLayer(1);
 	}
 
 	/**
@@ -474,5 +467,6 @@ public class ComplexEscapeFractal
 	{
 		orbitList.clear();
 		display.clearLayer(1);
+		display.clearLayer(2);
 	}
 }

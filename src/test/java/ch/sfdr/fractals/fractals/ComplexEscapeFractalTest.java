@@ -3,6 +3,7 @@ package ch.sfdr.fractals.fractals;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.io.File;
@@ -29,8 +30,6 @@ public class ComplexEscapeFractalTest
 	private static final int WIDTH = 400;
 	private static final int HEIGHT = 400;
 
-	private static final File failName = new File("failed-test.png");
-
 	private static final File refDir = new File("src/test/resource");
 
 	private static final File refFractalName = new File(refDir, "fractal.png");
@@ -49,15 +48,12 @@ public class ComplexEscapeFractalTest
 	public void setUp()
 		throws Exception
 	{
-		if (failName.exists() && !failName.delete())
-			fail("failed to delete: " + failName);
-
 		scaler = new Scaler();
 		scaler.setDimension(WIDTH, HEIGHT);
 		ColorMap colorMap = ColorMapFactory.getMap(0); // the grayscale map
 		Mandelbrot mandelbrot = new Mandelbrot();
 		image = new LayeredImage(1);
-		image.createImages(WIDTH, HEIGHT);
+		reset();
 
 		me = new ComplexEscapeFractal(image, scaler, mandelbrot, colorMap);
 
@@ -87,15 +83,13 @@ public class ComplexEscapeFractalTest
 	@Test
 	public void testDrawFractal()
 	{
-		BufferedImage ref = loadRefImage(refFractalName);
-
 		me.setStatObserver(this);
 		assertEquals(this, me.getStatObserver());
 
 		drawFractal();
 		me.setStatObserver(null);
 
-		compareImages(ref, image.getBackingImage());
+		compareImages(refFractalName, image.getBackingImage());
 
 		assertTrue(drawTime > 0);
 		assertEquals(3412073, stepCount);
@@ -107,35 +101,34 @@ public class ComplexEscapeFractalTest
 		me.drawOrbit(
 			new ComplexNumber(-0.009523809523809379D, -0.647619047619048D),
 			200, Color.RED, 0);
-		me.waitForOrbitCompleted(true);
+		me.drawOrbit(
+			new ComplexNumber(0.35714285714285754D, -0.28571428571428603),
+			200, Color.GREEN, 50);
+		me.waitForOrbitCompleted(false);
 	}
 
 
 	@Test
 	public void testDrawOrbit()
 	{
-		BufferedImage ref = loadRefImage(refOrbitName);
-
 		drawOrbit();
-		compareImages(ref, image.getBackingImage());
+		compareImages(refOrbitName, image.getBackingImage());
 
 		reset();
 
 		me.redrawAllOrbits();
 		me.waitForOrbitCompleted(true);
-		compareImages(ref, image.getBackingImage());
+		compareImages(refOrbitName, image.getBackingImage());
 	}
 
 	@Test
 	public void testClearOrbits()
 	{
-		BufferedImage ref = loadRefImage(refFractalName);
-
 		drawFractal();
 		drawOrbit();
 		me.clearOrbits();
 
-		compareImages(ref, image.getBackingImage());
+		compareImages(refFractalName, image.getBackingImage());
 	}
 
 	private void drawFractalDifferentColors()
@@ -148,9 +141,8 @@ public class ComplexEscapeFractalTest
 	@Test
 	public void testDifferentColors()
 	{
-		BufferedImage ref = loadRefImage(refFractal2Name);
 		drawFractalDifferentColors();
-		compareImages(ref, image.getBackingImage());
+		compareImages(refFractal2Name, image.getBackingImage());
 	}
 
 
@@ -163,9 +155,8 @@ public class ComplexEscapeFractalTest
 	@Test
 	public void testDrawLiveOrbit()
 	{
-		BufferedImage ref = loadRefImage(refLiveOrbitName);
 		drawLiveOrbit();
-		compareImages(ref, image.getBackingImage());
+		compareImages(refLiveOrbitName, image.getBackingImage());
 	}
 
 	//--------------------------------------------------------------------------
@@ -178,15 +169,19 @@ public class ComplexEscapeFractalTest
 		return out;
 	}
 
-	private void compareImages(BufferedImage expected, BufferedImage actual)
+	private void compareImages(File ref, BufferedImage actual)
 	{
+		File failName = new File("failed-" + ref.getName());
+		if (failName.exists() && !failName.delete())
+			fail("failed to delete: " + failName);
+
+		BufferedImage expected = convertRGB(loadRefImage(ref));
 		try {
 			ImageIO.write(actual, "png", failName);
 		} catch (IOException e) {
 			fail("failed to save actual image: " + e);
 		}
 
-		expected = convertRGB(expected);
 		actual = convertRGB(actual);
 
 		assertEquals(expected.getWidth(), actual.getWidth());
@@ -195,8 +190,11 @@ public class ComplexEscapeFractalTest
 		DataBuffer db1 = expected.getData().getDataBuffer();
 		DataBuffer db2 = actual.getData().getDataBuffer();
 		assertEquals(db1.getSize(), db2.getSize());
-		for (int i = 0; i < db1.getSize(); i++)
-			assertEquals(db1.getElem(i), db2.getElem(i));
+		for (int i = 0; i < db1.getSize(); i++) {
+			if (db1.getElem(i) != db2.getElem(i)) {
+				fail("images not equal, failed: " + failName + "; expected: " + ref);
+			}
+		}
 
 		failName.delete();
 	}
@@ -217,6 +215,15 @@ public class ComplexEscapeFractalTest
 	private void reset()
 	{
 		image.createImages(WIDTH, HEIGHT);
+
+		/*
+		 * fill layer 0 with black; in real, layer 0 get's the fractal so it's
+		 * not transparent anyways
+		 */
+		Graphics2D g = image.getLayerGraphics(0);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
+		image.updateLayer(0);
 	}
 
 	private void saveRefFractal()
