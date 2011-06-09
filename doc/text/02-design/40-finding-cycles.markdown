@@ -96,7 +96,7 @@ private ComplexNumber callFunction(ComplexNumber start, ComplexNumber res)
 Die nötigen partiellen Ableitungen für die Jacobi-Matrix berechnen sich rein
 numerisch mittels des zentralen Differenzenquotienten:
 
-$$D_2 f(x_0, h) = \frac{f(x_0 + h) - f(x_h - h)}{2h}$$
+$$D_2 f(x_0, h) = \frac{f(x_0 + h) - f(x_0 - h)}{2h}$$
 
 
 Ebenfalls in der Klass `Jacobian2x2` ist die Funktion implementiert die die
