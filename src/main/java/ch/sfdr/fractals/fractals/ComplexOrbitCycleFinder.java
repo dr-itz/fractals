@@ -18,7 +18,7 @@ public strictfp class ComplexOrbitCycleFinder
 	private static final double TOL = 1e-13;
 
 	// the tolerance comparing cycle start points
-	private static final double POINT_TOL = 1e-4;
+	private static final double POINT_TOL = 1e-6;
 
 	// the "h" used in diff. Smaller values would cause NaN problems
 	private static final double DIFF_H = 1e-8;
@@ -124,8 +124,7 @@ public strictfp class ComplexOrbitCycleFinder
 		Jacobian2x2 jac = new Jacobian2x2();
 
 		int i = 0;
-		while ((Math.abs(f.getReal()) > TOL ||
-				Math.abs(f.getImaginary()) > TOL) &&
+		while ((Math.abs(f.getReal()) +	Math.abs(f.getImaginary()) > TOL) &&
 				i++ < maxIter)
 		{
 			// get the inverse of the jacobian
@@ -227,7 +226,7 @@ public strictfp class ComplexOrbitCycleFinder
 		double ymax = function.getUpperBounds().getImaginary();
 		double boundary = function.getBoundarySqr();
 
-		int divide = cycleLength * cycleLength;
+		int divide = 3 * cycleLength * cycleLength;
 		double stepSizeX = Math.abs(xmax - xmin) / divide;
 		double stepSizeY = Math.abs(ymax - ymin) / divide;
 
