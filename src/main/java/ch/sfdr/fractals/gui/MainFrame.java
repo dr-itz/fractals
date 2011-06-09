@@ -347,7 +347,7 @@ public class MainFrame
 
 		// Orbit cycles
 		JLabel lblCycle = new JLabel("Find cycles of length");
-		snmCycleLength = new SpinnerNumberModel(3, 2, 10, 1);
+		snmCycleLength = new SpinnerNumberModel(3, 2, 11, 1);
 		JSpinner spinCycleLength = new JSpinner(snmCycleLength);
 		JLabel lblCycleDelay = new JLabel("Delay (ms)");
 		snmCycleDelay = new SpinnerNumberModel(500, 50, 1500, 10);
