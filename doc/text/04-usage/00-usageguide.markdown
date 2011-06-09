@@ -27,17 +27,17 @@ beschrieben.
 ### Aufbau der Applikation ###
 
 Die Benutzeroberfläche besteht bewusst nur aus einem einzigen Fenster. Dieses
-ist in die folgenden Bereiche eingeteilt:
+ist in folgende Bereiche eingeteilt:
 
   * **Anzeige**
 
-	Der grösste Teil des Fenster ist von der Anzeige des Fraktals benutzt.
+	Der grösste Teil des Fensters ist von der Anzeige des Fraktals benutzt.
 
-  * **Frakalauswahl und Konfiguration**
+  * **Fraktalauswahl und Konfiguration**
 
 	Unten links befindet sich der Bereich für die Auswahl und Konfiguration der
 	Darstellung des Fraktals. Hier kann die Funktion, die maximale Anzahl
-	Iteration pro Bildpunkt, das Frabschema, sowie für Julia-Fraktale die
+	Iteration pro Bildpunkt, das Farbschema, sowie für Julia-Fraktale die
 	Konstante eingegeben werden.
 
   * **Informationsanzeige**
@@ -45,7 +45,7 @@ ist in die folgenden Bereiche eingeteilt:
 	Oben rechts befindet sich die Informationsanzeige ("Info"). Hier werden die folgenden
 	Informationen dargestellt:
 
-	  * Die aktuelle Koordinaten unter dem Mauszeiger als komplexe Zahl.
+	  * Die aktuellen Koordinaten unter dem Mauszeiger als komplexe Zahl.
 	  * Der aktuelle Zoom, als ganze Zahl.
 	  * Die Zeit die benötigt wurde, um die aktuelle Anzeige zu berechnen.
 	  * Die Anzahl Schritte die berechnet wurden. An dieser Stelle erscheint
@@ -57,13 +57,13 @@ ist in die folgenden Bereiche eingeteilt:
 
 	Direkt unterhalb der Informationsanzeige lässt sich das Verhalten der Maus
 	konfigurieren ("Click Action"). Hier kann ausgewählt werden, ob mit der
-	Maus der Zoom kontrolliert wird, oder ob Orbits gezeichnet werden sollen.
+	Maus der Zoom kontrolliert wird oder ob Orbits gezeichnet werden sollen.
 
   * **Zeichnen der Orbits**
 
 	Unten rechts befinden sich alle Elemente bezüglich Zeichnen der Orbits
-	("Orbit drawing"). Hier lässt sich die Farbe konfigurieren, von Hand ein
-	Startwert für einen Orbit angeben, oder automatisch zyklische Orbits finden.
+	("Orbit drawing"). Hier lässt sich die Farbe konfigurieren, von Hand einen
+	Startwert für einen Orbit angeben oder automatisch zyklische Orbits finden.
 
 
 ### Zeichnen von Mandelbrot und Julia Fraktalen ###
@@ -71,19 +71,19 @@ ist in die folgenden Bereiche eingeteilt:
 Unten links kann die Fraktalfunktion ausgewählt werden. Beim Ändern der Auwahl
 wird sofort das Fraktal gezeichnet. Rechts davon lässt sich die maximale
 Iterationszahl konfigurieren. Wird diese verändert, muss das Fraktal durch
-klicken auf "Draw" neu gezeichnet werden. Beim der Auswahl eines Julia-Fraktals
-werden direkt unterhalb der Auswahl zwei Zusäzliche Eingabefelder eingeblendet.
-Diese erlauben das festlegen der Konstante. Die beiden Eingabefelder stellen den
+klicken auf "Draw" neu gezeichnet werden. Bei der Auswahl eines Julia-Fraktals
+werden direkt unterhalb der Auswahl zwei zusätzliche Eingabefelder eingeblendet.
+Diese erlauben das Festlegen der Konstante. Die beiden Eingabefelder stellen den
 Real- und den Imaginärteil dieser Konstante dar. Wird die Konstante geändert,
 muss ebenfalls durch den "Draw"-Button das Frakal neu gezeichnet werden.
 
-Um die farbliche Darstellung des Fraktals zu ändern, stehen zwei Komboboxen zur
+Um die farbliche Darstellung des Fraktals zu ändern, stehen zwei Komboboxen
 unter "Colorization" zur Auswahl. Die linke legt dabei das Farbschema für die
 Punkte fest, die sich ausserhalb der Mandelbrot- bzw. Julia-Menge befinden. Die
 farblichen Abstufungen helfen dabei zu zeigen, wieviele Schritte notwendig sind
 um einen Betrag > 2 zu erreichen. Die zweite Auswahl, "Set color" legt die Farbe
 der Menge selbst fest, als jener Punkte dessen Orbit gebunden sind. Änderungen
-an der Frabauswahl werden sofort übernommen
+an der Farbauswahl werden sofort übernommen.
 
 
 ### Zoom ###
@@ -94,7 +94,7 @@ einfach ausgewählt werden mittels Klicken-und-Ziehen. Die ausgewählte Fläche
 wird hierbei hervorgehoben. Das Fraktal wird danach für den gewählten Ausschnitt
 neu berechnet und die Informationsanzeige entsprechend aktualisiert. Um den Zoom
 wieder zu verringern, kann einfach die rechte Maustaste betätigt werden. Der
-Punkt unter den Mauszeiger wird dabei das neue Zentrum der Darstellung, der Zoom
+Punkt unter dem Mauszeiger wird dabei das neue Zentrum der Darstellung, der Zoom
 wird um Faktor 3 verringert.
 
 
@@ -106,7 +106,7 @@ angeklickt, wird dieser als Startwert genommen und der Orbit wird in der
 entsprechenden Farbe, wählbar unter "Orbit drawing" gezeichnet. Die Checkbox
 "Auto-cycle" kontrolliert hierbei die automatische Umschaltung auf die nächste
 Farbe in der Liste. Die Zahl "Step delay" legt fest, wieviele Millisekunden
-zwischen dem Zeichnen der ersten 30 Schritten eines Orbits gewartet werden soll.
+zwischen dem Zeichnen der ersten 30 Schritte eines Orbits gewartet werden soll.
 Der Button "Clear orbits" löscht alle bisher eingezeichneten Orbits. Der
 Startwert beim Zeichnen eines Orbits wird dabei im Bereich "Manual Real/Imag"
 eingetragen. Dies erlaubt dem Benutzer, die Werte zu verändern und durch den
@@ -116,7 +116,7 @@ Wird mit gedrückter Taste die Maus bewegt, wird mit weisser Farbe der Orbit an
 dieser Stelle live gezeichnet und wird erst beim loslassen der Maus bleibend und
 in der ausgewählten Farbe eingezeichnet. Mit der rechten Maustaste bleiben die
 Live-Orbits auch nach den Loslassen der Maustaste bestehen, können aber durch
-erneutes klicken wieder entfernt werden.
+erneutes Klicken wieder entfernt werden.
 
 
 ### Finden von Zyklen ###
@@ -124,17 +124,17 @@ erneutes klicken wieder entfernt werden.
 In der untersten Zeile im Bereich "Orbit drawing" können zyklische Orbits
 mittels einer Newton-Iteration gefunden werden. Zuerst wird die Länge des Zyklus
 mit "Find cycles of length .." festgelegt. Der "Delay" kontrolliert die
-Verzögerung in Millisekunden bei zwischen dem Anzeigen der einzelnen Orbits. Die
+Verzögerung in Millisekunden zwischen dem Anzeigen der einzelnen Orbits. Die
 Checkbox "Full orbit" legt fest, ob für jeden gefundenen Startpunkt der gesamte
-Orbit gezeichnet werden sollt. Ist diese Checkbox nicht angewählt, werden nur
+Orbit gezeichnet werden soll. Ist diese Checkbox nicht angewählt, werden nur
 die Startpunkte eingezeichnet. Durch den Button "Find" kann die Suche gestartet
-werden. Alle einzeichneten Orbits benutzen dabei die Farbeinstellungen und
+werden. Alle eingezeichneten Orbits benutzen dabei die Farbeinstellungen und
 lassen sich durch "Clear orbits" wieder löschen.
 
 
 ### Speichern der Ansicht ###
 
-Die aktuelle Ansicht des Fraktal lässt sich als Bild abspeichern. Dazu muss der
+Die aktuelle Ansicht des Fraktals lässt sich als Bild abspeichern. Dazu muss der
 Button "Save as..." betätigt werden. Nach Eingabe des Dateinamen und Bildformat
 (PNG oder JPEG) wird die Ansicht abgespeichert.
 
