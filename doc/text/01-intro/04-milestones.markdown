@@ -41,18 +41,11 @@ Der Fokus des dritten Meilensteins sind folgende Funktionen:
 
 * Detailverbesserungen
 * Geschwindigkeitssteigerungen
+* Orbits zeichnen im Live Modus
 * Intensive Tests und Bugfixes
 * Speichern der Anzeige als Bild
 * Dokumentation
 
-Dieser Meilenstein trägt den Namen "v1.0-pre3" und wurde vor der Präsentation
-zur Verfügung gestellt.
+Dieser Meilenstein trägt den Namen "v1.0" und beinhaltet die finale Version,
+welche vor der Präsentation zur Verfügung gestellt wurde.
 
-
-### 4. Meilenstein ###
-
-Der vierte Meilenstein ist die finale Version mit dem Namen "v1.0". Diese wird
-sich im Idealfall nicht von der Version "v1.0-pre3" unterscheiden. Die kurze
-Zeit zwischen dem dritten und vierten Meilenstein erlaubt es, letzte kleine
-Bugs zu beheben und ggf. die Dokumentation noch einmal zu überarbeiten
-(Korrektur von Schreibfehler, etc).
