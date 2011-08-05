@@ -14,6 +14,8 @@
 %\usepackage{indentfirst}
 \usepackage{framed,color}
 \usepackage{array}
+\usepackage{float}
+\usepackage{ctable}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 \usepackage{verbatim}
 \usepackage{moreverb}
@@ -22,12 +24,17 @@
 \usepackage{amsmath}
 
 \lstset{ %
-basicstyle=\ttfamily\footnotesize,
-numberstyle=\tiny,
-tabsize=4,
-numbers=left,
-showstringspaces=false,
-frame=single}
+	basicstyle=\ttfamily\footnotesize,
+	numberstyle=\tiny,
+	tabsize=4,
+	numbers=left,
+	showstringspaces=false,
+	frame=single
+}
+
+\setupctable{
+	mincapwidth=\hsize
+}
 
 \definecolor{shadecolor}{gray}{0.90}
 
