@@ -2,7 +2,10 @@
 ###############################################################################
 # This is originally based on the "progit" makepdf script, but is heavily
 # changed to automatically generate PDFs from .gv and .svg plus changes
-# for newer versions of pandoc and portability fixes
+# for newer versions of pandoc and portability fixes.
+#
+# Like "Pro Git", this is licensed under the
+#   Creative Commons Attribution-Non Commercial-Share Alike 3.0 license.
 ###############################################################################
 # -*- coding: utf-8 -*-
 require 'fileutils'
