@@ -164,7 +164,7 @@ docs.each do |doc|
 
 	print "\tParsing markdown... "
 	latex = IO.popen(
-		'pandoc -p --no-wrap -f markdown -t latex --chapters --listings', 'w+'
+		'pandoc -p --wrap=none -f markdown -t latex --top-level-division=chapter --listings', 'w+'
 	) do |pipe|
 		pipe.write(pre_pandoc(markdown, config))
 		pipe.close_write

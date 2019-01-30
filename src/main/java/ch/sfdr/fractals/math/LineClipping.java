@@ -1,7 +1,7 @@
 package ch.sfdr.fractals.math;
 
 /**
- * 2D Line clipping based on the well-known Cohen–Sutherland line clipping
+ * 2D Line clipping based on the well-known Cohen-Sutherland line clipping
  * algorithm. This is not the most efficient algorithm, but performs well
  * enough. For a C++ version, see:
  *   http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland

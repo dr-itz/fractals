@@ -16,6 +16,7 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{ctable}
+\usepackage{longtable}
 \usepackage[font=small,format=plain,labelfont=bf,up,textfont=it,up]{caption}
 \usepackage{verbatim}
 \usepackage{moreverb}
@@ -51,6 +52,10 @@
 \author{<%= config['author'] %>}
 \newcommand{\titleshort}{<%= config['titleshort'] %>}
 \newcommand{\authorshort}{<%= config['authorshort'] %>}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\passthrough}[1]{#1}
 
 \makeatletter
 \let\savedauthor=\@author
